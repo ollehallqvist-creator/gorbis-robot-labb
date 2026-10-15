@@ -31,7 +31,7 @@ button:hover{border-color:#9ac6a8;filter:brightness(1.12)}
 .panel-head h3{letter-spacing:.17em;color:#d6d4c7}.panel-head span,.hint{color:#aaa99b}
 .hint strong{color:#a5e2bd}.part-chip{background:#171814;border:1px solid #494a40;border-radius:2px;color:#dddacc}.part-chip .mini{border-radius:2px;background:#304b3b;color:#b7e3c6}
 .mobile-pad button{border-radius:3px;background:#151612e8}.footer{color:#77786d}.footer a{color:#a6d6b7}
-@media(max-width:720px){.game-frame{border-radius:2px}.game-stage{aspect-ratio:4/3}}
+@media(max-width:720px){.game-frame{border-radius:2px}}
 
 </style>
 </head>
@@ -230,7 +230,7 @@ d.parts.forEach((part,i)=>{if(state.collected.includes(i))return;const bob=Math.
 const c=state.crate;const cg=ctx.createLinearGradient(c.x,c.y,c.x+c.w,c.y+c.h);cg.addColorStop(0,'#9a7b4f');cg.addColorStop(.5,'#644b30');cg.addColorStop(1,'#30291f');ctx.fillStyle='#080908';ctx.fillRect(c.x+3,c.y+4,c.w,c.h);ctx.fillStyle=cg;ctx.fillRect(c.x,c.y,c.w,c.h);ctx.strokeStyle='#d0ad72';ctx.lineWidth=2;ctx.strokeRect(c.x+2,c.y+2,c.w-4,c.h-4);ctx.strokeStyle='#4a3825';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(c.x+5,c.y+5);ctx.lineTo(c.x+c.w-5,c.y+c.h-5);ctx.moveTo(c.x+c.w-5,c.y+5);ctx.lineTo(c.x+5,c.y+c.h-5);ctx.stroke();ctx.fillStyle=state.sensorActive?'#b9d967':'#4c5a40';ctx.fillRect(d.sensor.x,d.sensor.y,d.sensor.w,d.sensor.h);ctx.fillStyle=state.sensorActive?'#e5ed9a':'#8eaa6e';ctx.fillRect(d.sensor.x+4,d.sensor.y+3,d.sensor.w-8,3);ctx.strokeStyle='#777d61';ctx.strokeRect(d.sensor.x,d.sensor.y,d.sensor.w,d.sensor.h);
 // Heavy exit hatch with a lit seam when unlocked.
 ctx.fillStyle='#080908';ctx.fillRect(d.door.x-7,d.door.y-8,d.door.w+14,d.door.h+15);ctx.fillStyle='#34372e';ctx.fillRect(d.door.x-4,d.door.y-5,d.door.w+8,d.door.h+10);ctx.fillStyle=state.sensorActive?'#8dd8a5':'#191c16';ctx.fillRect(d.door.x,d.door.y,d.door.w,d.door.h);ctx.strokeStyle=state.sensorActive?'#d4f0b5':'#757869';ctx.lineWidth=2;ctx.strokeRect(d.door.x,d.door.y,d.door.w,d.door.h);ctx.fillStyle=state.sensorActive?'#b4edbd':'#8e8f7c';ctx.fillRect(d.door.x+5,d.door.y+8,d.door.w-10,4);ctx.fillStyle='#151712';ctx.fillRect(d.door.x+5,d.door.y+20,d.door.w-10,d.door.h-27);
-drawRobot(state.player.x+state.player.w/2,state.player.y+state.player.h-10,.72);
+drawRobot(state.player.x+state.player.w/2,state.player.y+state.player.h-10,.48);
 ctx.restore();
 // Original-like HUD: part icons lower-left and a small exit symbol upper-right.
 ctx.fillStyle='#070907c9';ctx.fillRect(12,478,145,48);ctx.strokeStyle='#727466';ctx.lineWidth=1;ctx.strokeRect(12,478,145,48);for(let i=0;i<3;i++){const x=26+i*42;ctx.fillStyle=state.collected.includes(i)?'#a8d6b1':'#171a15';ctx.strokeStyle=state.collected.includes(i)?'#d4e8bb':'#9da28b';ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<6;k++){const a=Math.PI/3*k-Math.PI/6;const xx=x+Math.cos(a)*14,yy=502+Math.sin(a)*14;k?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.closePath();ctx.fill();ctx.stroke();if(state.collected.includes(i)){ctx.fillStyle='#324e39';ctx.fillRect(x-4,496,8,12);ctx.fillStyle='#f0db7c';ctx.fillRect(x-2,499,4,5)}}
