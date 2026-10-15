@@ -16,3 +16,5 @@ jobs:
         run: node tests/level-generation.test.js
       - name: Check robot part variants
         run: node tests/robot-variants.test.js
+      - name: Check synthesized sound cues
+        run: node tests/sound-cues.test.js

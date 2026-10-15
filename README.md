@@ -27,6 +27,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
 - 24 olika, procedurgenererade labyrintlayouter med perspektivritade väggar och golv.
 - Sex rumsteman med separata färgpaletter och tonat omgivningsljus.
+- Sju syntetiserade ljudsignaler för insamling, banavslut, låda, paketmaskin, hinder, reglage och utgång; ljudet kan stängas av och bygger inte på originalets ljudfiler.
 - Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång. Antalet hinder ökar gradvis mellan banorna, och hinder placeras inte ovanpå delar eller pusselobjekt.
 - 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
 - 24 visuella variationer för varje delkategori, med extra antenner, paneler, linser, hjul och andra tillbehör.
@@ -35,7 +36,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Robotbyggarens hylla visar de senast öppnade delarna, och endast öppnade delar kan väljas.
 - Originalinspirerat banflöde: när alla tre delar samlats visas klar-dialogen direkt.
 - Fem lokala sparfiler i webbläsarens `localStorage`, med JSON-export/import för säkerhetskopiering.
-- Ett Node-baserat regressionstest som kontrollerar att alla 24 genererade labyrinter är unika och att alla delar, lådor, tryckplattor och utgångar går att nå.
+- Node-baserade regressionstester som kontrollerar alla 24 genererade labyrinter, robotdelarnas visuella variationer, ljudsignalerna och JavaScript-syntaxen.
 - Tydlig progressionsmätare för upplåsta banor och sammanfattning i banväljaren.
 - Kontextbaserade ledtrådar som ändras beroende på samlade delar och tryckplattans status.
 - Bekräftelse innan omstart så att pågående framsteg inte försvinner av misstag.
