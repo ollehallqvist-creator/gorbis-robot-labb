@@ -25,6 +25,9 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Sex rumsteman med separata färgpaletter och tonat omgivningsljus.
 - Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång.
 - 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
+- Sex varianter av låda/tryckplatta-pusslet, med olika startpositioner i slutkammaren.
+- Reservdelsmaskin med ett handtag som dras ned och en separat paketlucka; tom maskin ger tydlig återkoppling.
+- Originalinspirerat banflöde: när alla tre delar samlats visas klar-dialogen direkt.
 - Fem lokala sparfiler i webbläsarens `localStorage`.
 - Tangentbords- och pekstyrning utan externa bibliotek.
 
