@@ -1,0 +1,16 @@
+name: Game checks
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check inline JavaScript syntax
+        run: node tests/check-inline-script.js
+      - name: Check all 24 levels
+        run: node tests/level-generation.test.js

@@ -44,7 +44,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Tester
 
-Kör `node tests/level-generation.test.js` med Node.js för att kontrollera att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar och att hinder inte överlappar samlarobjekt eller pusselobjekt.
+Kör `node tests/check-inline-script.js` och `node tests/level-generation.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar och att hinder inte överlappar samlarobjekt eller pusselobjekt. GitHub Actions kör samma tester vid push och pull request.
 
 ## Viktigt om likheten med originalet
 
