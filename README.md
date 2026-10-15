@@ -1,29 +1,35 @@
 # Gorbis Robotlabb — fanrekonstruktion
 
-En fristående, spelbar webbprototyp inspirerad av den dokumenterade spelmekaniken i SVT:s **Julkalendern: Gorbis Robotlabb** (2017). Det här är ett fanprojekt, inte en officiell SVT-produkt.
+En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Gorbis Robotlabb* (2017). Projektet är ett fanprojekt och inte en officiell SVT-produkt.
 
 ## Testa lokalt
-Öppna `index.html` i en modern webbläsare. Ingen byggprocess eller externa bibliotek behövs.
+
+Öppna `index.html` i en modern webbläsare. Ingen byggprocess eller extern JavaScript-bibliotek krävs.
 
 ## Kontroller
-- **A/D** eller **←/→**: gå
-- **W**, **↑** eller **mellanslag**: hoppa
-- **E** eller **Enter**: använd / putta lådan
-- På pekskärm: använd riktningsknapparna i spelrutan
-- Samla robotdelar, undvik fällor, ställ lådan på sensorn och nå dörren.
 
-## Funktioner som finns nu
-- Verkstadsscen, robotbyggare och sex visuellt olika färgteman i gångarna.
-- 24 namngivna gångar byggda från sex plattformsmönster med varierande placeringar.
-- Horisontellt rörliga fällor, samlarföremål, låda, trycksensor och låst dörr.
-- Mer förlåtande hopp med kort hoppbuffert och coyote time; sensorn släpper igen om lådan flyttas bort.
-- Robotens fyra huvudformer, fyra kroppstyper, tre bentyper och färger visas i ritningen.
-- Upplåsta gångar, robotdelar och utseende sparas lokalt i webbläsaren.
-- Samma robotdel delas inte ut flera gånger om en bana spelas om.
-- Egenritad grafik och syntetiska ljudeffekter; originalets skyddade kod, modeller och bilder ingår inte.
+- **Dra med musen eller fingret** i spelrutan för att styra Gorbi genom labyrinten.
+- På datorn fungerar även **WASD** eller **piltangenterna**.
+- Tryck på **E**, **Enter** eller **mellanslag** för att försöka flytta lådan när du står nära den.
+- Tryck på **LABB** uppe till höger i spelrutan eller på knappen under rutan för att återvända till verkstaden.
+- Klicka på reservdelsmaskinen i verkstaden för att välja delar som du hittat.
+- Klicka på panelerna under roboten för att byta huvud, kropp, ben och färg.
+- Klicka på **SPARFIL** högst upp för att välja mellan fem separata sparfiler.
 
-## Kvar att förbättra
-Detta är fortfarande en fanrekonstruktion och inte en exakt kopia av originalet. Alla 24 gångar har ännu inte varsitt helt unikt pussel, och spelet behöver fortfarande testas visuellt i flera riktiga webbläsare. Robotdelar väljs genom att cykla bland upplåsta alternativ i stället för att placeras fritt.
+## Funktioner i den här versionen
 
-## Research och referenser
-Se [docs/research.md](docs/research.md) för källor och dokumenterade spelmekaniker. Originalbilderna används som visuell referens, inte som inbäddade spelresurser.
+- Verkstad och robotbyggare med egenritad robotgrafik.
+- 24 olika, procedurgenererade labyrintlayouter med perspektivritade väggar och golv.
+- Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång.
+- 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
+- Fem lokala sparfiler i webbläsarens `localStorage`.
+- Tangentbords- och pekstyrning utan externa bibliotek.
+
+## Viktigt om likheten med originalet
+
+Det här är fortfarande en **fanrekonstruktion**, inte en exakt 1:1-kopia. Miljöerna och roboten är ritade med egen Canvas-grafik och använder en 2.5D-perspektiveffekt i stället för originalets riktiga 3D-modeller, animationer, ljud och resurser. De 24 labyrinterna är egna banor inspirerade av den dokumenterade spelmekaniken, inte originalets ursprungliga banfiler.
+
+## Referenser
+
+- [PappasAppars recension från 2017](https://www.pappasappar.se/gorbis-robotlabb/) beskriver styrning genom att dra, tre samlingsdelar per bana, låda/tryckplatta, robotbyggaren och fem sparfiler.
+- [Appbeskrivning och skärmbilder](https://apprecs.com/ios/1299061571/julkalendern%3A-gorbis-robotlabb) beskriver de 24 banorna och samlandet av robotdelar.
