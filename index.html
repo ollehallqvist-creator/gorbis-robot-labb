@@ -34,6 +34,16 @@ button:hover{border-color:#9ac6a8;filter:brightness(1.12)}
 .mobile-pad button{border-radius:3px;background:#151612e8}.footer{color:#77786d}.footer a{color:#a6d6b7}
 @media(max-width:720px){.game-frame{border-radius:2px}}
 
+
+/* Interaction and fidelity pass: calendar doors, touch-drag movement, and profile selector. */
+#game{touch-action:none;cursor:grab}#game:active{cursor:grabbing}
+.overlay-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:250px;overflow:auto;padding:3px 2px}
+.overlay-actions button{min-height:38px;font-size:11px;letter-spacing:.04em;text-align:left;padding:9px 10px}
+.overlay-card{max-width:min(620px,94vw)}.overlay-card h3{font-family:Arial,sans-serif;letter-spacing:.08em}
+.overlay-actions button.locked{opacity:.55;border-style:dashed}
+.slot-current{color:#d9e9b4}
+@media(max-width:560px){.overlay-actions{grid-template-columns:repeat(2,minmax(0,1fr));max-height:46vh}.overlay-actions button{font-size:10px;padding:8px 6px}}
+
 </style>
 </head>
 <body>
@@ -69,7 +79,7 @@ button:hover{border-color:#9ac6a8;filter:brightness(1.12)}
 "use strict";
 const $=id=>document.getElementById(id);
 const canvas=$("game"),ctx=canvas.getContext("2d");
-const state={scene:"lab",level:1,unlocked:1,parts:[],found:{},robot:{head:0,body:0,legs:0,color:0},sound:false,overlay:false,toastTimer:null,keys:{},player:{x:72,y:0,vx:0,vy:0,w:26,h:38,onGround:false,face:1},camera:0,crate:{x:560,y:0,w:38,h:36,vx:0},sensorActive:false,levelParts:[],collected:[],lastTime:0,levelData:null,move:{left:false,right:false,jump:false},soundCtx:null};
+const state={scene:"lab",level:1,unlocked:1,slot:1,drag:null,parts:[],found:{},robot:{head:0,body:0,legs:0,color:0},sound:false,overlay:false,toastTimer:null,keys:{},player:{x:72,y:0,vx:0,vy:0,w:26,h:38,onGround:false,face:1},camera:0,crate:{x:560,y:0,w:38,h:36,vx:0},sensorActive:false,levelParts:[],collected:[],lastTime:0,levelData:null,move:{left:false,right:false,jump:false},soundCtx:null};
 const colors=["#7edcb4","#f2a65a","#a9a3ff","#f28a9d","#8bc8f8","#d7ed79"];
 const headNames=["Rund","Radar","Kupa","Antenn"];
 const bodyNames=["Mint","Koppar","Lila","Blå"];
@@ -77,8 +87,11 @@ const legNames=["Små ben","Hjul","Fjädrar"];
 const allParts=[{type:"head",name:"Radarhuvud",icon:"⌁"},{type:"body",name:"Kopparkropp",icon:"▰"},{type:"legs",name:"Hjulben",icon:"◉"},{type:"head",name:"Kuphjälm",icon:"◍"},{type:"body",name:"Lila kärna",icon:"▣"},{type:"legs",name:"Fjäderben",icon:"⌁"},{type:"head",name:"Dubbelantenn",icon:"♧"},{type:"body",name:"Blå rustning",icon:"▰"},{type:"legs",name:"Larvfötter",icon:"▤"}];
 const levelNames=["Servicegången","Rörlabyrinten","Tryckplattan","Kuggverket","Röda korridoren","Ljusfällan","Under bron","Pumpstationen","Låsta slussen","Glödgrottan","Hisschaktet","Vaktgången","Kedjerummet","Blå sektorn","Kärnlabbet","Spegelhallen","Växelspåret","Djupa schaktet","Överhettning","Kraftverket","Sista låset","Tidskammaren","Kärnans väg","Robotarnas hem"];
 function pad(n){return String(n).padStart(2,"0")}
-function save(){try{localStorage.setItem("gorbi-rebuild-save",JSON.stringify({version:2,savedAt:Date.now(),unlocked:state.unlocked,parts:state.parts,found:state.found,robot:state.robot,sound:state.sound}));$("saveState").textContent="AUTOSPARAD"}catch(e){$("saveState").textContent="EJ SPARAD"}}
-function load(){try{const s=JSON.parse(localStorage.getItem("gorbi-rebuild-save")||"null");if(s){state.unlocked=Math.max(1,Math.min(24,s.unlocked||1));state.parts=Array.isArray(s.parts)?s.parts.filter(i=>Number.isInteger(i)&&i>=0&&i<allParts.length):[];state.found=s.found&&typeof s.found==="object"?s.found:{};state.robot=Object.assign(state.robot,s.robot||{});state.robot.head=Math.max(0,Math.min(headNames.length-1,Number(state.robot.head)||0));state.robot.body=Math.max(0,Math.min(bodyNames.length-1,Number(state.robot.body)||0));state.robot.legs=Math.max(0,Math.min(legNames.length-1,Number(state.robot.legs)||0));state.robot.color=Math.max(0,Math.min(colors.length-1,Number(state.robot.color)||0));state.sound=!!s.sound;$("soundBtn").textContent=state.sound?"♫ LJUD PÅ":"♫ LJUD AV";$("soundBtn").setAttribute("aria-pressed",String(state.sound));}}catch(e){}}
+function save(){try{localStorage.setItem("gorbi-rebuild-slot-"+state.slot,JSON.stringify({version:3,savedAt:Date.now(),unlocked:state.unlocked,parts:state.parts,found:state.found,robot:state.robot,sound:state.sound}));$("saveState").textContent="SPARFIL "+state.slot+"/5"}catch(e){$("saveState").textContent="EJ SPARAD"}}
+function load(){try{let raw=localStorage.getItem("gorbi-rebuild-slot-"+state.slot);if(!raw&&state.slot===1){raw=localStorage.getItem("gorbi-rebuild-save");if(raw)localStorage.setItem("gorbi-rebuild-slot-1",raw)}const s=JSON.parse(raw||"null");state.unlocked=1;state.parts=[];state.found={};state.robot={head:0,body:0,legs:0,color:0};state.sound=false;if(s){state.unlocked=Math.max(1,Math.min(24,s.unlocked||1));state.parts=Array.isArray(s.parts)?s.parts.filter(i=>Number.isInteger(i)&&i>=0&&i<allParts.length):[];state.found=s.found&&typeof s.found==="object"?s.found:{};state.robot=Object.assign(state.robot,s.robot||{});state.robot.head=Math.max(0,Math.min(headNames.length-1,Number(state.robot.head)||0));state.robot.body=Math.max(0,Math.min(bodyNames.length-1,Number(state.robot.body)||0));state.robot.legs=Math.max(0,Math.min(legNames.length-1,Number(state.robot.legs)||0));state.robot.color=Math.max(0,Math.min(colors.length-1,Number(state.robot.color)||0));state.sound=!!s.sound;}$("soundBtn").textContent=state.sound?"♫ LJUD PÅ":"♫ LJUD AV";$("soundBtn").setAttribute("aria-pressed",String(state.sound));$("saveState").textContent="SPARFIL "+state.slot+"/5"}catch(e){}}
+function chooseProfile(n){save();state.slot=n;load();state.scene="lab";state.level=1;state.levelData=null;state.collected=[];hideOverlay();updateUI();save();drawLab();toast("Sparfil "+n+" vald") }
+function openProfiles(){const buttons=[];for(let n=1;n<=5;n++){const raw=localStorage.getItem("gorbi-rebuild-slot-"+n);let label="TOM SPARFIL";try{const d=JSON.parse(raw||"null");if(d)label="GÅNG "+pad(d.unlocked||1)+" · "+(Array.isArray(d.parts)?d.parts.length+3:3)+" DELAR"}catch(e){}buttons.push({label:(n===state.slot?"✓ ":"")+"SPARFIL "+n+" — "+label,primary:n===state.slot,action:()=>chooseProfile(n)})}buttons.push({label:"STÄNG",action:hideOverlay});showOverlay("VÄLJ SPARFIL","Upp till fem separata spel kan sparas på samma enhet.",buttons)}
+
 function sound(freq=440,dur=.08){if(!state.sound)return;try{state.soundCtx=state.soundCtx||new(window.AudioContext||window.webkitAudioContext)();const o=state.soundCtx.createOscillator(),g=state.soundCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.setValueAtTime(.05,state.soundCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,state.soundCtx.currentTime+dur);o.connect(g);g.connect(state.soundCtx.destination);o.start();o.stop(state.soundCtx.currentTime+dur)}catch(e){}}
 function toast(msg){const el=$("toast");el.textContent=msg;el.classList.remove("hidden");clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>el.classList.add("hidden"),2100)}
 function showOverlay(title,text,buttons){$("overlayTitle").textContent=title;$("overlayText").textContent=text;const holder=$("overlayActions");holder.innerHTML="";buttons.forEach(b=>{const el=document.createElement("button");el.textContent=b.label;el.className=b.primary?"primary":"";el.onclick=b.action;holder.appendChild(el)});$("overlay").classList.remove("hidden");state.overlay=true}
@@ -93,43 +106,27 @@ $("levelHud").classList.toggle("hidden",state.scene!=="level");$("mobilePad").cl
 $("labControls").classList.toggle("hidden",state.scene!=="lab"&&state.scene!=="build");$("levelControls").classList.toggle("hidden",state.scene!=="level");
 $("leftPanelTitle").textContent=state.scene==="level"?"Uppdrag":state.scene==="build"?"Robotbyggare":"Uppdrag";
 $("rightPanelTitle").textContent=state.scene==="level"?"Robotdelar":state.scene==="build"?"Tillgängliga delar":"Samling";
-$("hintText").innerHTML=state.scene==="level"?"Gå med <strong>← →</strong> eller A/D. Hoppa med <strong>↑ / W / mellanslag</strong>. Samla delar, undvik fällor och flytta lådan till sensorn.":"Välkommen till verkstaden. Samla delar i gångarna och bygg din egen tokiga robot.";
+$("hintText").innerHTML=state.scene==="level"?"Styr Gorbi genom att dra med fingret. Dra åt sidan för att gå och dra uppåt för att hoppa. Samla delar och lös vägen genom gångarna.":state.scene==="build"?"Tryck på panelerna i verkstaden för att välja huvud, kropp, ben och färg. Din robot sparas automatiskt.":"Välkommen till verkstaden. Gå ner i gångarna och leta efter robotdelar, eller bygg om din robot.";
+$("enterBtn").textContent=state.scene==="build"?"↶ TILL LABBET":"▶ GÅ TILL GÅNGARNA";$("buildBtn").textContent=state.scene==="build"?"✓ KLAR":"⚙ BYGG ROBOT";$("paintBtn").textContent=state.scene==="build"?"◉ BYT FÄRG":"◉ BYT FÄRG";
 $("partStrip").innerHTML="";
 const basics=[{name:"Grundhuvud",icon:"◉",got:true},{name:"Startkropp",icon:"▰",got:true},{name:"Små ben",icon:"⌁",got:true}];
 basics.concat(state.parts.map(i=>({name:allParts[i%allParts.length].name,icon:allParts[i%allParts.length].icon,got:true}))).slice(-6).forEach(p=>{const el=document.createElement("div");el.className="part-chip";el.innerHTML='<span class="mini">'+p.icon+'</span><span>'+p.name+'</span>'; $("partStrip").appendChild(el)});
 }
 function makeLevel(n){
-const width=2300+(n-1)*18, floor=430, theme=n%6;
-// Six readable level patterns, stretched across the whole corridor instead of leaving an empty end.
-const patterns=[
-[350,292,360,278,342,300,365,286,350,310],
-[300,350,275,330,285,360,300,340,280,350],
-[370,320,270,315,370,300,265,325,365,295],
-[280,280,340,365,315,275,350,370,305,285],
-[360,285,320,370,290,340,275,355,310,365],
-[315,370,300,275,355,315,370,285,335,300]
-];
-const heights=patterns[theme], span=width-650, step=span/(heights.length-1);
-const platforms=[{x:0,y:floor,w:width,h:110}];
-for(let i=0;i<heights.length;i++){
- const x=180+i*step+(((n+i*3)%3)-1)*10;
- const y=Math.max(260,Math.min(380,heights[(i+(n%3))%heights.length]+((n+i)%3-1)*10));
- platforms.push({x,y,w:118+((n+i)%3)*12,h:18});
-}
-const hazardCount=4+(n%4), hazards=[];
-for(let i=0;i<hazardCount;i++){
- const x=300+i*((width-820)/Math.max(1,hazardCount-1));
- hazards.push({x,y:floor-12,w:36+((n+i)%3)*8,h:12,phase:(i+n)*.7,travel:12+(n%4)*5});
-}
-const parts=[
-{x:Math.round(width*.13),y:floor-70},
-{x:Math.round(width*.39),y:floor-92-((n%2)*10)},
-{x:Math.round(width*.67),y:floor-78-((n%3)*7)}
-];
-const crate={x:width-330,y:floor-36,w:38,h:36};
-const sensor={x:width-205,y:floor-14,w:44,h:14};
-const door={x:width-85,y:floor-90,w:28,h:90};
-return {width,floor,platforms,hazards,parts,crate,sensor,door,theme};
+const width=2300+(n-1)*18,floor=430,theme=(n-1)%6;
+// Each day gets its own deterministic route, with a smooth, reachable height profile.
+let seed=(n*7919+104729)>>>0;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+const count=9+(n%3),span=width-660,step=span/(count-1),platforms=[{x:0,y:floor,w:width,h:110}];
+let py=350-Math.floor(rnd()*3)*15;
+for(let i=0;i<count;i++){if(i>0){const delta=[-25,-15,0,15,25][Math.floor(rnd()*5)];py=Math.max(285,Math.min(375,py+delta));}
+ const x=150+i*step+Math.round((rnd()-.5)*24),w=105+Math.floor(rnd()*49);
+ platforms.push({x,y:py,w,h:16+(i%3===0?4:0)});}
+// Every level changes hazard count, spacing, travel, and vertical placement.
+const hazardCount=3+(n%5),hazards=[];for(let i=0;i<hazardCount;i++){const x=260+i*((width-780)/Math.max(1,hazardCount-1));hazards.push({x,y:floor-12-(n%4===0&&i%2===0?20:0),w:30+((n+i*2)%4)*8,h:12,phase:(i+n)*.71,travel:18+(n%6)*7,type:(n+i)%3});}
+// Parts sit at different heights and distances on each route.
+const parts=[{x:Math.round(width*(.12+(n%4)*.012)),y:floor-58-(n%3)*13},{x:Math.round(width*(.35+(n%5)*.009)),y:Math.max(245,platforms[2+(n%Math.max(1,count-2))].y-42)},{x:Math.round(width*(.64+(n%3)*.014)),y:Math.max(250,platforms[Math.max(2,count-2)].y-45)}];
+const crate={x:width-330-(n%3)*25,y:floor-36,w:38,h:36};const sensor={x:width-205,y:floor-14,w:44,h:14};const door={x:width-85,y:floor-90,w:28,h:90};
+return {width,floor,platforms,hazards,parts,crate,sensor,door,theme,number:n,puzzle:n%6};
 }
 function startLevel(n){
 state.level=Math.max(1,Math.min(state.unlocked,n));state.scene="level";state.levelData=makeLevel(state.level);state.player={x:65,y:state.levelData.floor-42,vx:0,vy:0,w:26,h:38,onGround:true,face:1};state.camera=0;state.collected=[];state.crate={...state.levelData.crate};state.sensorActive=false;hideOverlay();updateUI();toast("Gång "+pad(state.level)+": "+levelNames[state.level-1]);sound(330,.12)
@@ -224,7 +221,7 @@ d.platforms.forEach((p,i)=>{ctx.fillStyle='#090a08';ctx.fillRect(p.x,p.y+5,p.w,p
 // Continuous deep floor, bevel and striped danger edge.
 ctx.fillStyle='#090a08';ctx.fillRect(0,d.floor+4,d.width,110);ctx.fillStyle='#35372e';ctx.fillRect(0,d.floor,d.width,7);ctx.fillStyle='#777866';ctx.fillRect(0,d.floor,d.width,2);ctx.fillStyle='#24261e';ctx.fillRect(0,d.floor+7,d.width,12);for(let xx=0;xx<d.width;xx+=42){ctx.fillStyle=(Math.floor(xx/42)%2)?'#b2a15c':'#292b22';ctx.beginPath();ctx.moveTo(xx,d.floor+1);ctx.lineTo(xx+20,d.floor+1);ctx.lineTo(xx+11,d.floor+7);ctx.lineTo(xx-9,d.floor+7);ctx.closePath();ctx.fill()}
 // Giant industrial cog hazards, with deep bevels and red-hot hubs.
-d.hazards.forEach((h,i)=>{const hx=h.x+Math.sin(performance.now()/620+h.phase)*h.travel;const cy=d.floor-26;const r=34+(i%3)*8;ctx.save();ctx.translate(hx+h.w/2,cy);ctx.rotate(performance.now()/1700*(i%2?-1:1)+h.phase);ctx.shadowColor='#000';ctx.shadowBlur=12;ctx.fillStyle='#080907';ctx.beginPath();for(let k=0;k<24;k++){const a=k*Math.PI/12,rr=k%2===0?r+7:r-3;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle=i%2?'#725a22':'#7d3028';ctx.beginPath();for(let k=0;k<24;k++){const a=k*Math.PI/12,rr=k%2===0?r+3:r-5;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}ctx.closePath();ctx.fill();ctx.strokeStyle=i%2?'#d5ae48':'#d55b4b';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#201d14';ctx.beginPath();ctx.arc(0,0,r*.66,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#b69a53';ctx.lineWidth=2;ctx.stroke();for(let k=0;k<8;k++){const a=k*Math.PI/4;ctx.strokeStyle='#a88b42';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*.22,Math.sin(a)*r*.22);ctx.lineTo(Math.cos(a)*r*.57,Math.sin(a)*r*.57);ctx.stroke()}ctx.fillStyle=i%2?'#d7b84e':'#ef6755';ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#252016';ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.fill();ctx.restore()});
+d.hazards.forEach((h,i)=>{const hx=h.x+Math.sin(performance.now()/620+h.phase)*h.travel;const type=h.type||0;ctx.save();if(type===0){const cy=d.floor-26,r=31+(i%3)*7;ctx.translate(hx+h.w/2,cy);ctx.rotate(performance.now()/1700*(i%2?-1:1)+h.phase);ctx.shadowColor='#000';ctx.shadowBlur=12;ctx.fillStyle='#080907';ctx.beginPath();for(let k=0;k<24;k++){const a=k*Math.PI/12,rr=k%2===0?r+7:r-3;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle=i%2?'#725a22':'#7d3028';ctx.beginPath();for(let k=0;k<24;k++){const a=k*Math.PI/12,rr=k%2===0?r+3:r-5;ctx.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}ctx.closePath();ctx.fill();ctx.strokeStyle=i%2?'#d5ae48':'#d55b4b';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#201d14';ctx.beginPath();ctx.arc(0,0,r*.66,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#b69a53';ctx.lineWidth=2;ctx.stroke();for(let k=0;k<8;k++){const a=k*Math.PI/4;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*.22,Math.sin(a)*r*.22);ctx.lineTo(Math.cos(a)*r*.57,Math.sin(a)*r*.57);ctx.stroke()}ctx.fillStyle=i%2?'#d7b84e':'#ef6755';ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#252016';ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.fill()}else if(type===1){const y=d.floor-12;ctx.fillStyle='#080908';ctx.fillRect(hx-8,y-15,h.w+16,25);ctx.fillStyle='#777a69';ctx.fillRect(hx-5,y-12,5,20);ctx.fillRect(hx+h.w,y-12,5,20);ctx.fillStyle='#b7a25c';for(let k=0;k<h.w;k+=12){ctx.beginPath();ctx.moveTo(hx+k,y-11);ctx.lineTo(hx+k+6,y-11);ctx.lineTo(hx+k,y-5);ctx.closePath();ctx.fill()}ctx.shadowColor='#ff5d45';ctx.shadowBlur=13;ctx.fillStyle='#ff684d';ctx.fillRect(hx,y-3,h.w,5);ctx.shadowBlur=0;ctx.fillStyle='#ffd9a4';ctx.fillRect(hx,y-2,h.w,1)}else{const y=d.floor-4;ctx.fillStyle='#080908';ctx.fillRect(hx-4,y-10,h.w+8,20);for(let xx=hx;xx<hx+h.w;xx+=12){ctx.fillStyle=(Math.floor(xx/12)%2)?'#7e3028':'#b8493c';ctx.beginPath();ctx.moveTo(xx,y+5);ctx.lineTo(xx+6,y-12);ctx.lineTo(xx+12,y+5);ctx.closePath();ctx.fill();ctx.strokeStyle='#e6a28a';ctx.lineWidth=1;ctx.stroke()}}ctx.restore()});
 // Collected robot parts are metallic capsules with a warm inner core.
 d.parts.forEach((part,i)=>{if(state.collected.includes(i))return;const bob=Math.sin(performance.now()/260+i*2)*4;ctx.save();ctx.translate(part.x,part.y+bob);ctx.shadowColor='#b8e3b4';ctx.shadowBlur=12;ctx.fillStyle='#a9cbb3';ctx.beginPath();ctx.roundRect(-10,-13,20,26,4);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#405c49';ctx.fillRect(-6,-8,12,16);ctx.fillStyle='#f0d777';ctx.fillRect(-3,-4,6,8);ctx.strokeStyle='#dfe7c8';ctx.lineWidth=1;ctx.strokeRect(-10,-13,20,26);ctx.restore()});
 // Wooden/metal crate and floor pressure sensor.
@@ -249,24 +246,30 @@ const light=ctx.createRadialGradient(437,240,20,437,240,200);light.addColorStop(
 ctx.fillStyle='#080a08';ctx.beginPath();ctx.ellipse(428,363,122,27,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#41463a';ctx.beginPath();ctx.ellipse(428,356,113,21,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#9ba38a';ctx.stroke();drawRobot(428,319,2.2);
 // Right shelf of collected parts, each part on its own metal tray.
 ctx.fillStyle='#090b09';ctx.fillRect(602,111,130,310);ctx.strokeStyle='#77796b';ctx.lineWidth=2;ctx.strokeRect(602,111,130,310);for(let i=0;i<4;i++){let yy=126+i*70;ctx.fillStyle='#303228';ctx.fillRect(610,yy,114,57);ctx.fillStyle='#696b5a';ctx.fillRect(610,yy,114,3);ctx.fillStyle='#11130f';ctx.fillRect(618,yy+8,98,42);ctx.fillStyle=['#b6d7bf','#b65b57','#8b80bb','#a4b6a5'][i];ctx.beginPath();ctx.roundRect(650,yy+15,28,26,5);ctx.fill();ctx.fillStyle='#20271f';ctx.fillRect(654,yy+20,20,14);ctx.fillStyle='#e5d579';ctx.fillRect(658,yy+23,4,4);ctx.fillRect(666,yy+23,4,4)}
-ctx.fillStyle='#d1d0bf';ctx.font='11px monospace';ctx.fillText('HUVUD  '+headNames[state.robot.head%headNames.length],236,420);ctx.fillText('KROPP  '+bodyNames[state.robot.body%bodyNames.length],236,442);ctx.fillText('BEN    '+legNames[state.robot.legs%legNames.length],236,464);ctx.fillStyle='#c3e6c9';ctx.fillText('FÄRG '+pad(state.robot.color+1),468,464);
+ctx.fillStyle='#d1d0bf';ctx.font='10px monospace';ctx.fillText('VÄLJ DEL / TRYCK PÅ EN PANEL',236,420);const tiles=[{x:230,w:116,label:'HUVUD',value:headNames[state.robot.head%headNames.length]},{x:352,w:116,label:'KROPP',value:bodyNames[state.robot.body%bodyNames.length]},{x:474,w:116,label:'BEN',value:legNames[state.robot.legs%legNames.length]},{x:596,w:128,label:'FÄRG',value:'FÄRG '+pad(state.robot.color+1)}];tiles.forEach((t,i)=>{ctx.fillStyle='#080a08';ctx.fillRect(t.x,432,t.w,48);ctx.fillStyle=i===3?colors[state.robot.color%colors.length]:'#373a30';ctx.fillRect(t.x+2,434,t.w-4,44);ctx.strokeStyle='#929581';ctx.lineWidth=1;ctx.strokeRect(t.x+2,434,t.w-4,44);ctx.fillStyle='#dce0cb';ctx.font='bold 10px monospace';ctx.fillText(t.label,t.x+9,448);ctx.fillStyle='#aee0bb';ctx.font='10px monospace';ctx.fillText(t.value.slice(0,15),t.x+9,466)});
 }
 function frame(t){const dt=Math.min(.035,(t-(state.lastTime||t))/1000);state.lastTime=t;if(state.scene==="level"&&!state.overlay)movePlayer(dt);ctx.clearRect(0,0,960,540);if(state.scene==="lab")drawLab();else if(state.scene==="level")drawLevel();else drawBuild();requestAnimationFrame(frame)}
-function setScene(scene){state.scene=scene;updateUI();hideOverlay()}
-$("enterBtn").onclick=()=>startLevel(1);
+function setScene(scene){state.scene=scene;state.move.left=state.move.right=state.move.jump=false;state.drag=null;updateUI();hideOverlay()}
+$("enterBtn").onclick=()=>{if(state.scene==="build")returnLab();else startLevel(1)};
 $("backLabBtn").onclick=returnLab;
 $("useBtn").onclick=interact;
 $("hintBtn").onclick=()=>toast(state.sensorActive?"Dörren är öppen — gå fram till den!":"Leta efter den bruna lådan nära slutet och putta den mot den gröna sensorn.");
 function cycleRobotPart(type){const names={head:headNames,body:bodyNames,legs:legNames};const unlocked=state.parts.filter(i=>allParts[i%allParts.length].type===type).length;const limit=Math.min(names[type].length,1+unlocked);state.robot[type]=(state.robot[type]+1)%Math.max(1,limit);save();updateUI();toast(names[type][state.robot[type]]+" vald")}
-$("buildBtn").onclick=()=>{setScene("build");showOverlay("Bygg din robot","Välj bland grunddelar och delar du har hittat i gångarna. Fler val låses upp när du samlar robotdelar.",[{label:"BYT HUVUD",action:()=>cycleRobotPart("head")},{label:"BYT KROPP",action:()=>cycleRobotPart("body")},{label:"BYT BEN",action:()=>cycleRobotPart("legs")},{label:"BYT FÄRG",action:()=>{state.robot.color=(state.robot.color+1)%colors.length;save();updateUI();toast("Robotfärgen ändrad") }},{label:"KLAR",primary:true,action:()=>{hideOverlay();state.scene="lab";updateUI();drawLab()}}])};
+$("buildBtn").onclick=()=>{if(state.scene==="build"){returnLab();return}setScene("build");toast("Tryck på panelerna under roboten för att byta delar.")};
 $("paintBtn").onclick=()=>{state.robot.color=(state.robot.color+1)%colors.length;save();toast("Robotfärgen ändrad!");if(state.scene==="lab")drawLab()};
-$("levelsBtn").onclick=()=>{const opts=[];for(let n=1;n<=state.unlocked;n++){opts.push({label:pad(n)+" · "+levelNames[n-1],action:()=>startLevel(n),primary:n===state.level})}showOverlay("Välj en gång","24 gångar finns i den här rekonstruktionen. Låsta gångar öppnas när du klarar en bana.",opts.concat([{label:"STÄNG",action:hideOverlay}]))};
+$("levelsBtn").onclick=()=>{const opts=[];for(let n=1;n<=24;n++){const open=n<=state.unlocked,done=state.found[n]!==undefined;opts.push({label:(done?"✓ ":open?"▣ ":"🔒 ")+"LUCKA "+pad(n)+(done?" · "+state.found[n]+"/3":""),primary:n===state.level,action:()=>{if(open)startLevel(n);else toast("Klara lucka "+pad(n-1)+" först!")}})}opts.push({label:"TILLBAKA",action:hideOverlay});showOverlay("VÄLJ EN LUCKA","Varje lucka har en egen underjordisk bana. Samla robotdelarna och öppna nästa.",opts)};
+$("saveState").parentElement.style.cursor="pointer";$("saveState").parentElement.title="Byt sparfil";$("saveState").parentElement.addEventListener("click",openProfiles);
 $("resetBtn").onclick=()=>{if(state.scene==="level")startLevel(state.level);else{state.robot={head:0,body:0,legs:0,color:0};save();toast("Robotens utseende återställt.");updateUI();drawLab()}};
 $("soundBtn").onclick=()=>{state.sound=!state.sound;$("soundBtn").textContent=state.sound?"♫ LJUD PÅ":"♫ LJUD AV";$("soundBtn").setAttribute("aria-pressed",String(state.sound));sound(440,.08)};
 window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp","Space"].includes(e.code))e.preventDefault();if(e.repeat&&["ArrowUp","KeyW","Space"].includes(e.code))return;state.keys[e.code]=true;if(e.code==="KeyE"||e.code==="Enter")interact();if(e.code==="Escape"){hideOverlay();if(state.scene==="level")returnLab()}});
 window.addEventListener("keyup",e=>{state.keys[e.code]=false});
 document.querySelectorAll("[data-move]").forEach(b=>{const k=b.dataset.move;const down=e=>{e.preventDefault();if(k==="interact")interact();else if(k==="jump")state.move.jump=true;else state.move[k]=true};const up=e=>{e.preventDefault();if(k!=="jump")state.move[k]=false};b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);b.addEventListener("pointerleave",up)});
-canvas.addEventListener("pointerdown",e=>{if(state.scene!=="level"||state.overlay)return;const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width*960;const y=(e.clientY-rect.top)/rect.height*540;if(y<100&&x>800){returnLab();return}const worldX=x+state.camera;if(Math.abs(worldX-(state.player.x+state.player.w/2))>35){if(worldX>state.player.x)state.move.right=true;else state.move.left=true;setTimeout(()=>{state.move.right=state.move.left=false},260)}if(y<270)state.move.jump=true});
+let dragPointer=null;
+function canvasPoint(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*960,y:(e.clientY-r.top)/r.height*540}}
+canvas.addEventListener("pointerdown",e=>{if(state.overlay)return;const q=canvasPoint(e);if(state.scene==="build"){if(q.y>=430&&q.y<=490){if(q.x<350)cycleRobotPart("head");else if(q.x<472)cycleRobotPart("body");else if(q.x<594)cycleRobotPart("legs");else{state.robot.color=(state.robot.color+1)%colors.length;save();updateUI();sound(480,.06)}}return}if(state.scene!=="level")return;if(q.y<100&&q.x>800){returnLab();return}e.preventDefault();dragPointer=e.pointerId;try{canvas.setPointerCapture(e.pointerId)}catch(err){}state.drag={id:e.pointerId,startX:q.x,startY:q.y,lastX:q.x,lastY:q.y,worldX:q.x+state.camera};const center=state.player.x+state.player.w/2;if(Math.abs(state.drag.worldX-center)>28){state.move.right=state.drag.worldX>center;state.move.left=state.drag.worldX<center}else{state.move.left=state.move.right=false}});
+canvas.addEventListener("pointermove",e=>{if(!state.drag||e.pointerId!==dragPointer||state.scene!=="level")return;const q=canvasPoint(e),d=state.drag;d.lastX=q.x;d.lastY=q.y;d.worldX=q.x+state.camera;const center=state.player.x+state.player.w/2;state.move.right=d.worldX>center+12;state.move.left=d.worldX<center-12;if(d.startY-q.y>32){state.move.jump=true;d.startY=q.y}});
+function stopCanvasDrag(e){if(!state.drag||(e&&e.pointerId!==dragPointer))return;state.drag=null;dragPointer=null;state.move.left=state.move.right=false}
+canvas.addEventListener("pointerup",stopCanvasDrag);canvas.addEventListener("pointercancel",stopCanvasDrag);canvas.addEventListener("lostpointercapture",stopCanvasDrag);
 load();updateUI();requestAnimationFrame(frame);
 })();
 </script>
