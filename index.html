@@ -115,12 +115,16 @@ function interact(){if(state.scene!=="level")return;const d=state.levelData,p=st
 function movePlayer(dt){
 const p=state.player,d=state.levelData;if(!d)return;
 const left=state.keys.ArrowLeft||state.keys.KeyA||state.move.left,right=state.keys.ArrowRight||state.keys.KeyD||state.move.right,jump=state.keys.ArrowUp||state.keys.KeyW||state.keys.Space||state.move.jump;
-const speed=190;p.vx=(right?1:0)-(left?1:0);p.vx*=speed;if(p.vx)p.face=Math.sign(p.vx);if(jump&&p.onGround){p.vy=-400;p.onGround=false;sound(200,.04);state.move.jump=false;state.keys.ArrowUp=state.keys.KeyW=state.keys.Space=false}
+const speed=190;p.vx=((right?1:0)-(left?1:0))*speed;if(p.vx)p.face=Math.sign(p.vx);
+// Small coyote-time and jump-buffer windows make keyboard and touch jumps less frustrating.
+if(p.onGround)p.coyote=.11;else p.coyote=Math.max(0,(p.coyote||0)-dt);
+if(jump)p.jumpBuffer=.12;else p.jumpBuffer=Math.max(0,(p.jumpBuffer||0)-dt);
+if((p.jumpBuffer||0)>0&&(p.coyote||0)>0){p.vy=-400;p.onGround=false;p.coyote=0;p.jumpBuffer=0;sound(200,.04);state.move.jump=false;state.keys.ArrowUp=state.keys.KeyW=state.keys.Space=false}
 p.vy+=1000*dt;p.x+=p.vx*dt;p.x=Math.max(0,Math.min(d.width-p.w,p.x));p.y+=p.vy*dt;p.onGround=false;
 for(const plat of d.platforms){if(p.x+p.w>plat.x&&p.x<plat.x+plat.w&&p.y+p.h>=plat.y&&p.y+p.h<=plat.y+Math.max(18,p.vy*dt+5)&&p.vy>=0){p.y=plat.y-p.h;p.vy=0;p.onGround=true}}
 if(p.y>620){p.x=Math.max(25,p.x-100);p.y=d.floor-p.h;p.vy=0;toast("Tillbaka till gångens kant")}
 const c=state.crate;const touching=collide({x:p.x,y:p.y,w:p.w,h:p.h},c);if(touching){if(p.vx!==0&&p.y+p.h>c.y+5&&p.y<c.y+c.h-3){const nextX=c.x+Math.sign(p.vx)*Math.abs(p.vx)*dt;if(nextX>=0&&nextX+c.w<=d.width){c.x=nextX}else{p.x-=p.vx*dt}}else if(p.vy>=0&&p.y+p.h-c.y<15){p.y=c.y-p.h;p.vy=0;p.onGround=true}}
-if(collide(c,d.sensor)){state.sensorActive=true}
+state.sensorActive=collide(c,d.sensor);
 if(state.sensorActive&&collide(p,d.door)){finishLevel();return}
 d.parts.forEach((part,i)=>{if(!state.collected.includes(i)&&collide(p,{x:part.x-13,y:part.y-13,w:26,h:26})){state.collected.push(i);sound(560+i*120,.13);toast("Robotdel hittad! "+state.collected.length+"/3");updateUI();if(state.collected.length===3){finishLevel()}}});
 for(const h of d.hazards){const phase=Math.sin(performance.now()/320+h.phase*2);const hz={x:h.x+Math.sin(performance.now()/620+h.phase)*h.travel,y:h.y+(phase>0?0:2),w:h.w,h:h.h};if(collide(p,hz)){p.x=Math.max(10,p.x-90);p.y=d.floor-p.h;p.vy=0;toast("Aj! Akta de heta kuggarna.");break}}
@@ -210,7 +214,7 @@ $("paintBtn").onclick=()=>{state.robot.color=(state.robot.color+1)%colors.length
 $("levelsBtn").onclick=()=>{const opts=[];for(let n=1;n<=state.unlocked;n++){opts.push({label:pad(n)+" · "+levelNames[n-1],action:()=>startLevel(n),primary:n===state.level})}showOverlay("Välj en gång","24 gångar finns i den här rekonstruktionen. Låsta gångar öppnas när du klarar en bana.",opts.concat([{label:"STÄNG",action:hideOverlay}]))};
 $("resetBtn").onclick=()=>{if(state.scene==="level")startLevel(state.level);else{state.robot={head:0,body:0,legs:0,color:0};save();toast("Robotens utseende återställt.");updateUI();drawLab()}};
 $("soundBtn").onclick=()=>{state.sound=!state.sound;$("soundBtn").textContent=state.sound?"♫ LJUD PÅ":"♫ LJUD AV";$("soundBtn").setAttribute("aria-pressed",String(state.sound));sound(440,.08)};
-window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp","Space"].includes(e.code))e.preventDefault();state.keys[e.code]=true;if(e.code==="KeyE"||e.code==="Enter")interact();if(e.code==="Escape"){hideOverlay();if(state.scene==="level")returnLab()}});
+window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp","Space"].includes(e.code))e.preventDefault();if(e.repeat&&["ArrowUp","KeyW","Space"].includes(e.code))return;state.keys[e.code]=true;if(e.code==="KeyE"||e.code==="Enter")interact();if(e.code==="Escape"){hideOverlay();if(state.scene==="level")returnLab()}});
 window.addEventListener("keyup",e=>{state.keys[e.code]=false});
 document.querySelectorAll("[data-move]").forEach(b=>{const k=b.dataset.move;const down=e=>{e.preventDefault();if(k==="interact")interact();else if(k==="jump")state.move.jump=true;else state.move[k]=true};const up=e=>{e.preventDefault();if(k!=="jump")state.move[k]=false};b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);b.addEventListener("pointerleave",up)});
 canvas.addEventListener("pointerdown",e=>{if(state.scene!=="level"||state.overlay)return;const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width*960;const y=(e.clientY-rect.top)/rect.height*540;if(y<100&&x>800){returnLab();return}const worldX=x+state.camera;if(Math.abs(worldX-(state.player.x+state.player.w/2))>35){if(worldX>state.player.x)state.move.right=true;else state.move.left=true;setTimeout(()=>{state.move.right=state.move.left=false},260)}if(y<270)state.move.jump=true});

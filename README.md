@@ -16,6 +16,7 @@ En fristående, spelbar webbprototyp inspirerad av den dokumenterade spelmekanik
 - Verkstadsscen, robotbyggare och sex visuellt olika färgteman i gångarna.
 - 24 namngivna gångar byggda från sex plattformsmönster med varierande placeringar.
 - Horisontellt rörliga fällor, samlarföremål, låda, trycksensor och låst dörr.
+- Mer förlåtande hopp med kort hoppbuffert och coyote time; sensorn släpper igen om lådan flyttas bort.
 - Robotens fyra huvudformer, fyra kroppstyper, tre bentyper och färger visas i ritningen.
 - Upplåsta gångar, robotdelar och utseende sparas lokalt i webbläsaren.
 - Samma robotdel delas inte ut flera gånger om en bana spelas om.
