@@ -22,6 +22,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Gorbi vänder sig i rörelseriktningen i labyrinten och får en enkel gångrörelse när spelaren styr.
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
 - 24 olika, procedurgenererade labyrintlayouter med perspektivritade väggar och golv.
+- Sex rumsteman med separata färgpaletter och tonat omgivningsljus.
 - Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång.
 - 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
 - Fem lokala sparfiler i webbläsarens `localStorage`.
