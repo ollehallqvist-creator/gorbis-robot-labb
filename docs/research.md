@@ -1,10 +1,10 @@
 # Research: Gorbis Robotlabb
 
-## Källor som hittills hittats
+## Källor som hittats
 
 1. **PappasAppar – recension publicerad 1 december 2017**  
    https://www.pappasappar.se/gorbis-robotlabb/  
-   Beskriver första start, robotbyggaren, banor, insamling och hinder. Sidan innehåller sex originalskärmbilder med exempel från labbet, robotanpassning och sidovybanor.
+   Beskriver första start, robotbyggaren, banor, insamling och hinder. Sidan innehåller sex originalskärmbilder som också listas direkt nedan.
 
 2. **Maximumandroid – Android gameplay-video, publicerad 2 december 2017**  
    https://www.youtube.com/watch?v=tFPJx4ghxgs  
@@ -17,6 +17,17 @@
 4. **AppRecs – appbeskrivning och funktioner**  
    https://apprecs.com/ios/1299061571/julkalendern%3A-gorbis-robotlabb  
    Beskriver 24 unika banor, pussel och hinder, samlande av robotdelar, färgläggning av robotar och stöd för upp till fem sparade spel.
+
+## Originalets skärmbilder
+
+Bilderna finns på PappasAppars recension. De är referensmaterial och **kopieras inte in i webbappen**.
+
+- [Meny / robotlabbet](https://s8.pappasappar.se/wp-content/uploads/gorbis-robotlabb-meny-480x360.jpg)
+- [Bygga och anpassa robot](https://s9.pappasappar.se/wp-content/uploads/gorbis-robotlabb-fixa-robot-480x360.jpg)
+- [Kugghjul och hinder](https://s8.pappasappar.se/wp-content/uploads/gorbis-robotlabb-kugghjul-480x360.jpg)
+- [Robotdel hittad i gången](https://s6.pappasappar.se/wp-content/uploads/gorbis-robotlabb-hittat-del-480x360.jpg)
+- [Enklare bana / rör och sensorer](https://s9.pappasappar.se/wp-content/uploads/gorbis-robotlabb-enkelt-480x360.jpg)
+- [Plattformsbana med lila ljus och sensor](https://s5.pappasappar.se/wp-content/uploads/gorbis-robotlabb-plattform-480x360.jpg)
 
 ## Dokumenterade mekaniker från recensionen
 
