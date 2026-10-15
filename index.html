@@ -138,6 +138,7 @@ function movePlayer(dt){const p=state.player,d=state.levelData;if(!d)return;cons
 state.sensorActive=Math.hypot(state.crate.x-d.sensor.x,state.crate.y-d.sensor.y)<.48;
 for(const h of d.hazards){const hx=h.x+Math.sin(performance.now()/850+h.phase)*h.travel;if(Math.hypot(p.x-hx,p.y-h.y)<.38){p.x=d.start.x;p.y=d.start.y;toast("Aj! Du kom åt ett farligt hinder — tillbaka till starten.");break}}
 d.parts.forEach((part,i)=>{if(!state.collected.includes(i)&&Math.hypot(p.x-part.x,p.y-part.y)<.52){state.collected.push(i);sound(560+i*120,.13);toast("Robotdel hittad! "+state.collected.length+"/3");updateUI();if(state.collected.length===3){finishLevel();return}}});
+if(state.collected.length===3)return;
 if(state.collected.length>0&&state.sensorActive&&Math.hypot(p.x-d.door.x,p.y-d.door.y)<.7){finishLevel();return}
 }
 
