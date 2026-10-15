@@ -29,8 +29,10 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Sex rumsteman med separata färgpaletter och tonat omgivningsljus.
 - Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång.
 - 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
+- 24 visuella variationer för varje delkategori, med extra antenner, paneler, linser, hjul och andra tillbehör.
 - Sex varianter av låda/tryckplatta-pusslet, med olika startpositioner i slutkammaren.
-- Reservdelsmaskin med ett handtag som dras ned och en separat paketlucka; tom maskin ger tydlig återkoppling.
+- Reservdelsmaskin med ett handtag som dras ned och en separat paketlucka. Varje öppnat paket låser upp en specifik del i byggaren; tom maskin ger tydlig återkoppling.
+- Robotbyggarens hylla visar de senast öppnade delarna, och endast öppnade delar kan väljas.
 - Originalinspirerat banflöde: när alla tre delar samlats visas klar-dialogen direkt.
 - Fem lokala sparfiler i webbläsarens `localStorage`, med JSON-export/import för säkerhetskopiering.
 - Ett Node-baserat regressionstest som kontrollerar att alla 24 genererade labyrinter är unika och att alla delar, lådor, tryckplattor och utgångar går att nå.
