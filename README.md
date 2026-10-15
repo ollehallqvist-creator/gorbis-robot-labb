@@ -18,6 +18,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Klicka på reservdelsmaskinen i verkstaden för att välja delar som du hittat.
 - Klicka på panelerna under roboten för att byta huvud, kropp, ben och färg.
 - Klicka på **SPARFIL** högst upp för att välja mellan fem separata sparfiler.
+- Öppna **HJÄLP** för att exportera en sparfil som JSON eller importera en tidigare säkerhetskopia. Importen ber om bekräftelse innan den ersätter vald sparfil.
 
 ## Funktioner i den här versionen
 
@@ -31,12 +32,17 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Sex varianter av låda/tryckplatta-pusslet, med olika startpositioner i slutkammaren.
 - Reservdelsmaskin med ett handtag som dras ned och en separat paketlucka; tom maskin ger tydlig återkoppling.
 - Originalinspirerat banflöde: när alla tre delar samlats visas klar-dialogen direkt.
-- Fem lokala sparfiler i webbläsarens `localStorage`.
+- Fem lokala sparfiler i webbläsarens `localStorage`, med JSON-export/import för säkerhetskopiering.
+- Ett Node-baserat regressionstest som kontrollerar att alla 24 genererade labyrinter är unika och att alla delar, lådor, tryckplattor och utgångar går att nå.
 - Tydlig progressionsmätare för upplåsta banor och sammanfattning i banväljaren.
 - Kontextbaserade ledtrådar som ändras beroende på samlade delar och tryckplattans status.
 - Bekräftelse innan omstart så att pågående framsteg inte försvinner av misstag.
 - Hjälpmeny och förbättrad tangentbords-/skärmläsartext för spelrutan.
 - Tangentbords- och pekstyrning utan externa bibliotek.
+
+## Tester
+
+Kör `node tests/level-generation.test.js` med Node.js för att kontrollera de 24 labyrintlayouterna.
 
 ## Viktigt om likheten med originalet
 
