@@ -14,3 +14,5 @@ jobs:
         run: node tests/check-inline-script.js
       - name: Check all 24 levels
         run: node tests/level-generation.test.js
+      - name: Check robot part variants
+        run: node tests/robot-variants.test.js
