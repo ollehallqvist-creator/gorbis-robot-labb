@@ -161,7 +161,7 @@ if(state.robot.legs%3===1){
 ctx.strokeStyle='#aab7aa';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-13,0);ctx.lineTo(-20-stride*2,7);ctx.lineTo(-22-stride*3,15);ctx.moveTo(13,0);ctx.lineTo(20+stride*2,7);ctx.lineTo(22+stride*3,15);ctx.stroke();
 ctx.fillStyle='#6c8273';ctx.beginPath();ctx.arc(-14,1,4,0,Math.PI*2);ctx.arc(14,1,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d5ddd0';ctx.beginPath();ctx.arc(-22-stride*3,16,3,0,Math.PI*2);ctx.arc(22+stride*3,16,3,0,Math.PI*2);ctx.fill();
 // Boxy enamel body with bevelled edges.
-const bodyPalette=[mint,'#bc8050','#9189c2','#6f9db8','#79a76f','#8e6755','#c5c8b8','#c5a64d','#4d8d78','#6c8fb2','#a1a95f','#b66c58','#6eabb5','#777c83','#c46c52','#526b78','#75b7a2','#6e8790','#a995c8','#b7b7aa','#698a9b','#7b9565','#ad985f','#6c9db7'];const body=bodyPalette[state.robot.body%bodyPalette.length];
+const bodyPalette=[mint,'#bc8050','#9189c2','#6f9db8','#79a76f','#8e6755','#c5c8b8','#c5a64d','#4d8d78','#6c8fb2','#a1a95f','#b66c58','#6eabb5','#777c83','#c46c52','#526b78','#75b7a2','#6e8790','#a995c8','#b7b7aa','#698a9b','#7b9565','#ad985f','#6c9db7','#e0b96d'];const body=bodyPalette[state.robot.body%bodyPalette.length];
 ctx.fillStyle='#0007';ctx.fillRect(-15,-4,30,24);ctx.fillStyle=body;ctx.fillRect(-14,-5,28,23);ctx.fillStyle='#e3efda';ctx.beginPath();ctx.moveTo(-14,-5);ctx.lineTo(-9,-9);ctx.lineTo(19,-9);ctx.lineTo(14,-5);ctx.closePath();ctx.fill();ctx.fillStyle='#344b3b';ctx.beginPath();ctx.moveTo(14,-5);ctx.lineTo(19,-9);ctx.lineTo(19,14);ctx.lineTo(14,18);ctx.closePath();ctx.fill();ctx.fillStyle='#d7f0d8';ctx.fillRect(-14,-5,28,3);ctx.fillStyle='#477c63';ctx.fillRect(-14,15,28,3);ctx.fillStyle='#c0d2b8';ctx.fillRect(-14,-2,2,15);ctx.fillStyle='#8fc8a8';ctx.fillRect(-12,-1,4,13);ctx.fillStyle='#315544';ctx.fillRect(-4,0,12,9);ctx.fillStyle='#c8e7b5';ctx.fillRect(-2,2,3,3);ctx.fillStyle='#e8d578';ctx.fillRect(3,2,3,3);const bs=state.robot.body%6;if(bs===1){ctx.fillStyle='#e4b875';ctx.fillRect(-11,4,5,5);ctx.fillRect(7,4,4,5);ctx.strokeStyle='#4b3025';ctx.lineWidth=1;ctx.strokeRect(-11,4,5,5)}else if(bs===2){ctx.fillStyle='#d9b4ff';ctx.beginPath();ctx.arc(0,7,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#584276';ctx.beginPath();ctx.arc(0,7,2,0,Math.PI*2);ctx.fill()}else if(bs===3){ctx.fillStyle='#c9e8ef';for(let yy=1;yy<12;yy+=4)ctx.fillRect(7,yy,4,2)}else if(bs===4){ctx.fillStyle='#d6e7b7';ctx.fillRect(-8,2,4,9);ctx.fillRect(3,2,4,9);ctx.fillStyle='#273d32';ctx.fillRect(-7,4,2,5);ctx.fillRect(4,4,2,5)}else if(bs===5){ctx.strokeStyle='#dfd1a0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-11,2);ctx.lineTo(-5,10);ctx.moveTo(-5,2);ctx.lineTo(1,10);ctx.moveTo(1,2);ctx.lineTo(7,10);ctx.stroke()}
 // Neck and oversized square head, the defining silhouette of Gorbi.
 ctx.fillStyle='#9da99d';ctx.fillRect(-3,-10,6,7);ctx.fillStyle='#5a675d';ctx.fillRect(-5,-10,10,2);
@@ -170,6 +170,69 @@ ctx.fillStyle='#0009';ctx.fillRect(-17,-34,34,25);ctx.fillStyle=headColor;ctx.fi
 // Yellow-green pixel eyes and tiny mouth glow.
 ctx.fillStyle='#f1dc72';ctx.fillRect(-8,-25,5,5);ctx.fillRect(3,-25,5,5);ctx.fillStyle='#fff0a1';ctx.fillRect(-7,-25,2,2);ctx.fillRect(4,-25,2,2);ctx.fillStyle='#91dca7';ctx.fillRect(-4,-18,8,1);
 const hs=state.robot.head%8;if([1,3,5,7].includes(hs)){ctx.strokeStyle='#b8c6b3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-2,-35);ctx.lineTo(-3,-42);if(hs>=5){ctx.moveTo(3,-35);ctx.lineTo(6,-40)}ctx.stroke();ctx.fillStyle=hs>=5?'#e26b55':'#d9c76e';ctx.beginPath();ctx.arc(-3,-43,3,0,Math.PI*2);if(hs>=5)ctx.arc(6,-41,2.5,0,Math.PI*2);ctx.fill()}if([2,6].includes(hs)){ctx.fillStyle='#e5e3d4';ctx.fillRect(-20,-31,5,8);ctx.fillRect(15,-31,5,8);ctx.fillStyle='#b4c2af';ctx.fillRect(-19,-29,3,4);ctx.fillRect(16,-29,3,4)}if(hs===4){ctx.fillStyle='#d1d9c7';ctx.fillRect(-11,-38,5,3);ctx.fillRect(6,-38,5,3);ctx.fillStyle='#e5d47b';ctx.fillRect(-9,-37,2,2);ctx.fillRect(8,-37,2,2)}if(hs===0){ctx.fillStyle='#c6d5c4';ctx.fillRect(-14,-33,3,3);ctx.fillRect(11,-33,3,3)}
+// Additional part-specific geometry gives the 24 catalog parts distinct silhouettes and fittings.
+const hi=Math.min(24,state.robot.head),bi=Math.min(24,state.robot.body),li=Math.min(24,state.robot.legs);
+if(hi>=8){ctx.save();switch(hi){
+ case 8: ctx.fillStyle='#b6e7c5';ctx.fillRect(-21,-30,5,7);ctx.fillRect(16,-30,5,7);ctx.fillStyle='#e5d67b';ctx.fillRect(-20,-28,3,3);ctx.fillRect(17,-28,3,3);break;
+ case 9: ctx.fillStyle='#d6d9c7';ctx.beginPath();ctx.arc(20,-25,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#27382d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(20,-25);ctx.lineTo(20,-28);ctx.moveTo(20,-25);ctx.lineTo(23,-24);ctx.stroke();break;
+ case 10: ctx.strokeStyle='#c9d8c5';ctx.lineWidth=2;ctx.strokeRect(-19,-38,38,29);ctx.strokeStyle='#718b75';ctx.strokeRect(-22,-41,44,35);break;
+ case 11: ctx.fillStyle='#f1dc72';ctx.fillRect(-8,-22,4,4);ctx.fillRect(4,-22,4,4);ctx.fillRect(-8,-16,4,3);ctx.fillRect(4,-16,4,3);break;
+ case 12: ctx.fillStyle='#df6554';ctx.fillRect(-13,-23,26,3);ctx.fillStyle='#ffb28d';ctx.fillRect(-11,-22,22,1);break;
+ case 13: ctx.strokeStyle='#c5d2c1';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-7,-36);ctx.lineTo(-11,-47);ctx.moveTo(7,-36);ctx.lineTo(11,-47);ctx.stroke();ctx.fillStyle='#e7d66e';ctx.beginPath();ctx.arc(-11,-47,2,0,Math.PI*2);ctx.arc(11,-47,2,0,Math.PI*2);ctx.fill();break;
+ case 14: ctx.strokeStyle='#c8d6c5';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,-35,18,Math.PI,Math.PI*2);ctx.stroke();ctx.fillStyle='#8ed1d2';ctx.fillRect(-11,-34,22,3);break;
+ case 15: ctx.fillStyle='#8fe0ce';ctx.beginPath();ctx.moveTo(0,-46);ctx.lineTo(8,-37);ctx.lineTo(0,-32);ctx.lineTo(-8,-37);ctx.closePath();ctx.fill();ctx.strokeStyle='#e2f5dc';ctx.stroke();break;
+ case 16: ctx.fillStyle='#192b24';ctx.beginPath();ctx.arc(0,-22,7,0,Math.PI*2);ctx.fill();ctx.fillStyle='#8bd4c3';ctx.beginPath();ctx.arc(0,-22,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e2f2c8';ctx.beginPath();ctx.arc(-1,-23,1.5,0,Math.PI*2);ctx.fill();break;
+ case 17: ctx.fillStyle='#202b23';ctx.fillRect(15,-31,8,13);ctx.strokeStyle='#d1dec9';ctx.lineWidth=1;for(let yy=-29;yy<-19;yy+=3){ctx.beginPath();ctx.moveTo(16,yy);ctx.lineTo(22,yy);ctx.stroke()}break;
+ case 18: ctx.strokeStyle='#aab7aa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-35);ctx.lineTo(0,-44);ctx.stroke();ctx.fillStyle='#e85d4f';ctx.shadowColor='#ff624b';ctx.shadowBlur=8;ctx.beginPath();ctx.arc(0,-46,4,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;break;
+ case 19: ctx.fillStyle='#f2f1dc';ctx.fillRect(-10,-32,20,2);ctx.fillStyle='#b7c9bd';ctx.fillRect(-10,-29,20,12);ctx.fillStyle='#e9f3e6';ctx.fillRect(-8,-27,16,2);break;
+ case 20: ctx.strokeStyle='#b8c9b8';ctx.lineWidth=2;ctx.beginPath();for(let yy=-28;yy<=-17;yy+=4){ctx.moveTo(-10,yy);ctx.lineTo(10,yy)}ctx.moveTo(-6,-29);ctx.lineTo(-6,-16);ctx.moveTo(6,-29);ctx.lineTo(6,-16);ctx.stroke();break;
+ case 21: ctx.fillStyle='#d8d8c8';ctx.beginPath();for(let k=0;k<10;k++){const an=-Math.PI/2+k*Math.PI/5,rr=k%2?4:8;ctx.lineTo(Math.cos(an)*rr,Math.sin(an)*rr-43)}ctx.closePath();ctx.fill();break;
+ case 22: ctx.fillStyle='#d4b85e';ctx.fillRect(-19,-32,4,16);ctx.fillRect(15,-32,4,16);ctx.strokeStyle='#fff0a1';ctx.strokeRect(-16,-35,32,24);break;
+ case 23: ctx.strokeStyle='#d0a95b';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-9,-39);ctx.lineTo(-9,-33);ctx.quadraticCurveTo(0,-27,9,-33);ctx.lineTo(9,-39);ctx.stroke();ctx.fillStyle='#e4d16d';ctx.fillRect(-12,-41,6,4);ctx.fillRect(6,-41,6,4);break;
+ case 24: ctx.fillStyle='#d6b65f';ctx.beginPath();ctx.moveTo(-13,-35);ctx.lineTo(-8,-43);ctx.lineTo(0,-39);ctx.lineTo(8,-43);ctx.lineTo(13,-35);ctx.closePath();ctx.fill();ctx.strokeStyle='#fff0a1';ctx.lineWidth=1;ctx.stroke();break;
+}ctx.restore()}
+if(bi>=6){ctx.save();switch(bi){
+ case 6: ctx.strokeStyle='#d4e6d9';ctx.lineWidth=1;ctx.strokeRect(-10,-1,20,13);ctx.fillStyle='#8bd3d1';ctx.fillRect(-8,1,16,8);break;
+ case 7: ctx.strokeStyle='#f0d47b';ctx.lineWidth=2;ctx.strokeRect(-12,-3,24,17);ctx.fillStyle='#f0d47b';ctx.fillRect(-11,0,3,10);ctx.fillRect(8,0,3,10);break;
+ case 8: ctx.fillStyle='#e4d66d';ctx.beginPath();ctx.arc(0,5,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#24382b';ctx.beginPath();ctx.arc(0,5,3,0,Math.PI*2);ctx.fill();break;
+ case 9: ctx.fillStyle='#76b8d0';ctx.beginPath();ctx.ellipse(0,5,8,7,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c6e4e6';ctx.stroke();ctx.fillStyle='#e6f2d7';ctx.fillRect(-4,1,8,2);break;
+ case 10: ctx.fillStyle='#d9e4b7';for(let k=0;k<4;k++)ctx.fillRect(-9+k*5,-1,3,12);ctx.fillStyle='#263a2d';ctx.fillRect(-10,2,20,2);break;
+ case 11: ctx.strokeStyle='#c5d6c2';ctx.lineWidth=2;for(const x of [-8,0,8]){ctx.beginPath();ctx.arc(x,6,4,0,Math.PI*2);ctx.stroke()}break;
+ case 12: ctx.fillStyle='#c4e7d2';ctx.beginPath();ctx.moveTo(-8,11);ctx.lineTo(-4,-2);ctx.lineTo(0,11);ctx.lineTo(4,-2);ctx.lineTo(8,11);ctx.closePath();ctx.fill();break;
+ case 13: ctx.fillStyle='#c4cbbd';ctx.fillRect(-13,-2,6,15);ctx.fillRect(7,-2,6,15);ctx.strokeStyle='#e7ead9';ctx.strokeRect(-13,-2,6,15);ctx.strokeRect(7,-2,6,15);break;
+ case 14: ctx.fillStyle='#d6d8c6';ctx.beginPath();ctx.moveTo(-12,13);ctx.lineTo(-7,0);ctx.lineTo(-2,13);ctx.fill();ctx.beginPath();ctx.moveTo(2,13);ctx.lineTo(7,0);ctx.lineTo(12,13);ctx.fill();break;
+ case 15: ctx.fillStyle='#83cbd0';ctx.fillRect(-11,0,22,11);ctx.strokeStyle='#d7eee4';ctx.strokeRect(-11,0,22,11);ctx.fillStyle='#eaf3d6';ctx.beginPath();ctx.arc(0,5,3,0,Math.PI*2);ctx.fill();break;
+ case 16: ctx.fillStyle='#70e1bf';ctx.fillRect(-12,1,24,2);ctx.fillRect(-12,7,24,2);ctx.shadowColor='#70e1bf';ctx.shadowBlur=6;ctx.fillRect(-3,0,6,11);ctx.shadowBlur=0;break;
+ case 17: ctx.fillStyle='#a8b8b0';for(let yy=0;yy<12;yy+=3)ctx.fillRect(-10,yy,20,1);break;
+ case 18: ctx.fillStyle='#e4d16d';ctx.beginPath();ctx.moveTo(0,-2);ctx.lineTo(3,3);ctx.lineTo(9,3);ctx.lineTo(4,7);ctx.lineTo(6,12);ctx.lineTo(0,9);ctx.lineTo(-6,12);ctx.lineTo(-4,7);ctx.lineTo(-9,3);ctx.lineTo(-3,3);ctx.closePath();ctx.fill();break;
+ case 19: ctx.fillStyle='#edf1e5';ctx.fillRect(-11,-1,22,14);ctx.fillStyle='#aebeb3';ctx.fillRect(-8,2,16,2);break;
+ case 20: ctx.strokeStyle='#e1c95c';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,5,7,Math.PI,Math.PI*2);ctx.stroke();ctx.fillStyle='#e1c95c';ctx.fillRect(-9,4,3,7);ctx.fillRect(6,4,3,7);break;
+ case 21: ctx.strokeStyle='#d8e7ed';ctx.lineWidth=2;for(let xx=-8;xx<=8;xx+=8){ctx.beginPath();ctx.moveTo(xx,0);ctx.lineTo(xx-3,9);ctx.stroke()}break;
+ case 22: ctx.fillStyle='#8fcebd';ctx.fillRect(-11,0,5,11);ctx.fillRect(6,0,5,11);ctx.fillStyle='#e8d477';ctx.fillRect(-10,3,3,3);ctx.fillRect(7,3,3,3);break;
+ case 23: ctx.strokeStyle='#e5d17a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(-7,7,5,0,Math.PI*2);ctx.arc(7,7,5,0,Math.PI*2);ctx.stroke();break;
+ case 24: ctx.fillStyle='#e3c568';ctx.beginPath();ctx.moveTo(0,-2);ctx.lineTo(8,5);ctx.lineTo(0,13);ctx.lineTo(-8,5);ctx.closePath();ctx.fill();ctx.strokeStyle='#fff0a1';ctx.stroke();break;
+}ctx.restore()}
+if(li>=6){ctx.save();switch(li){
+ case 6: ctx.fillStyle='#c5d0bd';ctx.fillRect(-20,27,13,9);ctx.fillRect(7,27,13,9);ctx.fillStyle='#e5ead7';ctx.fillRect(-19,27,11,2);ctx.fillRect(8,27,11,2);break;
+ case 7: ctx.fillStyle='#26362b';ctx.fillRect(-22,25,44,12);ctx.strokeStyle='#b6c5b4';ctx.strokeRect(-22,25,44,12);for(let x=-17;x<=17;x+=7){ctx.fillStyle='#819982';ctx.fillRect(x,27,4,7)}break;
+ case 8: ctx.strokeStyle='#c7d4c4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-12,17);ctx.lineTo(-12,24);ctx.lineTo(-16,27);ctx.moveTo(12,17);ctx.lineTo(12,24);ctx.lineTo(16,27);ctx.stroke();break;
+ case 9: ctx.fillStyle='#c9d2b8';ctx.beginPath();ctx.moveTo(-18,27);ctx.lineTo(-8,25);ctx.lineTo(-12,35);ctx.closePath();ctx.moveTo(18,27);ctx.lineTo(8,25);ctx.lineTo(12,35);ctx.closePath();ctx.fill();ctx.fillStyle='#d66c54';ctx.fillRect(-15,33,6,3);ctx.fillRect(9,33,6,3);break;
+ case 10: ctx.strokeStyle='#e4d16d';ctx.lineWidth=3;ctx.beginPath();ctx.arc(-11,29,6,0,Math.PI);ctx.arc(11,29,6,0,Math.PI);ctx.stroke();break;
+ case 11: ctx.strokeStyle='#d7d6c6';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-15,29);ctx.lineTo(-22,33);ctx.lineTo(-17,36);ctx.moveTo(15,29);ctx.lineTo(22,33);ctx.lineTo(17,36);ctx.stroke();break;
+ case 12: ctx.fillStyle='#303a32';ctx.beginPath();ctx.arc(-11,31,7,0,Math.PI*2);ctx.arc(11,31,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d4dfcc';ctx.stroke();ctx.fillStyle='#a9c7b0';ctx.beginPath();ctx.arc(-11,31,3,0,Math.PI*2);ctx.arc(11,31,3,0,Math.PI*2);ctx.fill();break;
+ case 13: ctx.strokeStyle='#d7c16a';ctx.lineWidth=3;ctx.beginPath();ctx.arc(-12,30,6,0,Math.PI*2);ctx.arc(12,30,6,0,Math.PI*2);ctx.stroke();break;
+ case 14: ctx.fillStyle='#b8c9b5';ctx.fillRect(-17,25,9,10);ctx.fillRect(8,25,9,10);ctx.fillStyle='#e7e6d4';ctx.fillRect(-19,33,12,4);ctx.fillRect(7,33,12,4);break;
+ case 15: ctx.fillStyle='#79c7d0';ctx.beginPath();ctx.moveTo(-17,28);ctx.lineTo(-23,32);ctx.lineTo(-16,35);ctx.closePath();ctx.moveTo(17,28);ctx.lineTo(23,32);ctx.lineTo(16,35);ctx.closePath();ctx.fill();break;
+ case 16: ctx.fillStyle='#b6c4b6';ctx.fillRect(-21,27,14,9);ctx.fillRect(7,27,14,9);ctx.strokeStyle='#e3ebdd';ctx.strokeRect(-21,27,14,9);ctx.strokeRect(7,27,14,9);break;
+ case 17: ctx.fillStyle='#9fe0d0';ctx.beginPath();ctx.moveTo(-18,35);ctx.lineTo(-12,24);ctx.lineTo(-6,35);ctx.closePath();ctx.moveTo(18,35);ctx.lineTo(12,24);ctx.lineTo(6,35);ctx.closePath();ctx.fill();break;
+ case 18: ctx.strokeStyle='#d5d8c4';ctx.lineWidth=2;ctx.beginPath();for(const x of [-12,12]){ctx.moveTo(x,18);for(let y=18;y<28;y+=3)ctx.lineTo(x+(y%2?3:-3),y+2);ctx.stroke()}break;
+ case 19: ctx.strokeStyle='#b8d0bc';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-10,17);ctx.lineTo(-17,23);ctx.lineTo(-15,30);ctx.moveTo(10,17);ctx.lineTo(17,23);ctx.lineTo(15,30);ctx.stroke();break;
+ case 20: ctx.strokeStyle='#d9d7bf';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-12,29);ctx.lineTo(-19,33);ctx.lineTo(-14,36);ctx.moveTo(12,29);ctx.lineTo(19,33);ctx.lineTo(14,36);ctx.stroke();break;
+ case 21: ctx.fillStyle='#d7e6e6';ctx.beginPath();ctx.moveTo(-18,27);ctx.lineTo(-10,25);ctx.lineTo(-13,36);ctx.closePath();ctx.moveTo(18,27);ctx.lineTo(10,25);ctx.lineTo(13,36);ctx.closePath();ctx.fill();break;
+ case 22: ctx.fillStyle='#6dd9b4';ctx.shadowColor='#6dd9b4';ctx.shadowBlur=5;ctx.fillRect(-18,28,12,5);ctx.fillRect(6,28,12,5);ctx.shadowBlur=0;break;
+ case 23: ctx.strokeStyle='#e5d16d';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(-11,31,8,5,0,0,Math.PI*2);ctx.ellipse(11,31,8,5,0,0,Math.PI*2);ctx.stroke();break;
+ case 24: ctx.strokeStyle='#f1d36b';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(-12,31,8,6,0,0,Math.PI*2);ctx.ellipse(12,31,8,6,0,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#f1d36b';ctx.beginPath();ctx.arc(-12,31,2,0,Math.PI*2);ctx.arc(12,31,2,0,Math.PI*2);ctx.fill();break;
+}ctx.restore()}
 ctx.restore();
 }
 function drawLab(){
