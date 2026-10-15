@@ -11,7 +11,10 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - **Dra med musen eller fingret** i spelrutan för att styra Gorbi genom labyrinten.
 - På datorn fungerar även **WASD** eller **piltangenterna**.
 - Tryck på **E**, **Enter** eller **mellanslag** för att försöka flytta lådan när du står nära den.
-- Tryck på **LABB** uppe till höger i spelrutan eller på knappen under rutan för att återvända till verkstaden.
+- Tryck på **Escape** för att pausa. Pausmenyn låter dig fortsätta, starta om eller gå tillbaka till labbet.
+- **H** visar en ledtråd, **R** öppnar omstart, och **M** växlar ljudet.
+- Tryck på knappen **HJÄLP** för att se kontrollerna igen.
+- Tryck på knappen under spelrutan för att återvända till verkstaden.
 - Klicka på reservdelsmaskinen i verkstaden för att välja delar som du hittat.
 - Klicka på panelerna under roboten för att byta huvud, kropp, ben och färg.
 - Klicka på **SPARFIL** högst upp för att välja mellan fem separata sparfiler.
@@ -29,6 +32,10 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Reservdelsmaskin med ett handtag som dras ned och en separat paketlucka; tom maskin ger tydlig återkoppling.
 - Originalinspirerat banflöde: när alla tre delar samlats visas klar-dialogen direkt.
 - Fem lokala sparfiler i webbläsarens `localStorage`.
+- Tydlig progressionsmätare för upplåsta banor och sammanfattning i banväljaren.
+- Kontextbaserade ledtrådar som ändras beroende på samlade delar och tryckplattans status.
+- Bekräftelse innan omstart så att pågående framsteg inte försvinner av misstag.
+- Hjälpmeny och förbättrad tangentbords-/skärmläsartext för spelrutan.
 - Tangentbords- och pekstyrning utan externa bibliotek.
 
 ## Viktigt om likheten med originalet
