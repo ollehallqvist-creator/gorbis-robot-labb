@@ -11,6 +11,7 @@ const sandbox = {};
 vm.runInNewContext(html.slice(start, end) + '\nglobalThis.makeLevel = makeLevel;', sandbox);
 const makeLevel = sandbox.makeLevel;
 const fingerprints = new Set();
+let previousHazardCount = 0;
 
 function reachableCells(level) {
   const startX = Math.floor(level.start.x);
@@ -35,6 +36,11 @@ function reachableCells(level) {
 for (let n = 1; n <= 24; n++) {
   const level = makeLevel(n);
   const visited = reachableCells(level);
+  assert(level.hazards.length >= previousHazardCount, `Level ${n}: hazard count should not decrease as levels progress`);
+  previousHazardCount = level.hazards.length;
+  const cell = (point) => `${Math.floor(point.x)},${Math.floor(point.y)}`;
+  const protectedCells = new Set([...level.parts.map(cell), cell(level.crate), cell(level.sensor), cell(level.door)]);
+  assert(level.hazards.every((hazard) => !protectedCells.has(cell(hazard))), `Level ${n}: hazard overlaps a part or puzzle object`);
   const canReach = (point) => visited.has(`${Math.floor(point.x)},${Math.floor(point.y)}`);
   assert(level.parts.every(canReach), `Level ${n}: a robot part is unreachable`);
   assert(canReach(level.crate), `Level ${n}: crate is unreachable`);
@@ -43,4 +49,4 @@ for (let n = 1; n <= 24; n++) {
   fingerprints.add(JSON.stringify(level.walls));
 }
 assert.equal(fingerprints.size, 24, 'All 24 levels should have distinct maze layouts');
-console.log('PASS: all 24 levels are unique and their parts, crate, pressure plate and exit are reachable.');
+console.log('PASS: 24 unique levels; all objectives reachable; hazards increase with difficulty and do not overlap collectibles or puzzle objects.');

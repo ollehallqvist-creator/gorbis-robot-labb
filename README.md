@@ -27,7 +27,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
 - 24 olika, procedurgenererade labyrintlayouter med perspektivritade väggar och golv.
 - Sex rumsteman med separata färgpaletter och tonat omgivningsljus.
-- Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång.
+- Samlarobjekt, tre typer av hinder, flyttbar låda, tryckplatta och utgång. Antalet hinder ökar gradvis mellan banorna, och hinder placeras inte ovanpå delar eller pusselobjekt.
 - 72 samlingsdelar (24 huvuden, 24 kroppar och 24 uppsättningar ben) som låses upp genom banorna.
 - 24 visuella variationer för varje delkategori, med extra antenner, paneler, linser, hjul och andra tillbehör.
 - Sex varianter av låda/tryckplatta-pusslet, med olika startpositioner i slutkammaren.
@@ -44,7 +44,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Tester
 
-Kör `node tests/level-generation.test.js` med Node.js för att kontrollera de 24 labyrintlayouterna.
+Kör `node tests/level-generation.test.js` med Node.js för att kontrollera att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar och att hinder inte överlappar samlarobjekt eller pusselobjekt.
 
 ## Viktigt om likheten med originalet
 
