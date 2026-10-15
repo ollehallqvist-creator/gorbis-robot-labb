@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#111816">
-<title>Gorbis Robotlabb — fanrekonstruktion</title>
+<meta name="description" content="En spelbar fanrekonstruktion av Gorbis Robotlabb med robotbyggare, samlarföremål och 24 gångar."><title>Gorbis Robotlabb — fanrekonstruktion</title>
 <style>
 :root{--bg:#101614;--panel:#1a2320;--panel2:#222d29;--line:#43514b;--mint:#9bf5c6;--lime:#c6f36b;--amber:#ffca73;--text:#f2f5ed;--muted:#a3b0a8;--danger:#ff7775}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% 0,#27352e 0,#121916 52%,#0b100e 100%);color:var(--text);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif}body{padding:clamp(10px,2.5vw,28px)}button{font:inherit;color:inherit;border:1px solid var(--line);background:linear-gradient(180deg,#293630,#1b2420);border-radius:12px;padding:11px 15px;cursor:pointer;box-shadow:0 3px 0 #080c0a;transition:transform .12s,border-color .12s,filter .12s}button:hover{border-color:var(--mint);filter:brightness(1.08)}button:active{transform:translateY(2px);box-shadow:0 1px 0 #080c0a}button:focus-visible{outline:2px solid var(--mint);outline-offset:3px}.primary{color:#122018;background:linear-gradient(180deg,#c4ffd9,#8beeb9);border-color:#d4ffe4;font-weight:900}.accent{color:#1b1b11;background:linear-gradient(180deg,#e5ff99,#b7e85e);border-color:#e5ffb4;font-weight:900}.quiet{background:#151d19}.shell{max-width:1240px;margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 auto 16px;max-width:1120px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#d4ff99,#75dca9);display:grid;place-items:center;color:#17231b;font-size:24px;box-shadow:inset 0 0 0 2px #efffd6}.brand h1{font-size:clamp(17px,2.3vw,25px);letter-spacing:.02em;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase}.top-status{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid #394a40;background:#19231e;border-radius:999px;padding:7px 11px;font-size:12px;color:#c4d2c9}.pill strong{color:var(--mint)}.game-frame{max-width:1120px;margin:auto;border:1px solid #4b5b51;background:#0d1210;border-radius:22px;padding:10px;box-shadow:0 22px 70px #0008,inset 0 1px 0 #ffffff10}.screen-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px 12px}.screen-title{display:flex;align-items:center;gap:10px}.led{width:8px;height:8px;background:var(--mint);border-radius:50%;box-shadow:0 0 12px var(--mint)}.screen-title h2{font-size:14px;margin:0;letter-spacing:.13em;text-transform:uppercase}.screen-title span{font-size:12px;color:var(--muted)}.screen-actions{display:flex;gap:7px}.screen-actions button{font-size:12px;padding:7px 10px;border-radius:9px}.game-stage{position:relative;overflow:hidden;border-radius:14px;border:1px solid #36433b;background:#161e1a;aspect-ratio:16/9;min-height:280px}.game-stage canvas{display:block;width:100%;height:100%;touch-action:none}.hud{position:absolute;inset:12px 12px auto 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;pointer-events:none}.hud>*{pointer-events:auto}.hud-card{background:#101713dd;border:1px solid #61726866;backdrop-filter:blur(8px);border-radius:11px;padding:8px 11px;box-shadow:0 4px 14px #0003}.hud-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#a8b9ae}.hud-value{font-weight:900;font-size:16px;margin-top:2px}.part-dots{display:flex;gap:6px;margin-top:5px}.part-dot{width:16px;height:16px;border-radius:5px;border:1px solid #7a8d80;background:#28342d;display:grid;place-items:center;font-size:10px}.part-dot.got{background:#bdf66c;color:#1b2616;border-color:#e6ffad}.stage-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;pointer-events:none}.stage-overlay .overlay-card{pointer-events:auto;max-width:420px;max-height:calc(100% - 20px);overflow-y:auto;text-align:center;padding:20px 24px;border:1px solid #73877a88;border-radius:18px;background:#111a16ee;box-shadow:0 15px 55px #0009;backdrop-filter:blur(12px)}.overlay-actions button{max-width:100%;white-space:normal}.overlay-card h3{margin:0 0 7px;font-size:23px}.overlay-card p{color:#c0cec5;line-height:1.45;margin:0 0 16px;font-size:14px}.overlay-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.bottom-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:10px;margin-top:10px}.info-panel{border:1px solid #35443b;border-radius:14px;padding:14px;background:linear-gradient(135deg,#1c2621,#141b17);min-height:94px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.panel-head h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0;color:#dce8df}.panel-head span{font-size:11px;color:var(--muted)}.hint{font-size:13px;line-height:1.45;color:#b7c4bc}.hint strong{color:var(--mint)}.part-strip{display:flex;gap:8px;flex-wrap:wrap}.part-chip{display:flex;align-items:center;gap:7px;background:#111914;border:1px solid #34453a;border-radius:9px;padding:7px 9px;font-size:12px;color:#d8e3db}.part-chip .mini{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;background:#2e4035;color:var(--mint);font-size:14px}.controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.controls button{font-size:12px;padding:8px 11px}.mobile-pad{display:none;position:absolute;inset:auto 12px 12px;justify-content:space-between;align-items:end;pointer-events:none}.mobile-pad button{pointer-events:auto;width:48px;height:48px;padding:0;border-radius:14px;background:#101713d9;font-size:20px;touch-action:none}.pad-cluster{display:flex;gap:6px}.footer{max-width:1120px;margin:13px auto 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#83948a;font-size:11px}.footer a{color:#b2d9bf;text-decoration:none}.footer a:hover{text-decoration:underline}.hidden{display:none!important}.toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#c5ffdb;color:#122119;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:800;box-shadow:0 6px 22px #0006;white-space:nowrap;pointer-events:none;animation:fadeup .22s ease-out}@keyframes fadeup{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}@media(max-width:720px){body{padding:8px}.topbar{align-items:flex-start}.top-status .pill:first-child{display:none}.game-frame{padding:6px;border-radius:16px}.screen-head{padding:6px 4px 9px}.screen-title span{display:none}.screen-actions button{padding:7px 8px}.game-stage{min-height:260px;aspect-ratio:4/3}.bottom-grid{grid-template-columns:1fr}.info-panel{min-height:0;padding:11px}.hud{inset:8px 8px auto}.hud-card{padding:6px 8px}.hud-value{font-size:14px}.mobile-pad{display:flex}.footer{font-size:10px}.brand p{font-size:10px}.brand-mark{width:40px;height:40px}}@media(max-width:420px){.brand h1{font-size:16px}.brand p{letter-spacing:.05em}.top-status .pill{font-size:10px;padding:6px 8px}.game-stage{min-height:250px}.screen-actions button{font-size:10px}.hud-label{font-size:9px}.hud-value{font-size:12px}.part-dot{width:13px;height:13px}.stage-overlay .overlay-card{padding:16px}.overlay-card h3{font-size:19px}}
@@ -73,19 +73,43 @@ const basics=[{name:"Grundhuvud",icon:"◉",got:true},{name:"Startkropp",icon:"�
 basics.concat(state.parts.map(i=>({name:allParts[i%allParts.length].name,icon:allParts[i%allParts.length].icon,got:true}))).slice(-6).forEach(p=>{const el=document.createElement("div");el.className="part-chip";el.innerHTML='<span class="mini">'+p.icon+'</span><span>'+p.name+'</span>'; $("partStrip").appendChild(el)});
 }
 function makeLevel(n){
-const width=2300+(n-1)*18, floor=430, variant=n%4;
-const base=[{x:235,y:350,w:145,h:18},{x:470,y:290,w:145,h:18},{x:735,y:355,w:145,h:18},{x:1000,y:300,w:150,h:18},{x:1280,y:355,w:150,h:18},{x:1585,y:285,w:155,h:18},{x:1880,y:345,w:150,h:18}];
-const platforms=[{x:0,y:floor,w:width,h:110},...base.map((p,i)=>({x:p.x+((n*i*23)%95)-variant*12,y:Math.max(245,Math.min(380,p.y+(((n+i)%3)-1)*24)),w:p.w+((n+i)%3)*12,h:p.h}))];
-const hazards=[];for(let i=0;i<Math.min(3+Math.floor(n/4),7);i++){hazards.push({x:330+i*255+((n*37+i*19)%115),y:floor-12,w:40+((n+i)%3)*6,h:12,phase:(i+n)%2})}
-const parts=[{x:275+((n*29)%120),y:Math.max(260,315-((n%3)*18))},{x:790+((n*41)%130),y:300+((n%2)*34)},{x:1600+((n*31)%150),y:240+((n%4)*12)}];
-const crate={x:width-330,y:floor-36,w:38,h:36};const sensor={x:width-205,y:floor-14,w:44,h:14};const door={x:width-85,y:floor-90,w:28,h:90};
-return {width,floor,platforms,hazards,parts,crate,sensor,door};
+const width=2300+(n-1)*18, floor=430, theme=n%6;
+// Six readable level patterns, stretched across the whole corridor instead of leaving an empty end.
+const patterns=[
+[350,292,360,278,342,300,365,286,350,310],
+[300,350,275,330,285,360,300,340,280,350],
+[370,320,270,315,370,300,265,325,365,295],
+[280,280,340,365,315,275,350,370,305,285],
+[360,285,320,370,290,340,275,355,310,365],
+[315,370,300,275,355,315,370,285,335,300]
+];
+const heights=patterns[theme], span=width-650, step=span/(heights.length-1);
+const platforms=[{x:0,y:floor,w:width,h:110}];
+for(let i=0;i<heights.length;i++){
+ const x=180+i*step+(((n+i*3)%3)-1)*10;
+ const y=Math.max(260,Math.min(380,heights[(i+(n%3))%heights.length]+((n+i)%3-1)*10));
+ platforms.push({x,y,w:118+((n+i)%3)*12,h:18});
+}
+const hazardCount=4+(n%4), hazards=[];
+for(let i=0;i<hazardCount;i++){
+ const x=300+i*((width-820)/Math.max(1,hazardCount-1));
+ hazards.push({x,y:floor-12,w:36+((n+i)%3)*8,h:12,phase:(i+n)*.7,travel:12+(n%4)*5});
+}
+const parts=[
+{x:Math.round(width*.13),y:floor-70},
+{x:Math.round(width*.39),y:floor-92-((n%2)*10)},
+{x:Math.round(width*.67),y:floor-78-((n%3)*7)}
+];
+const crate={x:width-330,y:floor-36,w:38,h:36};
+const sensor={x:width-205,y:floor-14,w:44,h:14};
+const door={x:width-85,y:floor-90,w:28,h:90};
+return {width,floor,platforms,hazards,parts,crate,sensor,door,theme};
 }
 function startLevel(n){
 state.level=Math.max(1,Math.min(state.unlocked,n));state.scene="level";state.levelData=makeLevel(state.level);state.player={x:65,y:state.levelData.floor-42,vx:0,vy:0,w:26,h:38,onGround:true,face:1};state.camera=0;state.collected=[];state.crate={...state.levelData.crate};state.sensorActive=false;hideOverlay();updateUI();toast("Gång "+pad(state.level)+": "+levelNames[state.level-1]);sound(330,.12)
 }
 function returnLab(){state.scene="lab";hideOverlay();updateUI();save();sound(260,.1)}
-function finishLevel(){const n=state.level;state.unlocked=Math.max(state.unlocked,Math.min(24,n+1));state.found[n]=state.collected.length;state.parts.push(...state.collected.map((i)=>((n-1)*3+i)%allParts.length));save();updateUI();sound(660,.2);showOverlay("Gången klar!","Du hittade "+state.collected.length+" av 3 robotdelar. Du behöver bara en del för att låsa upp nästa gång.",[{label:"TILL ROBOTLABBET",primary:true,action:returnLab},{label:"NÄSTA GÅNG",action:()=>startLevel(Math.min(state.unlocked,24))}])}
+function finishLevel(){const n=state.level;state.unlocked=Math.max(state.unlocked,Math.min(24,n+1));state.found[n]=state.collected.length;state.parts=[...new Set([...state.parts,...state.collected.map((i)=>((n-1)*3+i)%allParts.length)])];save();updateUI();sound(660,.2);showOverlay("Gången klar!","Du hittade "+state.collected.length+" av 3 robotdelar. Du behöver bara en del för att låsa upp nästa gång.",[{label:"TILL ROBOTLABBET",primary:true,action:returnLab},{label:"NÄSTA GÅNG",action:()=>startLevel(Math.min(state.unlocked,24))}])}
 function collide(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
 function interact(){if(state.scene!=="level")return;const d=state.levelData,p=state.player;const near=Math.abs((p.x+p.w/2)-(state.crate.x+state.crate.w/2))<62&&Math.abs((p.y+p.h)-(state.crate.y+state.crate.h))<60;if(near){state.crate.x+=p.face*56;state.crate.x=Math.max(0,Math.min(d.width-state.crate.w,state.crate.x));sound(220,.1);toast("Lådan skramlar framåt!");return}if(state.sensorActive){toast("Sensorn är aktiv — dörren är öppen!");return}toast("Hitta lådan och ställ den på den gröna sensorn.")}
 function movePlayer(dt){
@@ -99,24 +123,48 @@ const c=state.crate;const touching=collide({x:p.x,y:p.y,w:p.w,h:p.h},c);if(touch
 if(collide(c,d.sensor)){state.sensorActive=true}
 if(state.sensorActive&&collide(p,d.door)){finishLevel();return}
 d.parts.forEach((part,i)=>{if(!state.collected.includes(i)&&collide(p,{x:part.x-13,y:part.y-13,w:26,h:26})){state.collected.push(i);sound(560+i*120,.13);toast("Robotdel hittad! "+state.collected.length+"/3");updateUI();if(state.collected.length===3){finishLevel()}}});
-for(const h of d.hazards){const phase=Math.sin(performance.now()/320+h.phase*2);const hz={x:h.x,y:h.y+(phase>0?0:2),w:h.w,h:h.h};if(collide(p,hz)){p.x=Math.max(10,p.x-90);p.y=d.floor-p.h;p.vy=0;toast("Aj! Akta de heta kuggarna.");break}}
+for(const h of d.hazards){const phase=Math.sin(performance.now()/320+h.phase*2);const hz={x:h.x+Math.sin(performance.now()/620+h.phase)*h.travel,y:h.y+(phase>0?0:2),w:h.w,h:h.h};if(collide(p,hz)){p.x=Math.max(10,p.x-90);p.y=d.floor-p.h;p.vy=0;toast("Aj! Akta de heta kuggarna.");break}}
 state.camera=Math.max(0,Math.min(d.width-960,p.x-320));
 }
 function rounded(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke()}}
 function drawRobot(x,y,scale=1,preview=false){
-ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);const col=colors[state.robot.color%colors.length];
-ctx.strokeStyle="#8baca0";ctx.lineWidth=4;ctx.lineCap="round";
-ctx.beginPath();ctx.moveTo(-8,16);ctx.lineTo(-12,29);ctx.moveTo(8,16);ctx.lineTo(12,29);ctx.stroke();
-ctx.fillStyle="#7e9387";ctx.fillRect(-17,27,12,6);ctx.fillRect(5,27,12,6);
-ctx.fillStyle=state.robot.body%4===1?"#c98a56":state.robot.body%4===2?"#a69bf2":state.robot.body%4===3?"#77bce9":col;ctx.strokeStyle="#c8ffdc";ctx.lineWidth=1.4;ctx.beginPath();if(state.robot.body%4===2){ctx.moveTo(-15,1);ctx.lineTo(-10,-4);ctx.lineTo(10,-4);ctx.lineTo(15,1);ctx.lineTo(12,17);ctx.lineTo(-12,17);ctx.closePath()}else{ctx.roundRect(-15,-3,30,22,5)}ctx.fill();ctx.stroke();
+ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+const col=colors[state.robot.color%colors.length];
+const bodyColors=[col,"#c98a56","#a69bf2","#77bce9"];
+const bodyColor=bodyColors[state.robot.body%bodyColors.length];
+// Feet / wheels / spring legs are distinct silhouettes, not just labels.
+ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#8baca0";ctx.lineWidth=4;
+if(state.robot.legs%3===2){
+ ctx.beginPath();ctx.moveTo(-8,15);ctx.lineTo(-13,19);ctx.lineTo(-7,23);ctx.lineTo(-13,27);ctx.lineTo(-9,30);ctx.moveTo(8,15);ctx.lineTo(13,19);ctx.lineTo(7,23);ctx.lineTo(13,27);ctx.lineTo(9,30);ctx.stroke();
+ ctx.fillStyle="#d1e0d5";ctx.fillRect(-17,29,12,5);ctx.fillRect(5,29,12,5);
+}else if(state.robot.legs%3===1){
+ ctx.strokeStyle="#9db7a7";ctx.beginPath();ctx.moveTo(-8,15);ctx.lineTo(-11,25);ctx.moveTo(8,15);ctx.lineTo(11,25);ctx.stroke();
+ ctx.fillStyle="#c4d6cc";ctx.beginPath();ctx.arc(-11,29,7,0,Math.PI*2);ctx.arc(11,29,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#5b7567";ctx.stroke();
+ ctx.strokeStyle="#efffe9";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-15,29);ctx.lineTo(-7,29);ctx.moveTo(7,29);ctx.lineTo(15,29);ctx.stroke();
+}else{
+ ctx.beginPath();ctx.moveTo(-8,15);ctx.lineTo(-12,29);ctx.moveTo(8,15);ctx.lineTo(12,29);ctx.stroke();
+ ctx.fillStyle="#7e9387";ctx.fillRect(-17,27,12,6);ctx.fillRect(5,27,12,6);
+}
+ctx.fillStyle=bodyColor;ctx.strokeStyle="#c8ffdc";ctx.lineWidth=1.4;ctx.beginPath();
+if(state.robot.body%4===2){ctx.moveTo(-15,1);ctx.lineTo(-10,-4);ctx.lineTo(10,-4);ctx.lineTo(15,1);ctx.lineTo(12,17);ctx.lineTo(-12,17);ctx.closePath()}
+else if(state.robot.body%4===3){ctx.moveTo(-12,-4);ctx.lineTo(12,-4);ctx.lineTo(16,3);ctx.lineTo(11,18);ctx.lineTo(-11,18);ctx.lineTo(-16,3);ctx.closePath()}
+else ctx.roundRect(-15,-3,30,22,5);
+ctx.fill();ctx.stroke();
 if(state.robot.body%4!==0){ctx.fillStyle="#ffe0a2";ctx.fillRect(-10,0,3,3);ctx.fillRect(7,0,3,3)}
 ctx.fillStyle="#d7e7db";ctx.fillRect(-7,2,14,3);ctx.fillStyle="#16251e";ctx.fillRect(-10,5,20,8);
 ctx.fillStyle="#9effcb";ctx.beginPath();ctx.arc(-5,9,2,0,Math.PI*2);ctx.arc(5,9,2,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle="#d2e8d9";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-15,3);ctx.lineTo(-22,12);ctx.moveTo(15,3);ctx.lineTo(22,12);ctx.stroke();ctx.fillStyle="#8edbb3";ctx.beginPath();ctx.arc(-22,13,3,0,Math.PI*2);ctx.arc(22,13,3,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle="#c8d8cf";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(0,-10);ctx.stroke();ctx.fillStyle=col;ctx.beginPath();ctx.arc(0,-18,13,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#c8ffdc";ctx.stroke();
-ctx.fillStyle="#17221c";ctx.beginPath();ctx.ellipse(0,-17,9,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="#a8ffd0";ctx.beginPath();ctx.arc(-4,-17,2,0,Math.PI*2);ctx.arc(4,-17,2,0,Math.PI*2);ctx.fill();
-if(state.robot.head%4===1){ctx.strokeStyle="#ffcf7c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-6,-27);ctx.lineTo(-10,-38);ctx.moveTo(6,-27);ctx.lineTo(10,-38);ctx.stroke();ctx.fillStyle="#ffcf7c";ctx.beginPath();ctx.arc(-10,-39,3,0,Math.PI*2);ctx.arc(10,-39,3,0,Math.PI*2);ctx.fill()}
-if(state.robot.legs%3===1){ctx.fillStyle="#c4d6cc";ctx.beginPath();ctx.arc(-11,31,7,0,Math.PI*2);ctx.arc(11,31,7,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#5b7567";ctx.stroke()}
+// Four visibly different head modules.
+ctx.strokeStyle="#c8d8cf";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(0,-10);ctx.stroke();
+if(state.robot.head%4===2){
+ ctx.fillStyle=col;ctx.strokeStyle="#c8ffdc";ctx.beginPath();ctx.roundRect(-13,-31,26,22,5);ctx.fill();ctx.stroke();
+ ctx.fillStyle="#17221c";ctx.fillRect(-9,-25,18,10);ctx.fillStyle="#a8ffd0";ctx.fillRect(-6,-22,4,4);ctx.fillRect(2,-22,4,4);
+}else{
+ ctx.fillStyle=col;ctx.strokeStyle="#c8ffdc";ctx.beginPath();if(state.robot.head%4===3){ctx.moveTo(-13,-20);ctx.lineTo(-9,-30);ctx.lineTo(9,-30);ctx.lineTo(13,-20);ctx.closePath()}else{ctx.arc(0,-18,13,0,Math.PI*2)}ctx.fill();ctx.stroke();
+ ctx.fillStyle="#17221c";ctx.beginPath();ctx.ellipse(0,-17,9,7,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="#a8ffd0";ctx.beginPath();ctx.arc(-4,-17,2,0,Math.PI*2);ctx.arc(4,-17,2,0,Math.PI*2);ctx.fill();
+}
+if(state.robot.head%4===1||state.robot.head%4===3){ctx.strokeStyle="#ffcf7c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-6,-27);ctx.lineTo(-10,-38);if(state.robot.head%4===1){ctx.moveTo(6,-27);ctx.lineTo(10,-38)}ctx.stroke();ctx.fillStyle="#ffcf7c";ctx.beginPath();ctx.arc(-10,-39,3,0,Math.PI*2);if(state.robot.head%4===1)ctx.arc(10,-38,3,0,Math.PI*2);ctx.fill()}
+if(state.robot.head%4===0){ctx.fillStyle="#a8ffd0";ctx.fillRect(-2,-20,4,2)}
 ctx.restore();
 }
 function drawLab(){
@@ -134,13 +182,13 @@ ctx.fillStyle="#a8f5c5";ctx.font="bold 12px monospace";ctx.fillText("G O R B I",
 }
 function drawLevel(){
 const d=state.levelData;if(!d)return;const cam=state.camera;
-const bg=ctx.createLinearGradient(0,0,0,540);bg.addColorStop(0,state.level%4===0?"#211c2b":"#222b26");bg.addColorStop(1,"#0c120f");ctx.fillStyle=bg;ctx.fillRect(0,0,960,540);
+const themes=[["#222b26","#0c120f","#3a4940","#63796a"],["#202a35","#0a1019","#3a4b5b","#7194ad"],["#30252b","#130d12","#58404b","#b07883"],["#2d2b20","#111109","#55503a","#9c8e58"],["#202b31","#0a1114","#354d52","#65a8a0"],["#29213a","#100c19","#44375c","#8d7cbb"]];const palette=themes[d.theme];const bg=ctx.createLinearGradient(0,0,0,540);bg.addColorStop(0,palette[0]);bg.addColorStop(1,palette[1]);ctx.fillStyle=bg;ctx.fillRect(0,0,960,540);
 ctx.save();ctx.translate(-cam,0);
-for(let i=0;i<d.width/100+1;i++){ctx.fillStyle=i%2?"#28332d":"#242f29";ctx.fillRect(i*100,0,96,430);ctx.strokeStyle="#3b4a40";ctx.strokeRect(i*100+8,15,80,390);ctx.fillStyle="#121a15";ctx.fillRect(i*100+18,38,60,5);ctx.fillStyle="#46584b";ctx.fillRect(i*100+20,56,55,2)}
+for(let i=0;i<d.width/100+1;i++){ctx.fillStyle=i%2?palette[0]:palette[2];ctx.fillRect(i*100,0,96,430);ctx.strokeStyle=palette[2];ctx.strokeRect(i*100+8,15,80,390);ctx.fillStyle="#121a15";ctx.fillRect(i*100+18,38,60,5);ctx.fillStyle="#46584b";ctx.fillRect(i*100+20,56,55,2)}
 // overhead pipes
 ctx.strokeStyle="#111914";ctx.lineWidth=18;ctx.beginPath();ctx.moveTo(0,75);ctx.lineTo(d.width,75);ctx.stroke();ctx.strokeStyle="#536359";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,66);ctx.lineTo(d.width,66);ctx.stroke();
-d.platforms.forEach((p,i)=>{ctx.fillStyle="#3a4940";ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle="#63796a";ctx.fillRect(p.x,p.y,p.w,4);ctx.fillStyle="#222d26";ctx.fillRect(p.x,p.y+p.h-5,p.w,5);for(let x=p.x+8;x<p.x+p.w;x+=25){ctx.fillStyle="#516257";ctx.fillRect(x,p.y+7,8,3)}});
-d.hazards.forEach(h=>{const pulse=Math.sin(performance.now()/250+h.phase*2);ctx.fillStyle="#4a2522";ctx.fillRect(h.x,h.y-5,h.w,h.h+10);ctx.fillStyle=pulse>0?"#ff7d58":"#d94d4c";for(let x=h.x;x<h.x+h.w;x+=12){ctx.beginPath();ctx.moveTo(x,h.y);ctx.lineTo(x+6,h.y-9);ctx.lineTo(x+12,h.y);ctx.fill()}ctx.shadowColor="#ff604c";ctx.shadowBlur=10;ctx.fillRect(h.x,h.y+7,h.w,3);ctx.shadowBlur=0});
+d.platforms.forEach((p,i)=>{ctx.fillStyle=palette[2];ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle=palette[3];ctx.fillRect(p.x,p.y,p.w,4);ctx.fillStyle="#222d26";ctx.fillRect(p.x,p.y+p.h-5,p.w,5);for(let x=p.x+8;x<p.x+p.w;x+=25){ctx.fillStyle="#516257";ctx.fillRect(x,p.y+7,8,3)}});
+d.hazards.forEach(h=>{const pulse=Math.sin(performance.now()/250+h.phase*2),hx=h.x+Math.sin(performance.now()/620+h.phase)*h.travel;ctx.fillStyle="#4a2522";ctx.fillRect(hx,h.y-5,h.w,h.h+10);ctx.fillStyle=pulse>0?"#ff7d58":"#d94d4c";for(let x=hx;x<hx+h.w;x+=12){ctx.beginPath();ctx.moveTo(x,h.y);ctx.lineTo(x+6,h.y-9);ctx.lineTo(x+12,h.y);ctx.fill()}ctx.shadowColor="#ff604c";ctx.shadowBlur=10;ctx.fillRect(hx,h.y+7,h.w,3);ctx.shadowBlur=0});
 d.parts.forEach((part,i)=>{if(state.collected.includes(i))return;const bob=Math.sin(performance.now()/260+i*2)*4;ctx.save();ctx.translate(part.x,part.y+bob);ctx.shadowColor="#c9ff73";ctx.shadowBlur=16;ctx.fillStyle="#c9f77b";ctx.beginPath();ctx.moveTo(0,-13);ctx.lineTo(12,0);ctx.lineTo(0,13);ctx.lineTo(-12,0);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle="#334c2d";ctx.fillRect(-3,-5,6,10);ctx.restore()});
 const c=state.crate;ctx.fillStyle="#78563c";ctx.fillRect(c.x,c.y,c.w,c.h);ctx.strokeStyle="#c99c64";ctx.lineWidth=3;ctx.strokeRect(c.x+3,c.y+3,c.w-6,c.h-6);ctx.beginPath();ctx.moveTo(c.x+5,c.y+5);ctx.lineTo(c.x+c.w-5,c.y+c.h-5);ctx.moveTo(c.x+c.w-5,c.y+5);ctx.lineTo(c.x+5,c.y+c.h-5);ctx.stroke();
 ctx.fillStyle=state.sensorActive?"#baff70":"#3b5d46";ctx.fillRect(d.sensor.x,d.sensor.y,d.sensor.w,d.sensor.h);ctx.fillStyle=state.sensorActive?"#e3ff9c":"#7fe5ad";ctx.fillRect(d.sensor.x+5,d.sensor.y+4,d.sensor.w-10,3);ctx.shadowColor=state.sensorActive?"#baff70":"#000";ctx.shadowBlur=state.sensorActive?18:0;ctx.fillRect(d.door.x,d.door.y,d.door.w,d.door.h);ctx.shadowBlur=0;ctx.strokeStyle="#8aa897";ctx.strokeRect(d.door.x,d.door.y,d.door.w,d.door.h);ctx.fillStyle="#baf5c9";ctx.font="12px monospace";ctx.fillText(state.sensorActive?"OPEN":"LOCK",d.door.x-7,d.door.y-10);
@@ -157,7 +205,7 @@ $("backLabBtn").onclick=returnLab;
 $("useBtn").onclick=interact;
 $("hintBtn").onclick=()=>toast(state.sensorActive?"Dörren är öppen — gå fram till den!":"Leta efter den bruna lådan nära slutet och putta den mot den gröna sensorn.");
 function cycleRobotPart(type){const names={head:headNames,body:bodyNames,legs:legNames};const unlocked=state.parts.filter(i=>allParts[i%allParts.length].type===type).length;const limit=Math.min(names[type].length,1+unlocked);state.robot[type]=(state.robot[type]+1)%Math.max(1,limit);save();updateUI();toast(names[type][state.robot[type]]+" vald")}
-$("buildBtn").onclick=()=>{setScene("build");showOverlay("Bygg din robot","Välj bland grunddelar och delar du har hittat i gångarna. Fler val låses upp när du samlar robotdelar.",[{label:"BYT HUVUD",action:()=>cycleRobotPart("head")},{label:"BYT KROPP",action:()=>cycleRobotPart("body")},{label:"BYT BEN",action:()=>cycleRobotPart("legs")},{label:"BYT FÄRG",action:()=>{state.robot.color=(state.robot.color+1)%colors.length;save();updateUI();toast("Robotfärgen ändrad") }},{label:"KLAR",primary:true,action:()=>{hideOverlay();updateUI()}}])};
+$("buildBtn").onclick=()=>{setScene("build");showOverlay("Bygg din robot","Välj bland grunddelar och delar du har hittat i gångarna. Fler val låses upp när du samlar robotdelar.",[{label:"BYT HUVUD",action:()=>cycleRobotPart("head")},{label:"BYT KROPP",action:()=>cycleRobotPart("body")},{label:"BYT BEN",action:()=>cycleRobotPart("legs")},{label:"BYT FÄRG",action:()=>{state.robot.color=(state.robot.color+1)%colors.length;save();updateUI();toast("Robotfärgen ändrad") }},{label:"KLAR",primary:true,action:()=>{hideOverlay();state.scene="lab";updateUI();drawLab()}}])};
 $("paintBtn").onclick=()=>{state.robot.color=(state.robot.color+1)%colors.length;save();toast("Robotfärgen ändrad!");if(state.scene==="lab")drawLab()};
 $("levelsBtn").onclick=()=>{const opts=[];for(let n=1;n<=state.unlocked;n++){opts.push({label:pad(n)+" · "+levelNames[n-1],action:()=>startLevel(n),primary:n===state.level})}showOverlay("Välj en gång","24 gångar finns i den här rekonstruktionen. Låsta gångar öppnas när du klarar en bana.",opts.concat([{label:"STÄNG",action:hideOverlay}]))};
 $("resetBtn").onclick=()=>{if(state.scene==="level")startLevel(state.level);else{state.robot={head:0,body:0,legs:0,color:0};save();toast("Robotens utseende återställt.");updateUI();drawLab()}};
