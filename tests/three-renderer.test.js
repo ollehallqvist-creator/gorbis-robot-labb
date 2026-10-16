@@ -37,4 +37,6 @@ assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "th
 assert.ok(renderer.includes("function hexTiles(scene,placements,radius=.16,depth=.035)"), "repeated hex wall tiles should be instanced for Chromebook performance");
 assert.ok(renderer.includes("new T.InstancedMesh(new T.CylinderGeometry(radius,radius,depth,6)"), "hex wall tiles should render as instances instead of hundreds of separate meshes");
 assert.ok(renderer.includes("if(this.scene)this.scene.traverse(o=>{if(o.geometry)o.geometry.dispose()})"), "rebuilding scenes should dispose old geometry to prevent GPU memory growth while cycling parts");
+assert.ok(renderer.includes("const upper=new T.Group();upper.position.set(side*.46,1.35,0);g.add(upper);armSegments.push(upper)"), "arm animation should use joint pivots rather than rotating disconnected mesh segments");
+assert.ok(renderer.includes("a.rotation.z=Math.sin(now/(moving?95:420)+i)*.12"), "articulated arms should visibly swing while moving");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
