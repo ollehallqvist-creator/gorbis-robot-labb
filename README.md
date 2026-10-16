@@ -22,6 +22,8 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Funktioner i den här versionen
 
+- Originalinspirerad titelbild med stjärnfält, logotypbehandling, pulserande startikon och helskärmsläge.
+- Välkomstrum ombyggt med djupare perspektiv, grön servicehiss, reservdelsdisplay, säkerhetsramp och golvmarkeringar.
 - Verkstad och robotbyggare med egenritad robotgrafik.
 - Gorbi vänder sig i rörelseriktningen i labyrinten och får en enkel gångrörelse när spelaren styr.
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
@@ -45,7 +47,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Tester
 
-Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
+Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js`, `node tests/sound-cues.test.js` och `node tests/title-screen.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
 
 ## Viktigt om likheten med originalet
 

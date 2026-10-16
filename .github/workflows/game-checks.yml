@@ -18,3 +18,5 @@ jobs:
         run: node tests/robot-variants.test.js
       - name: Check synthesized sound cues
         run: node tests/sound-cues.test.js
+      - name: Check title screen and welcome-room scene
+        run: node tests/title-screen.test.js

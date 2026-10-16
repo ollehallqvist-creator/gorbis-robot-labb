@@ -1,0 +1,12 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+assert.match(html, /function drawTitle\(\)/, "cinematic title renderer should exist");
+assert.match(html, /VÄLKOMMEN IN I GORBIS HEMLIGA VÄRLD!/, "title card should include the welcome line");
+assert.match(html, /state\.hasSave=!!s;state\.scene="title"/, "fresh and returning players should see the title screen");
+assert.match(html, /state\.scene==="title"&&\(e\.code==="Enter"\|\|e\.code==="Space"\)/, "keyboard should start the game from title");
+assert.match(html, /if\(state\.scene==="title"\)\{startFromTitle\(\);return\}/, "pointer/touch should start the game from title");
+assert.match(html, /body\.title-screen \.game-frame/, "title scene should use a cinematic full-screen layout");
+assert.match(html, /function drawLab\(\)[\s\S]*?TRÄFFA ROBOTEN GORBI/, "welcome room should preserve the original-inspired title strip");
+console.log("PASS: title screen, keyboard/touch start, cinematic layout, and welcome-room composition are present.");
