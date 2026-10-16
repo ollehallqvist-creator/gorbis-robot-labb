@@ -13,7 +13,7 @@ assert.match(html, /body\.three-d-ready:not\(\.title-screen\) #game\{opacity:0\}
 assert.match(html, /body:not\(\.three-d-ready\) \.builder-overlay\{display:none!important\}/, "HTML builder controls should not duplicate Canvas controls when the 3D fallback is active");
 assert.match(renderer, /api\.hitTest=function\(clientX,clientY,canvas\)/, "the 3D parts machine should use raycasting for visible hit targets");
 assert.match(renderer, /const handle=box\(scene,[\s\S]*?const packagePart=new T\.Group\(\)/, "parts machine should have an animated handle and dispensing part");
-assert.match(renderer, /this\.refs\.handle\.position\.y=state\.machinePrimed/, "pulling the handle should change its 3D position");
+assert.ok(renderer.includes("const handleTarget=state.machinePrimed?.2:.37;this.refs.handle.position.y+=(handleTarget-this.refs.handle.position.y)*.24"), "pulling the handle should smoothly change its 3D position after priming");
 assert.match(renderer, /this\.refs\.packagePart\.visible=dispensing&&age<1350/, "dispensed parts should animate out of the hatch");
 assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"/, "raycasting should distinguish the handle from the hatch");
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
@@ -41,4 +41,5 @@ assert.ok(renderer.includes("const upper=new T.Group();upper.position.set(side*.
 assert.ok(renderer.includes("a.rotation.z=Math.sin(now/(moving?95:420)+i)*.12"), "articulated arms should visibly swing while moving");
 assert.ok(renderer.includes("g.userData.legSegments=legSegments"), "robot leg joints should be tracked for movement animation");
 assert.ok(renderer.includes("a.rotation.z=Math.sin(now/(moving?100:460)+i)*.07"), "robot legs should articulate subtly while walking");
+assert.ok(renderer.includes("const handleTarget=state.machinePrimed?.2:.37;this.refs.handle.position.y+=(handleTarget-this.refs.handle.position.y)*.24"), "handle should ease to its pulled position only after the pull gesture primes the machine");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
