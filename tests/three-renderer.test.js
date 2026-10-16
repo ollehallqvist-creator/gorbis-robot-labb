@@ -18,5 +18,7 @@ assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D r
 assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
 assert.match(renderer, /moving\?Math\.abs\(Math\.sin\(now\/75\)\)/, "the robot should bob while moving");
 assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize only when available");
+assert.match(renderer, /this\.renderer\.shadowMap\.enabled=true/, "3D scene should use real-time shadows");
+assert.match(renderer, /key\.castShadow=true/, "directional lighting should cast shadows");
 assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "the renderer should defer to the title-card Canvas and gracefully fall back");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
