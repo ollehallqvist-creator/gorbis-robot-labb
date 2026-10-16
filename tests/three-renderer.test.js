@@ -15,6 +15,8 @@ assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
 assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create lab and builder environments");
 assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
+assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
+assert.match(renderer, /moving\?Math\.abs\(Math\.sin\(now\/75\)\)/, "the robot should bob while moving");
 assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize only when available");
 assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "the renderer should defer to the title-card Canvas and gracefully fall back");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
