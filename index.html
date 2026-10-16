@@ -90,7 +90,7 @@ body.three-d-ready:not(.title-screen) #game{opacity:0}
 /* Title strip above the 3D lab and builder, shared with the fallback composition. */
 .room-banner{position:absolute;z-index:5;left:0;right:0;top:0;height:52px;padding:0 28px;background:linear-gradient(180deg,#020303,#10120f);border-bottom:3px solid #050606;color:#eeeee5;display:flex;align-items:center;justify-content:space-between;gap:12px;font:900 clamp(13px,2.4vw,23px) Impact,"Arial Narrow",Arial,sans-serif;letter-spacing:.055em;pointer-events:none}
 .room-banner span{font:700 10px monospace;color:#879382;letter-spacing:.04em}
-body:not(.three-d-ready) .room-banner{display:none}
+body:not(.three-d-ready) .room-banner{display:none}\nbody:not(.three-d-ready) .builder-overlay{display:none!important}
 @media(max-width:560px){.room-banner{height:45px;padding:0 10px}.room-banner span{font-size:7px}}
 
 </style>

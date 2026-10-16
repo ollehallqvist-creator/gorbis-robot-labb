@@ -10,6 +10,7 @@ assert.match(html, /window\.Gorbi3D\.render\(state\)/, "the main game loop shoul
 assert.match(html, /id="levelBanner"/, "level banner should remain visible as a DOM overlay over WebGL");
 assert.match(html, /id="builderOverlay"/, "builder controls should remain visible and interactive over WebGL");
 assert.match(html, /body\.three-d-ready:not\(\.title-screen\) #game\{opacity:0\}/, "Canvas should remain as a fallback and input layer under WebGL");
+assert.match(html, /body:not\(\.three-d-ready\) \.builder-overlay\{display:none!important\}/, "HTML builder controls should not duplicate Canvas controls when the 3D fallback is active");
 assert.match(renderer, /api\.hitTest=function\(clientX,clientY,canvas\)/, "the 3D parts machine should use raycasting for visible hit targets");
 assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"/, "raycasting should distinguish the handle from the hatch");
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
