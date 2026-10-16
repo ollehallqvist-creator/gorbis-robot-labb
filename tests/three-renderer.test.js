@@ -20,7 +20,10 @@ assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should cr
 assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create the lab environment");
 assert.match(renderer, /function makeBuilder\(state\)/, "the builder should use its own assembly studio");
 assert.match(renderer, /scene\.background=new T\.Color\("#171a19"\)/, "builder studio should use the original dark industrial palette");
-assert.match(renderer, /new T\.CylinderGeometry\(\.17,\.17,\.035,6\)/, "industrial wall should use hexagonal surface tiles");
+assert.ok(renderer.includes("for(let rr=0;rr<9;rr++)for(let cc=0;cc<Math.ceil(backW/.36);cc++)"), "level themes should use hex tiles on their industrial backdrops");
+const builderSection=renderer.slice(renderer.indexOf("function makeBuilder"),renderer.indexOf("function makeLab"));
+assert.ok(!builderSection.includes("new T.CylinderGeometry(.17,.17,.035,6)"), "builder should use framed wall panels instead of level hex tiles");
+assert.ok(builderSection.includes("addPanel(scene,-7.2+i*2.85,2.85,-4.82,2.5,4.55"), "builder wall should use framed industrial panels like the reference screenshot");
 assert.match(renderer, /Dark industrial assembly room/, "builder should match the original dark industrial backdrop");
 assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
 assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
