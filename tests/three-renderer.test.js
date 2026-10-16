@@ -18,12 +18,15 @@ assert.match(renderer, /this\.refs\.packagePart\.visible=dispensing&&age<1350/, 
 assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"/, "raycasting should distinguish the handle from the hatch");
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
 assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create the lab environment");
-assert.match(renderer, /function makeBuilder\(state\)/, "the builder should use its own light-grey assembly studio");
-assert.match(renderer, /Clean light-grey assembly studio/, "builder should not reuse the cave/lab backdrop");
+assert.match(renderer, /function makeBuilder\(state\)/, "the builder should use its own assembly studio");
+assert.match(renderer, /scene\.background=new T\.Color\("#171a19"\)/, "builder studio should use the original dark industrial palette");
+assert.match(renderer, /new T\.CylinderGeometry\(\.17,\.17,\.035,6\)/, "industrial wall should use hexagonal surface tiles");
+assert.match(renderer, /Dark industrial assembly room/, "builder should match the original dark industrial backdrop");
 assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
 assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
 assert.match(renderer, /moving\?Math\.abs\(Math\.sin\(now\/75\)\)/, "the robot should bob while moving");
 assert.match(renderer, /p\.faceX<0\?-Math\.PI\/2:p\.faceX>0\?Math\.PI\/2:p\.faceZ<0\?Math\.PI:0/, "robot orientation should follow movement direction");
+assert.ok(renderer.includes("pz+8.8-this.camera.position.z"), "maze camera should follow the robot instead of showing a static grid map");
 assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize only when available");
 assert.match(renderer, /this\.renderer\.shadowMap\.enabled=true/, "3D scene should use real-time shadows");
 assert.match(renderer, /key\.castShadow=true/, "directional lighting should cast shadows");

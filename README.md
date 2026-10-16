@@ -22,11 +22,11 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Funktioner i den här versionen
 
-- Separat WebGL-renderer med Three.js: 3D-rum, riktningsstyrd ljussättning och skuggor, material, robotmodell med animerade hjul/armar, labyrintväggar, kugghjul, låda, tryckplatta, dörr samt en 3D-reservdelsmaskin med animerat handtag och utmatad del. Canvas-renderaren finns kvar som reserv om WebGL eller CDN inte är tillgängligt.
+- Separat WebGL-renderer med Three.js: 3D-rum med kamera som följer roboten i banorna, hexagonmönstrade industriväggar, betongpanelgolv, riktningsstyrd ljussättning och skuggor, material, robotmodell med animerade hjul/armar, labyrintväggar, kugghjul, låda, tryckplatta, dörr samt en 3D-reservdelsmaskin med animerat handtag och utmatad del. Canvas-renderaren finns kvar som reserv om WebGL eller CDN inte är tillgängligt.
 - Rubrikremsa för labbet och banorna samt klickbara komponentpilar/paneler visas som HTML-överlägg ovanpå 3D-scenen, så de inte försvinner när Canvas-reserven döljs.
 - Originalinspirerad titelbild med stjärnfält, logotypbehandling, pulserande startikon och helskärmsläge.
 - Välkomstrum ombyggt med djupare perspektiv, grön servicehiss, reservdelsdisplay, säkerhetsramp och golvmarkeringar.
-- Robotbyggaren har en egen ljusgrå monteringsstudio med piedestal och reservdelsställ. Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
+- Robotbyggaren har en egen mörk industriell monteringsmiljö med hexagonmönstrade väggpaneler, piedestal och reservdelsställ. Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
 - Verkstad och robotbyggare med egenritad robotgrafik, sidopilar för att bläddra mellan delar och tydlig markering av vald komponent.
 - Gorbi vänder sig i rörelseriktningen i labyrinten och får en enkel gångrörelse när spelaren styr.
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
