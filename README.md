@@ -23,7 +23,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 ## Funktioner i den här versionen
 
 - Separat WebGL-renderer med Three.js: 3D-rum, ljussättning, material, robotmodell med animerade hjul/armar, labyrintväggar, kugghjul, låda, tryckplatta och dörr. Canvas-renderaren finns kvar som reserv om WebGL eller CDN inte är tillgängligt.
-- Rubrikremsa för banorna och klickbara komponentpilar/paneler visas som HTML-överlägg ovanpå 3D-scenen, så de inte försvinner när Canvas-reserven döljs.
+- Rubrikremsa för labbet och banorna samt klickbara komponentpilar/paneler visas som HTML-överlägg ovanpå 3D-scenen, så de inte försvinner när Canvas-reserven döljs.
 - Originalinspirerad titelbild med stjärnfält, logotypbehandling, pulserande startikon och helskärmsläge.
 - Välkomstrum ombyggt med djupare perspektiv, grön servicehiss, reservdelsdisplay, säkerhetsramp och golvmarkeringar.
 - Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
