@@ -1,0 +1,14 @@
+const fs=require("node:fs");
+const path=require("node:path");
+const assert=require("node:assert/strict");
+const html=fs.readFileSync(path.join(__dirname,"..","index.html"),"utf8");
+const renderer=fs.readFileSync(path.join(__dirname,"..","three-renderer.js"),"utf8");
+const dispense=html.match(/function dispensePart\(\)\{([\s\S]*?)\nfunction openDispensedPackage/);
+const open=html.match(/function openDispensedPackage\(\)\{([\s\S]*?)\nlet dragPointer/);
+assert.ok(dispense&&open,"machine should have separate dispense and open-package functions");
+assert.doesNotMatch(dispense[1],/openedParts\.push/,"dispensing a package must not unlock the part yet");
+assert.match(open[1],/openedParts\.push\(id\)/,"clicking the package should unlock its part");
+assert.match(html,/hit3D===\"package\"/,"the game should recognize a click on the 3D package");
+assert.match(renderer,/targets\.push\(this\.refs\.packagePart\)/,"the 3D raycaster should include the visible package");
+assert.match(renderer,/this\.refs\.packagePart\.visible=dispensing/,"the package should stay visible until the player opens it");
+console.log("PASS: machine dispenses a persistent package and unlocks the part only on the second click.");

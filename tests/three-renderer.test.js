@@ -14,8 +14,8 @@ assert.match(html, /body:not\(\.three-d-ready\) \.builder-overlay\{display:none!
 assert.match(renderer, /api\.hitTest=function\(clientX,clientY,canvas\)/, "the 3D parts machine should use raycasting for visible hit targets");
 assert.match(renderer, /const handle=box\(scene,[\s\S]*?const packagePart=new T\.Group\(\)/, "parts machine should have an animated handle and dispensing part");
 assert.ok(renderer.includes("const handleTarget=state.machinePrimed?.2:.37;this.refs.handle.position.y+=(handleTarget-this.refs.handle.position.y)*.24"), "pulling the handle should smoothly change its 3D position after priming");
-assert.match(renderer, /this\.refs\.packagePart\.visible=dispensing&&age<1350/, "dispensed parts should animate out of the hatch");
-assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"/, "raycasting should distinguish the handle from the hatch");
+assert.ok(renderer.includes("this.refs.packagePart.visible=dispensing;"), "package should stay visible until clicked");
+assert.ok(renderer.includes('if(hit===this.refs.handle)return "handle";if(hit===this.refs.hatch)return "hatch";'), "raycasting should distinguish the handle, hatch and package");
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
 assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create the lab environment");
 assert.match(renderer, /function makeBuilder\(state\)/, "the builder should use its own assembly studio");
