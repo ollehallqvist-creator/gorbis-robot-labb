@@ -1,0 +1,12 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+assert.match(html, /Large side arrows, like the original component carousel/, "builder should show side arrows");
+assert.match(html, /arrow\(270,282,-1/, "previous arrow should be drawn beside the robot");
+assert.match(html, /arrow\(568,282,1/, "next arrow should be drawn beside the robot");
+assert.match(html, /function cycleRobotPart\(type,direction=1\)/, "part selection should support previous and next");
+assert.match(html, /q\.x>=242&&q\.x<=300/, "previous arrow should respond to pointer/touch");
+assert.match(html, /q\.x>=544&&q\.x<=592/, "next arrow should respond to pointer/touch");
+assert.match(html, /state\.buildFocus===\['head','body','legs','color'\]\[i\]/, "selected part tile should be highlighted");
+console.log("PASS: robot builder arrows, directional part cycling, and selected-part highlight are present.");
