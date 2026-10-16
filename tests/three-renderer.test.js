@@ -1,0 +1,18 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+const renderer = fs.readFileSync(path.join(__dirname, "..", "three-renderer.js"), "utf8");
+assert.match(html, /id="game3d"/, "the game should have a separate WebGL canvas");
+assert.match(html, /three@0\.159\.0\/build\/three\.min\.js/, "Three.js should be loaded for the 3D view");
+assert.match(html, /src="three-renderer\.js"/, "the local 3D scene renderer should be loaded");
+assert.match(html, /window\.Gorbi3D\.render\(state\)/, "the main game loop should update the 3D scene");
+assert.match(html, /id="levelBanner"/, "level banner should remain visible as a DOM overlay over WebGL");
+assert.match(html, /id="builderOverlay"/, "builder controls should remain visible and interactive over WebGL");
+assert.match(html, /body\.three-d-ready:not\(\.title-screen\) #game\{opacity:0\}/, "Canvas should remain as a fallback and input layer under WebGL");
+assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
+assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create lab and builder environments");
+assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
+assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize only when available");
+assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "the renderer should defer to the title-card Canvas and gracefully fall back");
+console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");

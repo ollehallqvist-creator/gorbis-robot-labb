@@ -65,6 +65,27 @@ body.title-screen #game{display:block;width:100%;height:100%;cursor:pointer}
 .part-dot.got{background:#d8e2d9;color:#1a2b23;border:2px solid #7fc9e8;font-size:22px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 @media(max-width:720px){.hud{inset:auto auto 10px 10px}.part-dot{width:29px;height:29px;font-size:24px}.part-dot.got{font-size:18px}}
 
+
+/* Real 3D scene layer. The 2D canvas remains transparent on top as an input/fallback layer. */
+#game3d{display:none;position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#game{position:relative;z-index:2}
+body.three-d-ready:not(.title-screen) #game3d{display:block}
+body.three-d-ready:not(.title-screen) #game{opacity:0}
+
+
+/* DOM overlays remain crisp above WebGL and keep the builder usable when Canvas art is hidden. */
+.level-banner{position:absolute;z-index:5;left:0;right:0;top:0;height:68px;padding:8px 28px;background:linear-gradient(180deg,#020303,#080909);border-bottom:3px solid #050606;color:#f0f0e9;display:flex;flex-direction:column;justify-content:center;font-family:Impact,"Arial Narrow",Arial,sans-serif;font-weight:900;font-size:clamp(12px,2.4vw,23px);letter-spacing:.035em;line-height:1.12;pointer-events:none}
+.level-banner strong{position:absolute;right:25px;bottom:15px;color:#a6b0a8;font: bold 10px monospace;letter-spacing:.08em}
+.builder-overlay{position:absolute;z-index:5;inset:0;pointer-events:none}
+.builder-arrow{position:absolute;top:45.7%;width:5%;height:13%;min-width:32px;padding:0;display:grid;place-items:center;font:36px/1 Arial,sans-serif;background:#11140fe8;border:1px solid #777a68;border-radius:4px;color:#b9c9b6;pointer-events:auto;box-shadow:0 4px 12px #0008}
+.builder-arrow.previous{left:25.6%;color:#f28a9d}.builder-arrow.next{left:56.7%;color:#8fe2bb}
+.builder-parts{position:absolute;left:23.8%;top:79.5%;width:52%;height:9.5%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;pointer-events:auto}
+.builder-part{min-width:0;padding:5px 6px;border:1px solid #77796b;border-radius:2px;background:#171914eF;box-shadow:0 2px 5px #0008;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;text-align:left;overflow:hidden}
+.builder-part span{font:700 9px monospace;color:#c4c9b9;letter-spacing:.1em}
+.builder-part strong{max-width:100%;font:10px monospace;color:#aee0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.builder-part.selected{border:2px solid #c6edaa;background:#273429f2}
+@media(max-width:560px){.level-banner{height:55px;padding:5px 10px;font-size:12px}.level-banner strong{right:10px;bottom:9px;font-size:8px}.builder-arrow{min-width:25px;font-size:28px}.builder-parts{left:20%;width:60%;gap:3px}.builder-part{padding:3px}.builder-part span{font-size:7px}.builder-part strong{font-size:8px}}
+
 </style>
 </head>
 <body>
@@ -79,7 +100,19 @@ body.title-screen #game{display:block;width:100%;height:100%;cursor:pointer}
     <div class="screen-actions"><button class="quiet" id="levelsBtn">BANOR <span id="levelCount">01/24</span></button><button class="quiet" id="helpBtn" aria-label="Hjälp och kontroller">? HJÄLP</button><button class="quiet" id="soundBtn" aria-pressed="false">♫ LJUD AV</button><button class="quiet" id="resetBtn" title="Starta om aktuell bana">↻ STARTA OM</button></div>
   </div>
   <section class="game-stage" id="stage" aria-label="Spelområde">
+    <canvas id="game3d" width="960" height="540" aria-hidden="true"></canvas>
     <canvas id="game" width="960" height="540" tabindex="0" role="application" aria-label="Gorbis Robotlabb spelområde. Piltangenter eller WASD för att gå, E för att interagera och Escape för paus."></canvas>
+    <div class="level-banner hidden" id="levelBanner" aria-hidden="true"><span>LETA EFTER FÖRSVUNNA ROBOTDELAR</span><span>I 24 MAGISKA BANOR</span><strong id="bannerLevel">GÅNG 01 / 24</strong></div>
+    <div class="builder-overlay hidden" id="builderOverlay" aria-label="Robotbyggarens komponentval">
+      <button class="builder-arrow previous" id="builderPrevious" aria-label="Föregående komponent">‹</button>
+      <button class="builder-arrow next" id="builderNext" aria-label="Nästa komponent">›</button>
+      <div class="builder-parts">
+        <button class="builder-part selected" data-build-part="head"><span>HUVUD</span><strong id="builderHeadValue">Grundhuvud</strong></button>
+        <button class="builder-part" data-build-part="body"><span>KROPP</span><strong id="builderBodyValue">Startkropp</strong></button>
+        <button class="builder-part" data-build-part="legs"><span>BEN</span><strong id="builderLegsValue">Små ben</strong></button>
+        <button class="builder-part" data-build-part="color"><span>FÄRG</span><strong id="builderColorValue">FÄRG 01</strong></button>
+      </div>
+    </div>
     <div class="hud hidden" id="levelHud">
       <div class="hud-card"><div class="hud-label">Gång <span id="hudLevel">01</span> / 24</div><div class="hud-value" id="hudName">Servicegången</div></div>
       <div class="hud-card"><div class="hud-label">Robotdelar</div><div class="part-dots"><span class="part-dot" id="dot0">◈</span><span class="part-dot" id="dot1">◈</span><span class="part-dot" id="dot2">◈</span></div></div>
@@ -95,6 +128,8 @@ body.title-screen #game{display:block;width:100%;height:100%;cursor:pointer}
 </main>
 <footer class="footer"><span>Fanprojekt · egna former och kod · inte en officiell SVT-produkt</span><span>Research: <a href="https://www.pappasappar.se/gorbis-robotlabb/" target="_blank" rel="noreferrer">recension med originalbilder</a> · <a href="https://groplay.com/services/" target="_blank" rel="noreferrer">Gro Play</a></span></footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+<script src="three-renderer.js"></script>
 <script>
 (function(){
 "use strict";
@@ -414,10 +449,6 @@ ctx.fillStyle='#080a08e8';ctx.fillRect(900,12,48,44);ctx.strokeStyle='#8c927b';c
 // Translucent touch joystick inspired by the original mobile controls.
 ctx.save();ctx.globalAlpha=.62;ctx.fillStyle='#080a08';ctx.beginPath();ctx.arc(70,470,39,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#b7c3a8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(70,470,34,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.6;ctx.strokeStyle='#87917c';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(70,443);ctx.lineTo(70,497);ctx.moveTo(43,470);ctx.lineTo(97,470);ctx.stroke();const joyX=state.drag&&state.drag.joystick?Math.max(-17,Math.min(17,state.drag.lastX-state.drag.startX)):0,joyY=state.drag&&state.drag.joystick?Math.max(-17,Math.min(17,state.drag.lastY-state.drag.startY)):0;ctx.globalAlpha=.9;ctx.fillStyle='#737c69';ctx.beginPath();ctx.arc(70+joyX,470+joyY,14,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c4ceb6';ctx.lineWidth=2;ctx.stroke();ctx.restore();
 const vg=ctx.createRadialGradient(480,280,150,480,280,610);vg.addColorStop(0,'#0000');vg.addColorStop(1,'#0008');ctx.fillStyle=vg;ctx.fillRect(0,0,960,540);
- // Original-style black gameplay banner matching the original promotional screenshots.
- ctx.fillStyle='#020303';ctx.fillRect(0,0,960,68);ctx.fillStyle='#090a0a';ctx.fillRect(0,65,960,3);
- ctx.fillStyle='#f0f0e9';ctx.font='900 23px Impact,"Arial Narrow",Arial,sans-serif';ctx.fillText('LETA EFTER FÖRSVUNNA ROBOTDELAR',30,29);ctx.fillText('I 24 MAGISKA BANOR',30,56);
- ctx.fillStyle='#a6b0a8';ctx.font='bold 10px monospace';ctx.fillText('GÅNG '+pad(state.level)+' / 24',812,50);
 
 }
 function drawBuild(){
@@ -438,13 +469,17 @@ ctx.fillStyle='#090b09';ctx.fillRect(602,111,130,310);ctx.strokeStyle='#77796b';
 for(let i=0;i<4;i++){const yy=126+i*70,id=state.openedParts[state.openedParts.length-1-i];ctx.fillStyle='#303228';ctx.fillRect(610,yy,114,57);ctx.fillStyle='#696b5a';ctx.fillRect(610,yy,114,3);ctx.fillStyle='#11130f';ctx.fillRect(618,yy+6,98,43);if(id!==undefined){const part=allParts[id%allParts.length],tint=colors[(id+1)%colors.length];ctx.fillStyle=part.type==='head'?'#b6d7bf':part.type==='body'?tint:'#a4b6a5';ctx.beginPath();if(part.type==='head'){ctx.roundRect(648,yy+11,28,24,4);ctx.fill();ctx.fillStyle='#20352a';ctx.fillRect(653,yy+16,18,13);ctx.fillStyle='#f0dc70';ctx.fillRect(656,yy+19,4,4);ctx.fillRect(664,yy+19,4,4)}else if(part.type==='body'){ctx.roundRect(650,yy+11,24,25,3);ctx.fill();ctx.fillStyle='#355744';ctx.fillRect(655,yy+16,14,14);ctx.strokeStyle='#d0e3cc';ctx.strokeRect(655,yy+16,14,14)}else{ctx.fillRect(653,yy+11,7,20);ctx.fillRect(664,yy+11,7,20);ctx.fillStyle='#263a2d';ctx.beginPath();ctx.arc(656,yy+33,5,0,Math.PI*2);ctx.arc(667,yy+33,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c7d8c1';ctx.stroke()}ctx.fillStyle='#c8d3c1';ctx.font='7px monospace';ctx.fillText(part.name.slice(0,15),620,yy+48)}else{ctx.fillStyle='#59604e';ctx.font='8px monospace';ctx.fillText('TOMT PAKET',637,yy+30)}}
 ctx.fillStyle='#d1d0bf';ctx.font='10px monospace';ctx.fillText('DELAR SOM ÖPPNATS I MASKINEN',236,420);const tiles=[{x:230,w:116,label:'HUVUD',value:headNames[state.robot.head%headNames.length]},{x:352,w:116,label:'KROPP',value:bodyNames[state.robot.body%bodyNames.length]},{x:474,w:116,label:'BEN',value:legNames[state.robot.legs%legNames.length]},{x:596,w:128,label:'FÄRG',value:'FÄRG '+pad(state.robot.color+1)}];tiles.forEach((t,i)=>{ctx.fillStyle='#080a08';ctx.fillRect(t.x,432,t.w,48);ctx.fillStyle=i===3?colors[state.robot.color%colors.length]:'#373a30';ctx.fillRect(t.x+2,434,t.w-4,44);ctx.strokeStyle=state.buildFocus===['head','body','legs','color'][i]?'#c6edaa':'#929581';ctx.lineWidth=state.buildFocus===['head','body','legs','color'][i]?2:1;ctx.strokeRect(t.x+2,434,t.w-4,44);ctx.fillStyle='#dce0cb';ctx.font='bold 10px monospace';ctx.fillText(t.label,t.x+9,448);ctx.fillStyle='#aee0bb';ctx.font='10px monospace';ctx.fillText(t.value.slice(0,15),t.x+9,466)});
 }
-function frame(t){const dt=Math.min(.035,(t-(state.lastTime||t))/1000);state.lastTime=t;if(state.scene==="level"&&!state.overlay)movePlayer(dt);ctx.clearRect(0,0,960,540);if(state.scene==="title")drawTitle();else if(state.scene==="lab")drawLab();else if(state.scene==="level")drawLevel();else drawBuild();requestAnimationFrame(frame)}
+function frame(t){const dt=Math.min(.035,(t-(state.lastTime||t))/1000);state.lastTime=t;if(state.scene==="level"&&!state.overlay)movePlayer(dt);ctx.clearRect(0,0,960,540);if(state.scene==="title")drawTitle();else if(state.scene==="lab")drawLab();else if(state.scene==="level")drawLevel();else drawBuild();if(window.Gorbi3D)window.Gorbi3D.render(state);requestAnimationFrame(frame)}
 function setScene(scene){state.scene=scene;state.move.left=state.move.right=state.move.jump=false;state.drag=null;updateUI();hideOverlay()}
 $("enterBtn").onclick=()=>{if(state.scene==="build")returnLab();else startLevel(1)};
 $("backLabBtn").onclick=returnLab;
 $("useBtn").onclick=interact;
 $("hintBtn").onclick=()=>toast(state.sensorActive?"Tryckplattan är aktiv — följ korridoren fram till dörren!":state.collected.length===0?"Utforska gångarna och leta efter de lysande robotdelarna.":"Hitta metallådan i slutrummet och putta den mot sensorn.");
 function cycleRobotPart(type,direction=1){const names={head:headNames,body:bodyNames,legs:legNames};const available=[0,...new Set(state.openedParts.filter(i=>allParts[i%allParts.length].type===type).map(id=>allParts.slice(0,id+1).filter(q=>q.type===type).length))].sort((a,b)=>a-b);const current=Math.max(0,available.indexOf(state.robot[type]));state.robot[type]=available[(current+direction+available.length)%available.length];state.buildFocus=type;save();updateUI();toast(names[type][state.robot[type]]+" vald")}
+function cycleBuilderFocus(direction){if(state.buildFocus==="color"){state.robot.color=(state.robot.color+direction+colors.length)%colors.length;save();updateUI();toast("Färg "+pad(state.robot.color+1)+" vald")}else cycleRobotPart(state.buildFocus,direction)}
+$("builderPrevious").onclick=()=>cycleBuilderFocus(-1);$("builderNext").onclick=()=>cycleBuilderFocus(1);
+document.querySelectorAll("[data-build-part]").forEach(el=>el.onclick=()=>{const type=el.dataset.buildPart;state.buildFocus=type;if(type==="color"){state.robot.color=(state.robot.color+1)%colors.length;save();updateUI();sound(480,.06)}else cycleRobotPart(type)});
+
 $("buildBtn").onclick=()=>{if(state.scene==="build"){returnLab();return}setScene("build");toast("Tryck på panelerna under roboten för att byta delar.")};
 $("paintBtn").onclick=()=>{state.robot.color=(state.robot.color+1)%colors.length;save();toast("Robotfärgen ändrad!");if(state.scene==="lab")drawLab()};
 $("levelsBtn").onclick=()=>{const opts=[];for(let n=1;n<=24;n++){const open=n<=state.unlocked,found=Number(state.found[n]||0),done=found>=3,partial=found>0&&!done;opts.push({label:(done?"✓ ":partial?"◐ ":open?"▣ ":"🔒 ")+"LUCKA "+pad(n)+(found>0?" · "+found+"/3":""),primary:n===state.level,action:()=>{if(open)startLevel(n);else toast("Klara lucka "+pad(n-1)+" först!")}})}opts.push({label:"TILLBAKA",action:hideOverlay});const cleared=Object.values(state.found).filter(v=>Number(v)>=3).length,partial=Object.values(state.found).filter(v=>Number(v)>0&&Number(v)<3).length;showOverlay("VÄLJ EN LUCKA",cleared+" helt avklarade · "+partial+" påbörjade · "+(state.unlocked-1)+" upplåsta. ✓ = klar, ◐ = delar hittade, ▣ = tillgänglig, 🔒 = låst.",opts)};
@@ -474,7 +509,7 @@ canvas.addEventListener("pointerdown",e=>{if(state.overlay)return;const q=canvas
 canvas.addEventListener("pointermove",e=>{if(state.machinePullStart!==null&&e.pointerId===state.machinePullPointer&&state.scene==="lab"){const q=canvasPoint(e);if(q.y-state.machinePullStart>16){state.machinePrimed=true;state.machinePullStart=null;state.machinePullPointer=null;toast("Handtaget drogs ned. Tryck på paketluckan för att ta ut en del.");sound(300,.12)}return}if(!state.drag||e.pointerId!==dragPointer||state.scene!=="level")return;const q=canvasPoint(e),d=state.drag,dx=q.x-d.startX,dy=q.y-d.startY;d.lastX=q.x;d.lastY=q.y;state.move.left=dx< -10&&Math.abs(dx)>Math.abs(dy)*.75;state.move.right=dx>10&&Math.abs(dx)>Math.abs(dy)*.75;state.move.up=dy< -10&&Math.abs(dy)>=Math.abs(dx)*.65;state.move.down=dy>10&&Math.abs(dy)>=Math.abs(dx)*.65});
 function stopCanvasDrag(e){if(state.machinePullStart!==null&&(!e||e.pointerId===state.machinePullPointer)){state.machinePullStart=null;state.machinePullPointer=null;return}if(!state.drag||(e&&e.pointerId!==dragPointer))return;state.drag=null;dragPointer=null;state.move.left=state.move.right=state.move.up=state.move.down=false}
 canvas.addEventListener("pointerup",stopCanvasDrag);canvas.addEventListener("pointercancel",stopCanvasDrag);canvas.addEventListener("lostpointercapture",stopCanvasDrag);
-load();updateUI();requestAnimationFrame(frame);
+if(window.Gorbi3D)window.Gorbi3D.init($("stage"),$("game3d"));load();updateUI();requestAnimationFrame(frame);
 })();
 </script>
 </body>

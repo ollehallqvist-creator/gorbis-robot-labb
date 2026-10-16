@@ -4,7 +4,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Testa lokalt
 
-Öppna `index.html` i en modern webbläsare. Ingen byggprocess eller extern JavaScript-bibliotek krävs.
+Öppna `index.html` i en modern webbläsare. Ingen byggprocess krävs. Three.js hämtas från CDN för riktig 3D-rendering; om CDN eller WebGL inte fungerar används den inbyggda Canvas-versionen som reserv.
 
 ## Kontroller
 
@@ -22,6 +22,8 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Funktioner i den här versionen
 
+- Separat WebGL-renderer med Three.js: 3D-rum, ljussättning, material, robotmodell, labyrintväggar, kugghjul, låda, tryckplatta och dörr. Canvas-renderaren finns kvar som reserv om WebGL eller CDN inte är tillgängligt.
+- Rubrikremsa för banorna och klickbara komponentpilar/paneler visas som HTML-överlägg ovanpå 3D-scenen, så de inte försvinner när Canvas-reserven döljs.
 - Originalinspirerad titelbild med stjärnfält, logotypbehandling, pulserande startikon och helskärmsläge.
 - Välkomstrum ombyggt med djupare perspektiv, grön servicehiss, reservdelsdisplay, säkerhetsramp och golvmarkeringar.
 - Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
@@ -48,7 +50,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Tester
 
-Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js`, `node tests/sound-cues.test.js` och `node tests/title-screen.test.js`, `node tests/level-art.test.js`, `node tests/robot-builder.test.js`, `node tests/robot-materials.test.js`, `node tests/game-hud.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
+Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js`, `node tests/sound-cues.test.js` och `node tests/title-screen.test.js`, `node tests/level-art.test.js`, `node tests/robot-builder.test.js`, `node tests/robot-materials.test.js`, `node tests/game-hud.test.js`, `node tests/three-renderer.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
 
 ## Viktigt om likheten med originalet
 

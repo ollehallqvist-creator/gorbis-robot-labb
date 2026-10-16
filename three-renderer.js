@@ -1,0 +1,96 @@
+(function(){
+"use strict";
+const T=window.THREE;
+const api={ready:false,renderer:null,scene:null,camera:null,key:"",stage:null,refs:{}};
+const palette=["#79c8a6","#c47a52","#9489c7","#6c9fbd","#79a76e","#b7a85c","#83b8b8","#b96e80"];
+const mats={};
+function material(color,roughness=.82,metalness=.12,emissive=null){const key=[color,roughness,metalness,emissive].join("|");if(mats[key])return mats[key];const opts={color,roughness,metalness};if(emissive){opts.emissive=emissive;opts.emissiveIntensity=.32}return mats[key]=new T.MeshStandardMaterial(opts)}
+function box(parent,w,h,d,color,x,y,z,opts={}){const m=new T.Mesh(new T.BoxGeometry(w,h,d),material(color,opts.roughness??.82,opts.metalness??.12,opts.emissive??null));m.position.set(x,y,z);if(opts.rotationY)m.rotation.y=opts.rotationY;parent.add(m);return m}
+function plane(parent,w,d,color,x,y,z){const m=new T.Mesh(new T.PlaneGeometry(w,d),material(color));m.rotation.x=-Math.PI/2;m.position.set(x,y,z);parent.add(m);return m}
+function pipe(parent,a,b,r,color){const v1=new T.Vector3(...a),v2=new T.Vector3(...b),dir=new T.Vector3().subVectors(v2,v1),mesh=new T.Mesh(new T.CylinderGeometry(r,r,dir.length(),10),material(color,.56,.58));mesh.position.copy(v1).add(v2).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),dir.normalize());parent.add(mesh);return mesh}
+function addLights(scene,theme=0){scene.add(new T.HemisphereLight(0x9daeb2,0x191714,2.0));const key=new T.DirectionalLight(0xffe6bd,2.3);key.position.set(-5,10,7);scene.add(key);const rim=new T.DirectionalLight(0x7dc7bb,1.15);rim.position.set(7,6,-6);scene.add(rim);const green=new T.PointLight(theme===0?0x4de09b:0x8bafc0,5,10);green.position.set(-4,2,-3);scene.add(green)}
+function robot(parent,config={},scale=1){
+ const g=new T.Group();g.scale.setScalar(scale);parent.add(g);
+ const color=palette[(config.color||0)%palette.length],bodyColor=palette[(config.body||0)%palette.length]||color;
+ // Four-wheel base, articulated metal legs and side bearings.
+ box(g,.64,.16,.48,"#202a28",0,.18,0,{metalness:.48});
+ for(const side of [-1,1]){const wheel=new T.Mesh(new T.CylinderGeometry(.18,.18,.13,16),material("#202421",.45,.55));wheel.rotation.z=Math.PI/2;wheel.position.set(side*.36,.18,.04);g.add(wheel);const hub=new T.Mesh(new T.CylinderGeometry(.09,.09,.145,12),material("#9aab9e",.42,.7));hub.rotation.z=Math.PI/2;hub.position.set(side*.36,.18,.04);g.add(hub);pipe(g,[side*.24,.28,0],[side*.19,.63,0],.055,"#aab8ad");pipe(g,[side*.19,.63,0],[side*.28,.78,0],.045,"#657c6f")}
+ // Main enamel torso with a raised front control panel.
+ box(g,.76,.82,.55,"#294d3b",0,1.03,0);
+ box(g,.7,.76,.54,bodyColor,0,1.06,.035);
+ box(g,.58,.62,.025,"#c1d6c4",0,1.08,.319);
+ box(g,.46,.49,.025,color,0,1.08,.337);
+ box(g,.36,.32,.035,"#1d3028",0,1.11,.36);
+ box(g,.105,.11,.035,"#f5df76",-.105,1.16,.386,{emissive:"#d7bb4d"});
+ box(g,.105,.11,.035,"#f5df76",.105,1.16,.386,{emissive:"#d7bb4d"});
+ box(g,.17,.025,.035,"#92e0b4",0,1.0,.386,{emissive:"#4cbf84"});
+ // Shoulder bearings and slim arms.
+ for(const side of [-1,1]){const joint=new T.Mesh(new T.SphereGeometry(.12,12,10),material("#8fa49a",.45,.42));joint.position.set(side*.46,1.35,0);g.add(joint);pipe(g,[side*.46,1.35,0],[side*.62,1.08,.03],.055,"#b5c0b5");pipe(g,[side*.62,1.08,.03],[side*.66,.82,.09],.045,"#657e70");const claw=box(g,.13,.09,.11,"#c0cec0",side*.66,.78,.1);claw.rotation.z=side*.12}
+ // Oversized square head and black face display.
+ box(g,.61,.51,.55,"#3a6a50",0,1.83,0);
+ box(g,.55,.46,.52,color,0,1.84,.025);
+ box(g,.42,.28,.035,"#1b2d25",0,1.83,.302);
+ box(g,.09,.095,.025,"#f7df74",-.105,1.86,.33,{emissive:"#e4c858"});
+ box(g,.09,.095,.025,"#f7df74",.105,1.86,.33,{emissive:"#e4c858"});
+ box(g,.12,.025,.025,"#92dfae",0,1.75,.33,{emissive:"#4ebd81"});
+ // Bright bevels, corner bolts, and optional antenna/side sensors.
+ box(g,.55,.035,.54,"#dbe8d8",0,2.08,.015);
+ for(const side of [-1,1])for(const y of [1.66,2.0]){const bolt=new T.Mesh(new T.SphereGeometry(.026,8,6),material("#d7e0d2",.42,.45));bolt.position.set(side*.255,y,.31);g.add(bolt)}
+ if((config.head||0)%3!==0){pipe(g,[-.08,2.08,0],[-.1,2.28,0],.022,"#c0cabe");const tip=new T.Mesh(new T.SphereGeometry(.055,8,8),material((config.head||0)%2?"#df6c53":"#f1d56e",.38,.18,(config.head||0)%2?"#df6c53":"#f1d56e"));tip.position.set(-.1,2.29,0);g.add(tip)}
+ if((config.legs||0)%4===1){for(const side of [-1,1]){const foot=new T.Mesh(new T.CylinderGeometry(.22,.22,.1,16),material("#527f71",.45,.28));foot.rotation.z=Math.PI/2;foot.position.set(side*.4,.14,.06);g.add(foot)}}
+ return g
+}
+function addPanel(scene,x,y,z,w,h,color="#34372f"){box(scene,w,h,.18,"#0a0b0a",x+.04,y-.04,z-.08);box(scene,w,h,.18,color,x,y,z);box(scene,w-.16,h-.16,.035,"#10150f",x,y,z+.105)}
+function gear(parent,x,y,z,r,color="#8e3c30"){const g=new T.Group();g.position.set(x,y,z);parent.add(g);const disk=new T.Mesh(new T.CylinderGeometry(r,r,r*.22,20),material(color,.5,.45));disk.rotation.x=Math.PI/2;g.add(disk);const ring=new T.Mesh(new T.TorusGeometry(r*.66,r*.09,8,24),material("#d0a96b",.45,.42));ring.position.z=r*.13;g.add(ring);for(let i=0;i<12;i++){const a=i*Math.PI/6,t=box(g,r*.24,r*.12,r*.18,"#b9a06a",Math.cos(a)*r*.88,Math.sin(a)*r*.88,0);t.rotation.z=a}const hub=new T.Mesh(new T.CylinderGeometry(r*.2,r*.2,r*.25,12),material("#27251e",.45,.65));hub.rotation.x=Math.PI/2;hub.position.z=r*.1;g.add(hub);return g}
+function makeLab(state,isBuild){
+ const scene=new T.Scene();scene.background=new T.Color("#141916");scene.fog=new T.Fog("#141916",15,31);addLights(scene);
+ plane(scene,18,13,"#303229",0,0,0);const grid=new T.GridHelper(18,18,0x555747,0x3c4035);grid.position.y=.012;scene.add(grid);
+ // Three-dimensional industrial room with heavy side walls and ceiling beams.
+ box(scene,18,5.6,.5,"#30332b",0,2.8,-5.2);box(scene,.5,5.5,10,"#222720",-8.8,2.7,0);box(scene,.5,5.5,10,"#1d211d",8.8,2.7,0);box(scene,18,.25,10,"#0d100d",0,5.5,0);
+ for(let i=0;i<9;i++){const x=-8+i*2;box(scene,.07,5.1,.11,"#55584a",x,2.75,-4.91);box(scene,1.7,.06,.08,"#45483d",x+.85,4.3,-4.87)}
+ // Left green lift and illuminated controls.
+ addPanel(scene,-6.5,2.35,-4.85,2.25,3.55,"#3b4035");box(scene,1.45,2.7,.09,"#15251c",-6.5,2.22,-4.65);box(scene,.075,2.45,.1,"#a1e4b9",-7.2,2.28,-4.57,{emissive:"#76d8a1"});box(scene,.65,.45,.08,"#0e2117",-6.5,3.45,-4.55);box(scene,.34,.06,.03,"#8ce5ac",-6.5,3.47,-4.51,{emissive:"#5cc88a"});
+ // Inventory monitor and a grid of glowing parts.
+ addPanel(scene,-2.7,3.05,-4.82,2.7,2.35,"#383b31");box(scene,2.25,1.28,.06,"#0c1c12",-2.7,3.15,-4.65);for(let r=0;r<4;r++)for(let c=0;c<8;c++)box(scene,.16,.055,.025,(r+c)%4===0?"#d5ed9d":"#4fb67b",-3.58+c*.25,3.58-r*.25,-4.6,{emissive:(r+c)%4===0?"#b4df75":"#3d9c67"});
+ // Tool niche and pipes.
+ addPanel(scene,.15,2.6,-4.84,1.25,3.1,"#272a23");for(let i=0;i<3;i++){pipe(scene,[ -.2+i*.35,2.4,-4.55],[-.17+i*.35,1.65,-4.5],.055,"#aab1a0")}
+ pipe(scene,[-8,1.2,-3.8],[-4.6,1.2,-3.8],.14,"#111512");pipe(scene,[-4.6,1.2,-3.8],[-3.8,1.7,-3.8],.14,"#111512");pipe(scene,[1.1,1.55,-3.8],[4.5,1.55,-3.8],.13,"#101310");pipe(scene,[4.5,1.55,-3.8],[5.2,2.25,-3.8],.13,"#101310");
+ // Parts rack and package dispenser on the right.
+ addPanel(scene,6.35,2.65,-4.8,2.45,4.3,"#33362d");for(let i=0;i<4;i++){const y=4.15-i*.88;box(scene,2.08,.055,.55,"#11140f",6.35,y,-4.48);box(scene,.48,.48,.38,palette[i],6.35,y+.25,-4.22);box(scene,.31,.22,.04,"#18271e",6.35,y+.25,-4.0);box(scene,.055,.065,.025,"#f0d972",6.25,y+.27,-3.97);box(scene,.055,.065,.025,"#f0d972",6.45,y+.27,-3.97)}
+ box(scene,2.12,.25,.62,"#10130f",6.35,.65,-4.45);box(scene,1.95,.1,.48,"#4a4d40",6.35,.78,-4.42);pipe(scene,[7.35,.8,-4.02],[7.35,.42,-4.02],.055,"#b2bba8");box(scene,.35,.1,.16,"#b5c0ae",7.35,.37,-4.02);
+ // Hazard-striped service ramp, floor emblem, and foreground cable.
+ const ramp=box(scene,3.1,.1,1.4,"#24261e",5.0,.05,-1.3,{rotationY:-.3});for(let i=0;i<8;i++){const stripe=box(scene,.16,.025,1.3,i%2?"#181a14":"#b3a65f",3.75+i*.35,.12,-1.3,{rotationY:-.3})}
+ const emblem=new T.Mesh(new T.CircleGeometry(2.2,48),material("#1b3a33",.98,.02));emblem.rotation.x=-Math.PI/2;emblem.position.set(0,.025,1.35);scene.add(emblem);const emblemRing=new T.Mesh(new T.RingGeometry(2.0,2.08,48),material("#597063"));emblemRing.rotation.x=-Math.PI/2;emblemRing.position.set(0,.03,1.35);scene.add(emblemRing);
+ pipe(scene,[-9,.1,4.5],[-4,.1,4.5],.1,"#090b0a");pipe(scene,[-4,.1,4.5],[-2,.1,3.9],.1,"#090b0a");pipe(scene,[-2,.1,3.9],[0,.1,4.4],.1,"#090b0a");
+ const gorbi=robot(scene,state.robot,isBuild?1.18:1.0);gorbi.position.set(isBuild?-1.0:0,0,isBuild?.1:.15);
+ const helper=robot(scene,{head:2,body:1,legs:1,color:3},.42);helper.position.set(-3.1,0,1.7);
+ if(isBuild){ // Assembly cradle and component selector carousel.
+  box(scene,4.2,.2,2.2,"#111511",-1.0,.2,-.4);box(scene,4.0,.12,2.0,"#4b4e42",-1.0,.32,-.4);
+  for(const side of [-1,1]){const g=gear(scene,-1+side*3.2,1.6,-1.7,.42,side<0?"#b04f43":"#488c70");g.rotation.z=Math.PI/2}
+  addPanel(scene,4.7,2.5,-4.1,1.7,3.6,"#30342b");for(let i=0;i<4;i++){box(scene,1.35,.05,.48,"#10130f",4.7,3.65-i*.82,-3.85);const piece=robot(scene,{head:i+1,body:i+1,legs:i+1,color:i},.22);piece.position.set(4.7,2.75-i*.82,-3.5)}
+ }
+ return {scene,player:gorbi,helper};
+}
+function makeLevel(state){
+ const d=state.levelData,scene=new T.Scene();scene.background=new T.Color("#171817");scene.fog=new T.Fog("#171817",17,32);addLights(scene,d.theme);
+ const cols=d.cols,rows=d.rows;plane(scene,cols,rows,["#494236","#334142","#48332d","#454136","#2c4240","#3d3548"][d.theme],0,0,0);
+ const grid=new T.GridHelper(Math.max(cols,rows),Math.max(cols,rows),0x7a7564,0x5a594e);grid.scale.set(1,1,rows/cols);grid.position.y=.015;scene.add(grid);
+ // Cave walls, ledges and pipework around the 24 generated routes.
+ for(let side=0;side<2;side++){for(let i=0;i<8;i++){const x=side?cols/2+.5+i*.6:-cols/2-.5-i*.6;const h=1.3+(i%3)*.55;const rock=new T.Mesh(new T.DodecahedronGeometry(.45+(i%3)*.15,0),material(["#39372f","#51483b","#302f2b"][i%3],.98,.02));rock.scale.set(1.4,h,1.2);rock.position.set(x,h*.5,((i*7)%rows)-rows/2);scene.add(rock)}}
+ for(let i=0;i<7;i++){pipe(scene,[-cols/2+i*2.2,2.3,-rows/2-.35],[-cols/2+i*2.2+1.6,2.3,-rows/2-.35],.08,"#111514")}
+ const wallMats=["#4f473b","#394345","#53392e","#4a4538","#2f4643","#40364b"];
+ for(let z=0;z<rows;z++)for(let x=0;x<cols;x++)if(d.walls[z][x]){const wx=x-cols/2+.5,wz=z-rows/2+.5,h=1.15+(z%3)*.08;box(scene,.98,h,.98,wallMats[d.theme],wx,h/2,wz);const top=new T.Mesh(new T.DodecahedronGeometry(.42,0),material(["#8e8068","#657575","#95684e","#a29669","#5e8880","#8c78a0"][d.theme],.97,.03));top.scale.set(1.1,.32,1.05);top.position.set(wx,h+.05,wz);scene.add(top);for(let k=0;k<3;k++){const chip=box(scene,.12,.035,.025,k%2?"#262620":"#82735f",wx-.25+k*.2,h*.55+(k%2)*.18,wz+.5);chip.rotation.z=(k-1)*.2}}
+ const parts=[];for(let i=0;i<d.parts.length;i++){const q=d.parts[i],type=i%3,g=new T.Group();scene.add(g);if(type===0){box(g,.42,.38,.38,palette[(state.level+i)%palette.length],0,.42,0);box(g,.29,.22,.025,"#15281f",0,.42,.205);box(g,.065,.07,.02,"#f4dc70",-.075,.44,.225,{emissive:"#dfc14d"});box(g,.065,.07,.02,"#f4dc70",.075,.44,.225,{emissive:"#dfc14d"})}else if(type===1){box(g,.48,.42,.32,palette[(state.level+i)%palette.length],0,.35,0);box(g,.26,.25,.035,"#223b2c",0,.36,.18)}else{for(const side of [-1,1]){box(g,.12,.38,.13,palette[(state.level+i)%palette.length],side*.13,.35,0);const wheel=new T.Mesh(new T.CylinderGeometry(.11,.11,.07,10),material("#1e2823",.6,.3));wheel.rotation.z=Math.PI/2;wheel.position.set(side*.13,.14,.02);g.add(wheel)}}g.position.set(q.x-cols/2,0,q.y-rows/2);parts.push(g)}
+ const hazards=[];for(const q of d.hazards){let g;if(q.type===0)g=gear(scene,q.x-cols/2,.56,q.y-rows/2,.48,"#8f342c");else{g=new T.Group();scene.add(g);if(q.type===1){box(g,1.1,.07,.07,"#e94d43",0,.65,0,{emissive:"#df332a"});for(const side of [-1,1])box(g,.1,.6,.14,"#8a8c7d",side*.53,.35,0)}else for(let k=-1;k<=1;k++){const spike=new T.Mesh(new T.ConeGeometry(.16,.45,6),material("#b54d3d",.6,.2));spike.position.set(k*.32,.23,0);g.add(spike)}}g.position.x=q.x-cols/2;g.position.z=q.y-rows/2;hazards.push({mesh:g,data:q})}
+ const sensor=box(scene,.78,.08,.78,"#536f50",d.sensor.x-cols/2,.06,d.sensor.y-rows/2,{emissive:"#4c8152"});const sensorTop=box(scene,.48,.025,.48,"#9fd36f",d.sensor.x-cols/2,.11,d.sensor.y-rows/2,{emissive:"#6da74c"});
+ const doorFrame=box(scene,.95,1.8,.22,"#757565",d.door.x-cols/2,.9,d.door.y-rows/2);const door=box(scene,.68,1.45,.12,"#202a22",d.door.x-cols/2,.8,d.door.y-rows/2,{emissive:"#1c2d20"});
+ const crate=box(scene,.64,.64,.64,"#8d6840",state.crate.x-cols/2,.32,state.crate.y-rows/2);box(crate,.48,.48,.04,"#b79b67",0,0,.34);const cross1=box(crate,.04,.55,.05,"#5c432a",0,0,.37);const cross2=box(crate,.55,.04,.05,"#5c432a",0,0,.37);
+ const player=robot(scene,state.robot,.34);player.position.set(state.player.x-cols/2,0,state.player.y-rows/2);
+ return {scene,player,parts,hazards,crate,sensor,sensorTop,door,doorFrame,cols,rows};
+}
+api.init=function(stage,canvas){if(!T||!stage||!canvas)return false;try{this.stage=stage;this.renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"low-power"});this.renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));this.renderer.setSize(stage.clientWidth||960,stage.clientHeight||540,false);this.renderer.outputColorSpace=T.SRGBColorSpace;this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.08;window.addEventListener("resize",()=>{if(!this.ready)return;const w=this.stage.clientWidth||960,h=this.stage.clientHeight||540;this.renderer.setSize(w,h,false);if(this.camera){this.camera.aspect=w/h;this.camera.updateProjectionMatrix()}});this.ready=true;document.body.classList.add("three-d-ready");return true}catch(e){this.ready=false;return false}};
+api.render=function(state){if(!this.ready||state.scene==="title")return;const key=[state.scene,state.level,state.robot.head,state.robot.body,state.robot.legs,state.robot.color,(state.openedParts||[]).join(","),(state.parts||[]).join(",")].join("|");if(key!==this.key){this.key=key;this.refs={};if(state.scene==="level"){const built=makeLevel(state);this.scene=built.scene;Object.assign(this.refs,built);this.camera=new T.PerspectiveCamera(48,(this.stage.clientWidth||960)/(this.stage.clientHeight||540),.1,80);this.camera.position.set(0,8.8,12.5);this.camera.lookAt(0,0,0)}else{const built=makeLab(state,state.scene==="build");this.scene=built.scene;Object.assign(this.refs,built);this.camera=new T.PerspectiveCamera(50,(this.stage.clientWidth||960)/(this.stage.clientHeight||540),.1,80);this.camera.position.set(0,state.scene==="build"?5.3:4.3,14.5);this.camera.lookAt(state.scene==="build"?0:0,1.3,0)}}
+ if(state.scene==="level"&&this.refs.player){const d=state.levelData,p=state.player;this.refs.player.position.set(p.x-d.cols/2,0,p.y-d.rows/2);this.refs.player.rotation.y=p.faceX<0?Math.PI:p.faceZ>0?Math.PI/2:p.faceZ<0?-Math.PI/2:0;this.refs.crate.position.set(state.crate.x-d.cols/2,.32,state.crate.y-d.rows/2);this.refs.parts.forEach((m,i)=>{m.visible=!state.collected.includes(i);m.position.y=.08+Math.sin(performance.now()/250+i*1.8)*.06});this.refs.hazards.forEach((h,i)=>{h.mesh.rotation.y=performance.now()/1300+i;h.mesh.position.x=h.data.x-d.cols/2+Math.sin(performance.now()/850+h.data.phase)*h.data.travel});this.refs.sensor.material=material(state.sensorActive?"#a7df72":"#536f50",.7,.12,state.sensorActive?"#75c94f":null);this.refs.door.position.y=state.sensorActive?2.1:.8}
+ this.renderer.render(this.scene,this.camera)};
+window.Gorbi3D=api;
+})();

@@ -28,3 +28,5 @@ jobs:
         run: node tests/robot-materials.test.js
       - name: Check gameplay banner and collection HUD
         run: node tests/game-hud.test.js
+      - name: Check Three.js renderer integration
+        run: node tests/three-renderer.test.js
