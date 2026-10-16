@@ -36,4 +36,5 @@ assert.match(renderer, /key\.castShadow=true/, "directional lighting should cast
 assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "the renderer should defer to the title-card Canvas and gracefully fall back");
 assert.ok(renderer.includes("function hexTiles(scene,placements,radius=.16,depth=.035)"), "repeated hex wall tiles should be instanced for Chromebook performance");
 assert.ok(renderer.includes("new T.InstancedMesh(new T.CylinderGeometry(radius,radius,depth,6)"), "hex wall tiles should render as instances instead of hundreds of separate meshes");
+assert.ok(renderer.includes("if(this.scene)this.scene.traverse(o=>{if(o.geometry)o.geometry.dispose()})"), "rebuilding scenes should dispose old geometry to prevent GPU memory growth while cycling parts");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
