@@ -1,0 +1,10 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+assert.match(html, /LETA EFTER FÖRSVUNNA ROBOTDELAR/, "level scene should have the original-style title banner");
+assert.match(html, /I 24 MAGISKA BANOR/, "banner should reference the 24 original-inspired levels");
+assert.match(html, /\.hud-card:last-child\{padding:5px 7px;background:#10141bdd;border:3px solid #4a78b7/, "part counter should use the blue-framed bottom-left layout");
+assert.match(html, /d\.textContent=got\?"◉":"⬡"/, "part slots should distinguish collected parts from empty slots");
+assert.match(html, /\.hud\{display:flex;position:absolute;inset:auto auto 14px 14px/, "level HUD should be visible at the bottom left");
+console.log("PASS: gameplay banner and three-slot collection HUD match the original layout more closely.");

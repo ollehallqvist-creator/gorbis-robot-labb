@@ -48,7 +48,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 
 ## Tester
 
-Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js`, `node tests/sound-cues.test.js` och `node tests/title-screen.test.js`, `node tests/level-art.test.js`, `node tests/robot-builder.test.js`, `node tests/robot-materials.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
+Kör `node tests/check-inline-script.js`, `node tests/level-generation.test.js` och `node tests/robot-variants.test.js`, `node tests/sound-cues.test.js` och `node tests/title-screen.test.js`, `node tests/level-art.test.js`, `node tests/robot-builder.test.js`, `node tests/robot-materials.test.js`, `node tests/game-hud.test.js` med Node.js. De kontrollerar JavaScript-syntaxen, att de 24 labyrintlayouterna är unika, att alla mål går att nå, att svårighetsgraden ökar, att hinder inte överlappar objekt och att alla robotdelar har visuella varianter. GitHub Actions kör testerna vid push och pull request.
 
 ## Viktigt om likheten med originalet
 
