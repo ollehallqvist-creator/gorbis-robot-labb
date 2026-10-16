@@ -12,32 +12,37 @@ function addLights(scene,theme=0){scene.add(new T.HemisphereLight(0x9daeb2,0x191
 function robot(parent,config={},scale=1){
  const g=new T.Group();g.scale.setScalar(scale);parent.add(g);const wheels=[],armSegments=[];
  const color=palette[(config.color||0)%palette.length],bodyColor=palette[(config.body||0)%palette.length]||color;
+ const headVariant=Math.abs(config.head||0)%24,bodyVariant=Math.abs(config.body||0)%24,legVariant=Math.abs(config.legs||0)%24;
+ const headW=.48+(headVariant%6)*.025,headH=.36+(Math.floor(headVariant/6)%4)*.035,headD=.44+(headVariant%4)*.02;
+ const bodyW=.64+(bodyVariant%5)*.035,bodyH=.72+(Math.floor(bodyVariant/5)%4)*.045,bodyD=.48+(bodyVariant%3)*.035;
+ const wheelR=.13+(legVariant%5)*.012,wheelX=.31+(legVariant%4)*.025;
  // Four-wheel base, articulated metal legs and side bearings.
- box(g,.64,.16,.48,"#202a28",0,.18,0,{metalness:.48});
- for(const side of [-1,1]){const wheel=new T.Mesh(new T.CylinderGeometry(.18,.18,.13,16),material("#202421",.45,.55));wheel.rotation.z=Math.PI/2;wheel.position.set(side*.36,.18,.04);g.add(wheel);wheels.push(wheel);const hub=new T.Mesh(new T.CylinderGeometry(.09,.09,.145,12),material("#9aab9e",.42,.7));hub.rotation.z=Math.PI/2;hub.position.set(side*.36,.18,.04);g.add(hub);pipe(g,[side*.24,.28,0],[side*.19,.63,0],.055,"#aab8ad");pipe(g,[side*.19,.63,0],[side*.28,.78,0],.045,"#657c6f")}
- // Main enamel torso with a raised front control panel.
- box(g,.76,.82,.55,"#294d3b",0,1.03,0);
- box(g,.7,.76,.54,bodyColor,0,1.06,.035);
- box(g,.58,.62,.025,"#c1d6c4",0,1.08,.319);
- box(g,.46,.49,.025,color,0,1.08,.337);
- box(g,.36,.32,.035,"#1d3028",0,1.11,.36);
- box(g,.105,.11,.035,"#f5df76",-.105,1.16,.386,{emissive:"#d7bb4d"});
- box(g,.105,.11,.035,"#f5df76",.105,1.16,.386,{emissive:"#d7bb4d"});
- box(g,.17,.025,.035,"#92e0b4",0,1.0,.386,{emissive:"#4cbf84"});
+ box(g,.58+(legVariant%4)*.04,.16,.44+(Math.floor(legVariant/4)%3)*.04,"#202a28",0,.18,0,{metalness:.48});
+ for(const side of [-1,1]){const wheel=new T.Mesh(new T.CylinderGeometry(wheelR,wheelR,.13,16),material("#202421",.45,.55));wheel.rotation.z=Math.PI/2;wheel.position.set(side*wheelX,.18,.04);g.add(wheel);wheels.push(wheel);const hub=new T.Mesh(new T.CylinderGeometry(wheelR*.48,wheelR*.48,.145,12),material("#9aab9e",.42,.7));hub.rotation.z=Math.PI/2;hub.position.set(side*wheelX,.18,.04);g.add(hub);pipe(g,[side*.24,.28,0],[side*.19,.63,0],.055,"#aab8ad");pipe(g,[side*.19,.63,0],[side*.28,.78,0],.045,"#657c6f")}
+ // Variable torso silhouettes and control panels for the collected body parts.
+ box(g,bodyW,bodyH,bodyD,"#294d3b",0,1.03,0);
+ box(g,bodyW*.92,bodyH*.92,bodyD*.98,bodyColor,0,1.06,.025);
+ box(g,bodyW*.76,bodyH*.76,.025,"#c1d6c4",0,1.08,bodyD*.5+.025);
+ box(g,bodyW*.60,bodyH*.60,.025,color,0,1.08,bodyD*.5+.045);
+ box(g,bodyW*.46,bodyH*.43,.035,"#1d3028",0,1.08,bodyD*.5+.07);
+ box(g,bodyW*.30,.025,.035,"#78b995",0,1.20,bodyD*.5+.095,{emissive:"#397b56"});
+ for(let i=0;i<3;i++){const button=new T.Mesh(new T.SphereGeometry(.025,8,6),material(i===bodyVariant%3?"#d9c16b":"#84978a",.5,.25,i===bodyVariant%3?"#9b8538":null));button.position.set((i-1)*.095,.91,bodyD*.5+.095);g.add(button)}
  // Shoulder bearings and slim arms.
  for(const side of [-1,1]){const joint=new T.Mesh(new T.SphereGeometry(.12,12,10),material("#8fa49a",.45,.42));joint.position.set(side*.46,1.35,0);g.add(joint);armSegments.push(pipe(g,[side*.46,1.35,0],[side*.62,1.08,.03],.055,"#b5c0b5"));armSegments.push(pipe(g,[side*.62,1.08,.03],[side*.66,.82,.09],.045,"#657e70"));const claw=box(g,.13,.09,.11,"#c0cec0",side*.66,.78,.1);claw.rotation.z=side*.12}
- // Oversized square head and black face display.
- box(g,.61,.51,.55,"#3a6a50",0,1.83,0);
- box(g,.55,.46,.52,color,0,1.84,.025);
- box(g,.42,.28,.035,"#1b2d25",0,1.83,.302);
- box(g,.09,.095,.025,"#f7df74",-.105,1.86,.33,{emissive:"#e4c858"});
- box(g,.09,.095,.025,"#f7df74",.105,1.86,.33,{emissive:"#e4c858"});
- box(g,.12,.025,.025,"#92dfae",0,1.75,.33,{emissive:"#4ebd81"});
- // Bright bevels, corner bolts, and optional antenna/side sensors.
- box(g,.55,.035,.54,"#dbe8d8",0,2.08,.015);
- for(const side of [-1,1])for(const y of [1.66,2.0]){const bolt=new T.Mesh(new T.SphereGeometry(.026,8,6),material("#d7e0d2",.42,.45));bolt.position.set(side*.255,y,.31);g.add(bolt)}
- if((config.head||0)%3!==0){pipe(g,[-.08,2.08,0],[-.1,2.28,0],.022,"#c0cabe");const tip=new T.Mesh(new T.SphereGeometry(.055,8,8),material((config.head||0)%2?"#df6c53":"#f1d56e",.38,.18,(config.head||0)%2?"#df6c53":"#f1d56e"));tip.position.set(-.1,2.29,0);g.add(tip)}
- if((config.legs||0)%4===1){for(const side of [-1,1]){const foot=new T.Mesh(new T.CylinderGeometry(.22,.22,.1,16),material("#527f71",.45,.28));foot.rotation.z=Math.PI/2;foot.position.set(side*.4,.14,.06);g.add(foot)}}
+ // Head proportions, face panel, antenna and side sensors vary with each unlocked head.
+ box(g,headW,headH,headD,"#3a6a50",0,1.83,0);
+ box(g,headW*.9,headH*.9,headD*.96,color,0,1.84,.015);
+ const faceZ=headD*.5+.035;
+ box(g,headW*.72,headH*.56,.035,"#1b2d25",0,1.83,faceZ);
+ for(const side of [-1,1]){const eye=new T.Mesh(new T.SphereGeometry(.045+(headVariant%3)*.004,10,8),material("#f7df74",.32,.08,"#e4c858"));eye.position.set(side*headW*.18,1.83+headH*.04,faceZ+.025);g.add(eye)}
+ box(g,headW*.2,.025,.025,"#92dfae",0,1.83-headH*.25,faceZ+.025,{emissive:"#4ebd81"});
+ box(g,headW*.9,.035,headD*.98,"#dbe8d8",0,1.83+headH/2+.015,.015);
+ for(const side of [-1,1])for(const y of [1.83-headH*.31,1.83+headH*.31]){const bolt=new T.Mesh(new T.SphereGeometry(.026,8,6),material("#d7e0d2",.42,.45));bolt.position.set(side*headW*.4,y,headD*.5+.02);g.add(bolt)}
+ if(headVariant%3!==0){const ax=headVariant%2?-.1:.1,topY=1.83+headH/2+.025;pipe(g,[ax,topY,0],[ax-.02,topY+.18+(headVariant%4)*.025,0],.022,"#c0cabe");const tipColor=headVariant%2?"#df6c53":"#f1d56e",tip=new T.Mesh(new T.SphereGeometry(.045+(headVariant%3)*.006,8,8),material(tipColor,.38,.18,tipColor));tip.position.set(ax-.02,topY+.2+(headVariant%4)*.025,0);g.add(tip)}
+ if(headVariant%5===0){for(const side of [-1,1]){const ear=box(g,.12,.18,.2,"#a9b9a9",side*(headW*.53),1.83,.01);ear.rotation.z=side*.12}}
+ if(legVariant%4===1){for(const side of [-1,1]){const foot=new T.Mesh(new T.CylinderGeometry(.17+(legVariant%3)*.02,.17+(legVariant%3)*.02,.1,16),material("#527f71",.45,.28));foot.rotation.z=Math.PI/2;foot.position.set(side*(wheelX+.06),.14,.06);g.add(foot)}}
+ else if(legVariant%4===2){for(const side of [-1,1]){const support=box(g,.12,.3,.14,"#9aa99d",side*.24,.3,-.16);support.rotation.z=side*.18}}
+ else if(legVariant%4===3){for(const side of [-1,1]){const plate=box(g,.16,.24,.3,"#65796b",side*.38,.35,.02);plate.rotation.z=side*.15}}
  g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});g.userData.wheels=wheels;g.userData.armSegments=armSegments;return g
 }
 function addPanel(scene,x,y,z,w,h,color="#34372f"){box(scene,w,h,.18,"#0a0b0a",x+.04,y-.04,z-.08);box(scene,w,h,.18,color,x,y,z);box(scene,w-.16,h-.16,.035,"#10150f",x,y,z+.105)}
@@ -89,12 +94,28 @@ function makeLab(state,isBuild){
 function makeLevel(state){
  const d=state.levelData,scene=new T.Scene();scene.background=new T.Color("#171817");scene.fog=new T.Fog("#171817",17,32);addLights(scene,d.theme);
  const cols=d.cols,rows=d.rows;plane(scene,cols,rows,["#494236","#334142","#48332d","#454136","#2c4240","#3d3548"][d.theme],0,0,0);
- const grid=new T.GridHelper(Math.max(cols,rows),Math.max(cols,rows),0x7a7564,0x5a594e);grid.scale.set(1,1,rows/cols);grid.position.y=.015;scene.add(grid);
+ for(let z=0;z<=rows;z+=2)box(scene,cols,.018,.025,"#39382f",0,.018,z-rows/2);for(let x=0;x<=cols;x+=2)box(scene,.025,.018,rows,"#39382f",x-cols/2,.019,0);for(let i=0;i<26;i++){const chip=new T.Mesh(new T.DodecahedronGeometry(.09+(i%3)*.025,0),material(i%2?"#5c5548":"#292a25",.98,.01));chip.scale.set(1.5,.08,.8);chip.position.set(((i*17)%cols)-cols/2+.5,.035,((i*11)%rows)-rows/2+.5);scene.add(chip)}
+ // A layered industrial/cavern backdrop, with the large gears and suspended machinery seen in the original levels.
+ const backZ=-rows/2-1.25,backW=cols+8;box(scene,backW,5.2,.38,d.theme===1?"#25282a":"#302b25",0,2.6,backZ);
+ if(d.theme===1||d.theme===4){for(let rr=0;rr<9;rr++)for(let cc=0;cc<Math.ceil(backW/.36);cc++){const tile=new T.Mesh(new T.CylinderGeometry(.16,.16,.035,6),material((rr+cc)%5===0?"#55564f":"#343633",.95,.08));tile.rotation.x=Math.PI/2;tile.position.set(-backW/2+.2+cc*.36,.25+rr*.56,backZ+.22);scene.add(tile)}}else{for(let i=0;i<Math.ceil(backW/.7);i++){const rock=new T.Mesh(new T.DodecahedronGeometry(.48+(i%3)*.11,1),material(["#494239","#38352f","#5b4a3b"][i%3],.99,.01));rock.scale.set(1.6,1.2+(i%4)*.3,.65);rock.position.set(-backW/2+i*.68,1.1+(i%3)*.28,backZ+.28);scene.add(rock)}}
+ for(let i=0;i<Math.ceil(backW/2.4);i++)pipe(scene,[-backW/2+i*2.4,3.2,backZ+.38],[-backW/2+i*2.4+2.0,3.2,backZ+.38],.075,"#111514");
+ for(const side of [-1,1]){const bigGear=gear(scene,side*(cols*.25),2.15,backZ+.42,1.0+(side>0?.18:0),d.theme===2?"#a04431":"#916c2e");bigGear.rotation.z=side*.08}
+ pipe(scene,[0,4.5,backZ+.4],[0,2.05,backZ+.4],.045,"#101312");const wrecking=new T.Mesh(new T.SphereGeometry(.38,18,14),material("#aeb0a8",.28,.82));wrecking.position.set(0,1.72,backZ+.4);wrecking.castShadow=true;scene.add(wrecking);
  // Cave walls, ledges and pipework around the 24 generated routes.
  for(let side=0;side<2;side++){for(let i=0;i<8;i++){const x=side?cols/2+.5+i*.6:-cols/2-.5-i*.6;const h=1.3+(i%3)*.55;const rock=new T.Mesh(new T.DodecahedronGeometry(.45+(i%3)*.15,0),material(["#39372f","#51483b","#302f2b"][i%3],.98,.02));rock.scale.set(1.4,h,1.2);rock.position.set(x,h*.5,((i*7)%rows)-rows/2);scene.add(rock)}}
  for(let i=0;i<7;i++){pipe(scene,[-cols/2+i*2.2,2.3,-rows/2-.35],[-cols/2+i*2.2+1.6,2.3,-rows/2-.35],.08,"#111514")}
  const wallMats=["#4f473b","#394345","#53392e","#4a4538","#2f4643","#40364b"];
- for(let z=0;z<rows;z++)for(let x=0;x<cols;x++)if(d.walls[z][x]){const wx=x-cols/2+.5,wz=z-rows/2+.5,h=1.15+(z%3)*.08;box(scene,.98,h,.98,wallMats[d.theme],wx,h/2,wz);const top=new T.Mesh(new T.DodecahedronGeometry(.42,0),material(["#8e8068","#657575","#95684e","#a29669","#5e8880","#8c78a0"][d.theme],.97,.03));top.scale.set(1.1,.32,1.05);top.position.set(wx,h+.05,wz);scene.add(top);for(let k=0;k<3;k++){const chip=box(scene,.12,.035,.025,k%2?"#262620":"#82735f",wx-.25+k*.2,h*.55+(k%2)*.18,wz+.5);chip.rotation.z=(k-1)*.2}}
+ for(let z=0;z<rows;z++)for(let x=0;x<cols;x++)if(d.walls[z][x]){
+  const wx=x-cols/2+.5,wz=z-rows/2+.5,h=1.15+(z%3)*.08;
+  if(d.theme===1||d.theme===4){
+   box(scene,.98,h,.98,wallMats[d.theme],wx,h/2,wz);
+   for(let rr=0;rr<2;rr++)for(let cc=0;cc<3;cc++){const tile=new T.Mesh(new T.CylinderGeometry(.13,.13,.025,6),material((rr+cc)%3===0?"#9ba39a":"#606760",.8,.18));tile.rotation.x=Math.PI/2;tile.position.set(wx-.3+cc*.3,.25+rr*.42,wz+.505);scene.add(tile)}
+  }else{
+   const rock=new T.Mesh(new T.DodecahedronGeometry(.62,1),material(wallMats[d.theme],.99,.01));rock.scale.set(1.08,h/1.05,1.08);rock.position.set(wx,h*.48,wz);scene.add(rock);
+   const shoulder=new T.Mesh(new T.DodecahedronGeometry(.35,0),material(["#8e8068","#657575","#95684e","#a29669","#5e8880","#8c78a0"][d.theme],.99,.01));shoulder.scale.set(1.2,.8,1.05);shoulder.position.set(wx+(x%2?-.2:.2),h*.82,wz+.08);scene.add(shoulder);
+  }
+  for(let k=0;k<3;k++){const chip=box(scene,.12,.035,.025,k%2?"#262620":"#82735f",wx-.25+k*.2,h*.55+(k%2)*.18,wz+.48);chip.rotation.z=(k-1)*.2}
+ }
  const parts=[];for(let i=0;i<d.parts.length;i++){const q=d.parts[i],type=i%3,g=new T.Group();scene.add(g);if(type===0){box(g,.42,.38,.38,palette[(state.level+i)%palette.length],0,.42,0);box(g,.29,.22,.025,"#15281f",0,.42,.205);box(g,.065,.07,.02,"#f4dc70",-.075,.44,.225,{emissive:"#dfc14d"});box(g,.065,.07,.02,"#f4dc70",.075,.44,.225,{emissive:"#dfc14d"})}else if(type===1){box(g,.48,.42,.32,palette[(state.level+i)%palette.length],0,.35,0);box(g,.26,.25,.035,"#223b2c",0,.36,.18)}else{for(const side of [-1,1]){box(g,.12,.38,.13,palette[(state.level+i)%palette.length],side*.13,.35,0);const wheel=new T.Mesh(new T.CylinderGeometry(.11,.11,.07,10),material("#1e2823",.6,.3));wheel.rotation.z=Math.PI/2;wheel.position.set(side*.13,.14,.02);g.add(wheel)}}g.position.set(q.x-cols/2,0,q.y-rows/2);parts.push(g)}
  const hazards=[];for(const q of d.hazards){let g;if(q.type===0)g=gear(scene,q.x-cols/2,.56,q.y-rows/2,.48,"#8f342c");else{g=new T.Group();scene.add(g);if(q.type===1){box(g,1.1,.07,.07,"#e94d43",0,.65,0,{emissive:"#df332a"});for(const side of [-1,1])box(g,.1,.6,.14,"#8a8c7d",side*.53,.35,0)}else for(let k=-1;k<=1;k++){const spike=new T.Mesh(new T.ConeGeometry(.16,.45,6),material("#b54d3d",.6,.2));spike.position.set(k*.32,.23,0);g.add(spike)}}g.position.x=q.x-cols/2;g.position.z=q.y-rows/2;hazards.push({mesh:g,data:q})}
  const sensor=box(scene,.78,.08,.78,"#536f50",d.sensor.x-cols/2,.06,d.sensor.y-rows/2,{emissive:"#4c8152"});const sensorTop=box(scene,.48,.025,.48,"#9fd36f",d.sensor.x-cols/2,.11,d.sensor.y-rows/2,{emissive:"#6da74c"});
