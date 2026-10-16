@@ -164,7 +164,7 @@ function hideOverlay(){$("overlay").classList.add("hidden");state.overlay=false}
 function updateUI(){
 $("totalParts").textContent=pad(state.parts.length+3);$("levelCount").textContent=pad(state.unlocked)+"/24";const pct=Math.round((state.unlocked-1)/23*100);$("progressBar").style.width=pct+"%";$("progressBar").parentElement.setAttribute("aria-valuenow",String(state.unlocked-1));$("progressBar").parentElement.title=pct+"% av banorna upplåsta";$("collectionCount").textContent=(1+Math.floor(state.parts.length/3))+" robot"+(state.parts.length>=3?"ar":"");
 $("hudLevel").textContent=pad(state.level);$("hudName").textContent=levelNames[state.level-1];$("progressText").textContent=(state.collected||[]).length+" / 3 delar";
-[0,1,2].forEach(i=>{const d=$("dot"+i),got=(state.collected||[]).includes(i);d.classList.toggle("got",got);d.textContent=got?"◉":"⬡";});
+[0,1,2].forEach(i=>{const d=$("dot"+i),got=(state.collected||[]).includes(i),part=allParts[((state.level-1)*3+i)%allParts.length],icons={head:"◉",body:"▣",legs:"⌁"};d.classList.toggle("got",got);d.textContent=got?icons[part.type]:"◇";d.title=part.name;});
 $("sceneTitle").textContent=state.scene==="title"?"Välkommen":state.scene==="lab"?"Robotlabbet":state.scene==="level"?"Underjordiska gångar":"Robotbyggaren";
 $("sceneSubtitle").textContent=state.scene==="lab"?"Verkstad · sektor 01":state.scene==="level"?"Gång "+pad(state.level)+" · "+levelNames[state.level-1]:"Verkstad · robotkonstruktion";
 $("levelHud").classList.toggle("hidden",state.scene!=="level");$("mobilePad").classList.toggle("hidden",state.scene!=="level");
