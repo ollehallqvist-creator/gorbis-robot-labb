@@ -204,7 +204,7 @@ state.sensorActive=Math.hypot(state.crate.x-d.sensor.x,state.crate.y-d.sensor.y)
 for(const h of d.hazards){const hx=h.x+Math.sin(performance.now()/850+h.phase)*h.travel;if(Math.hypot(p.x-hx,p.y-h.y)<.38){p.x=d.start.x;p.y=d.start.y;soundCue("hazard");toast("Aj! Du kom åt ett farligt hinder — tillbaka till starten.");break}}
 d.parts.forEach((part,i)=>{if(!state.collected.includes(i)&&Math.hypot(p.x-part.x,p.y-part.y)<.52){state.collected.push(i);soundCue("collect");toast("Robotdel hittad! "+state.collected.length+"/3");updateUI();if(state.collected.length===3){finishLevel();return}}});
 if(state.collected.length===3)return;
-if(state.collected.length>0&&state.sensorActive&&Math.hypot(p.x-d.door.x,p.y-d.door.y)<.7){finishLevel();return}
+if(state.collected.length>0&&state.sensorActive&&Math.hypot(p.x-d.door.x,p.y-d.door.y)<.7){const found=state.collected.length;returnLab();toast("Gången klar — "+found+" av 3 delar. Tillbaka i robotlabbet.");return}
 }
 
 function rounded(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke()}}
