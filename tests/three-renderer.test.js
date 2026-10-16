@@ -44,4 +44,6 @@ assert.ok(renderer.includes("a.rotation.z=Math.sin(now/(moving?100:460)+i)*.07")
 assert.ok(renderer.includes("const handleTarget=state.machinePrimed?.2:.37;this.refs.handle.position.y+=(handleTarget-this.refs.handle.position.y)*.24"), "handle should ease to its pulled position only after the pull gesture primes the machine");
 assert.ok(renderer.includes("const openingKind=state.packageOpeningPart===null?-1:state.packageOpeningPart%3"), "opening a package should construct the actual unlocked head/body/leg part");
 assert.ok(renderer.includes("this.refs.openedPart.visible=opening"), "opened part should animate briefly out of the package");
+assert.ok(renderer.includes("const doorTarget=state.sensorActive?2.1:.8;this.refs.door.position.y+=(doorTarget-this.refs.door.position.y)*.18"), "exit door should slide smoothly when the pressure plate is activated");
+assert.ok(renderer.includes("const plateTarget=state.sensorActive?.08:.15"), "pressure plate should depress when the crate activates it");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
