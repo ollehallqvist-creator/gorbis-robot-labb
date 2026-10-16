@@ -14,7 +14,9 @@ assert.match(html, /body:not\(\.three-d-ready\) \.builder-overlay\{display:none!
 assert.match(renderer, /api\.hitTest=function\(clientX,clientY,canvas\)/, "the 3D parts machine should use raycasting for visible hit targets");
 assert.match(renderer, /hits\[0\]\.object===this\.refs\.handle\?"handle":"hatch"/, "raycasting should distinguish the handle from the hatch");
 assert.match(renderer, /function makeLevel\(state\)/, "the 3D renderer should create a level environment");
-assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create lab and builder environments");
+assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer should create the lab environment");
+assert.match(renderer, /function makeBuilder\(state\)/, "the builder should use its own light-grey assembly studio");
+assert.match(renderer, /Clean light-grey assembly studio/, "builder should not reuse the cave/lab backdrop");
 assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
 assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
 assert.match(renderer, /moving\?Math\.abs\(Math\.sin\(now\/75\)\)/, "the robot should bob while moving");

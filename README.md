@@ -26,7 +26,7 @@ En fristående, spelbar webbrekonstruktion inspirerad av SVT:s *Julkalendern: Go
 - Rubrikremsa för labbet och banorna samt klickbara komponentpilar/paneler visas som HTML-överlägg ovanpå 3D-scenen, så de inte försvinner när Canvas-reserven döljs.
 - Originalinspirerad titelbild med stjärnfält, logotypbehandling, pulserande startikon och helskärmsläge.
 - Välkomstrum ombyggt med djupare perspektiv, grön servicehiss, reservdelsdisplay, säkerhetsramp och golvmarkeringar.
-- Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
+- Robotbyggaren har en egen ljusgrå monteringsstudio med piedestal och reservdelsställ. Robotmodellen har riktningsstyrd ljussättning, skuggade emaljytor, fasade kanter och små mekaniska fästen för tydligare 3D-volym.
 - Verkstad och robotbyggare med egenritad robotgrafik, sidopilar för att bläddra mellan delar och tydlig markering av vald komponent.
 - Gorbi vänder sig i rörelseriktningen i labyrinten och får en enkel gångrörelse när spelaren styr.
 - Robotens huvud och kropp har nu separata skuggade fasningar för tydligare mekanisk volym.
