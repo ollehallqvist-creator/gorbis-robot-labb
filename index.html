@@ -239,38 +239,74 @@ if(li>=6){ctx.save();switch(li){
 ctx.restore();
 }
 function drawLab(){
-// Dim, abandoned industrial workshop with heavy pipes, metal panels and a work platform.
-const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,'#35362f');g.addColorStop(.42,'#24251f');g.addColorStop(1,'#090b09');ctx.fillStyle=g;ctx.fillRect(0,0,960,540);const labGlow=ctx.createRadialGradient(190,230,10,190,230,430);labGlow.addColorStop(0,'#71864a30');labGlow.addColorStop(1,'#00000000');ctx.fillStyle=labGlow;ctx.fillRect(0,0,960,540);
-// Rear wall: dirty steel plates, bevels, bolts and soft pools of light.
-for(let i=0;i<8;i++){const x=i*122-5;ctx.fillStyle=i%2?'#252720':'#2d2e27';ctx.fillRect(x,25,116,370);ctx.fillStyle='#3e4036';ctx.fillRect(x+3,28,110,4);ctx.fillStyle='#171914';ctx.fillRect(x+8,39,100,345);ctx.strokeStyle='#4b4d41';ctx.lineWidth=2;ctx.strokeRect(x+8,39,100,345);ctx.fillStyle='#34362d';ctx.fillRect(x+13,45,90,330);for(let yy=58;yy<360;yy+=38){ctx.fillStyle='#42443a';ctx.fillRect(x+13,yy,90,1)}for(const yy of [48,372]){ctx.fillStyle='#777766';ctx.beginPath();ctx.arc(x+17,yy,2,0,Math.PI*2);ctx.arc(x+99,yy,2,0,Math.PI*2);ctx.fill()}}
-// Ceiling rails and cold fluorescent strips.
-ctx.fillStyle='#070807';ctx.fillRect(0,0,960,32);ctx.fillStyle='#4a4b42';ctx.fillRect(0,24,960,4);ctx.fillStyle='#10120f';ctx.fillRect(575,35,235,9);ctx.fillStyle='#b9c6a6';ctx.shadowColor='#d7e9bd';ctx.shadowBlur=12;ctx.fillRect(596,36,196,4);ctx.shadowBlur=0;ctx.fillStyle='#171914';ctx.fillRect(605,40,178,7);
-// Large black pipe running across the back wall and down the left side.
-ctx.strokeStyle='#080a08';ctx.lineWidth=27;ctx.beginPath();ctx.moveTo(-20,322);ctx.bezierCurveTo(150,316,166,372,290,354);ctx.bezierCurveTo(430,336,460,304,590,344);ctx.lineTo(800,344);ctx.stroke();ctx.strokeStyle='#51564a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-20,309);ctx.bezierCurveTo(150,303,166,359,290,341);ctx.bezierCurveTo(430,323,460,291,590,331);ctx.lineTo(800,331);ctx.stroke();ctx.strokeStyle='#171a15';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-20,335);ctx.bezierCurveTo(150,329,166,385,290,367);ctx.bezierCurveTo(430,349,460,317,590,357);ctx.stroke();
-// Left control terminal with green schematic glow.
-ctx.fillStyle='#080b08';ctx.fillRect(35,75,228,176);ctx.fillStyle='#20251d';ctx.fillRect(40,80,218,166);ctx.strokeStyle='#777966';ctx.lineWidth=2;ctx.strokeRect(40,80,218,166);ctx.fillStyle='#111811';ctx.fillRect(53,95,190,125);ctx.fillStyle='#86d6a0';ctx.font='bold 11px monospace';ctx.fillText('LABORATORIUM 01',66,111);ctx.fillStyle='#1c4c2f';ctx.fillRect(64,121,166,77);ctx.strokeStyle='#5fb67d';ctx.lineWidth=1;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(76,133+i*17);ctx.lineTo(219,133+i*17);ctx.stroke()}for(let i=0;i<7;i++)for(let j=0;j<4;j++){ctx.fillStyle=(i+j)%3?'#8ce3a4':'#d2e9a0';ctx.beginPath();ctx.arc(83+i*20,133+j*17,2.5,0,Math.PI*2);ctx.fill()}ctx.fillStyle='#090c09';ctx.fillRect(55,224,20,10);ctx.fillRect(224,224,20,10);
-// Parts cabinet at right with shelves and silhouette pieces.
-ctx.fillStyle='#080908';ctx.fillRect(735,66,190,303);ctx.fillStyle='#24251f';ctx.fillRect(741,71,178,292);ctx.strokeStyle='#77796a';ctx.lineWidth=2;ctx.strokeRect(741,71,178,292);ctx.fillStyle='#b4b39d';ctx.font='bold 12px monospace';ctx.fillText('RESERVDELAR',762,92);for(let i=0;i<4;i++){let yy=119+i*56;ctx.fillStyle='#0d0f0c';ctx.fillRect(752,yy,156,45);ctx.fillStyle='#4b4d41';ctx.fillRect(752,yy,156,3);ctx.fillStyle=['#c8d5c7','#b94f52','#8a75b5','#a7b5a5'][i];ctx.beginPath();ctx.roundRect(785,yy+9,26,23,5);ctx.fill();ctx.fillStyle='#151812';ctx.fillRect(789,yy+14,18,12);ctx.fillStyle='#e8d67b';ctx.fillRect(793,yy+17,4,4);ctx.fillRect(801,yy+17,4,4);ctx.strokeStyle='#a8b2a3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(780,yy+18);ctx.lineTo(785,yy+18);ctx.moveTo(811,yy+18);ctx.lineTo(816,yy+18);ctx.stroke()}
-// Pull handle and package hatch at the bottom of the parts machine.
-ctx.fillStyle='#10120e';ctx.fillRect(751,337,156,22);ctx.fillStyle='#4c5043';ctx.fillRect(751,337,156,3);ctx.strokeStyle='#9aa18a';ctx.lineWidth=2;ctx.strokeRect(751,337,156,22);ctx.fillStyle=state.machinePrimed?'#d8bd68':'#65705d';ctx.fillRect(764,343,52,10);ctx.fillStyle='#151812';ctx.fillRect(769,345,42,6);ctx.strokeStyle='#aeb9a5';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(878,342);ctx.lineTo(878,351+(state.machinePullStart!==null?7:0));ctx.stroke();ctx.fillStyle='#c5c7b6';ctx.fillRect(869,350+(state.machinePullStart!==null?7:0),18,5);ctx.shadowColor=state.machinePrimed?'#f3dc7d':'#9bd6a7';ctx.shadowBlur=state.machinePrimed?11:3+2*Math.sin(performance.now()/300);ctx.fillStyle=state.machinePrimed?'#e8d67b':'#91a18a';ctx.beginPath();ctx.arc(889,337,3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-// A dispensed part briefly rises out of the hatch, then settles into the opened-parts rack.
-if(state.dispensedPart!==null){const age=performance.now()-state.dispensedAt;if(age<1350){const lift=Math.sin(Math.min(1,age/1350)*Math.PI)*24,part=allParts[state.dispensedPart%allParts.length];ctx.save();ctx.translate(835,338-lift);ctx.shadowColor='#b4edbd';ctx.shadowBlur=10;ctx.fillStyle='#b7d3b4';ctx.fillRect(-10,-10,20,20);ctx.shadowBlur=0;ctx.fillStyle=part.type==='head'?'#243b2d':part.type==='body'?'#638b6c':'#d3d9c5';ctx.fillRect(-7,-7,14,14);if(part.type==='head'){ctx.fillStyle='#f0dc70';ctx.fillRect(-5,-3,3,4);ctx.fillRect(2,-3,3,4)}else if(part.type==='body'){ctx.strokeStyle='#d5e5cf';ctx.strokeRect(-5,-5,10,10)}else{ctx.fillStyle='#202b23';ctx.beginPath();ctx.arc(-4,5,3,0,Math.PI*2);ctx.arc(4,5,3,0,Math.PI*2);ctx.fill()}ctx.restore()}else state.dispensedPart=null;}
-// Floor grid and scuffed metal deck.
-ctx.fillStyle='#11130f';ctx.fillRect(0,390,960,150);const fg=ctx.createLinearGradient(0,390,0,540);fg.addColorStop(0,'#414333');fg.addColorStop(.15,'#292b22');fg.addColorStop(1,'#090b09');ctx.fillStyle=fg;ctx.fillRect(0,390,960,150);ctx.strokeStyle='#3b3d32';ctx.lineWidth=1;for(let i=0;i<15;i++){ctx.beginPath();ctx.moveTo(i*76,390);ctx.lineTo(i*76-110,540);ctx.stroke()}for(let y=415;y<540;y+=31){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke()}
-// Sloped service ramp with worn black-and-yellow hazard stripes.
-ctx.fillStyle='#090b09';ctx.beginPath();ctx.moveTo(804,405);ctx.lineTo(960,376);ctx.lineTo(960,451);ctx.lineTo(804,468);ctx.closePath();ctx.fill();ctx.fillStyle='#424638';ctx.beginPath();ctx.moveTo(812,408);ctx.lineTo(960,382);ctx.lineTo(960,441);ctx.lineTo(812,458);ctx.closePath();ctx.fill();ctx.save();ctx.beginPath();ctx.moveTo(812,408);ctx.lineTo(960,382);ctx.lineTo(960,441);ctx.lineTo(812,458);ctx.closePath();ctx.clip();for(let i=-3;i<14;i++){ctx.fillStyle=i%2?'#171a14':'#b2a45d';ctx.beginPath();ctx.moveTo(820+i*20,400);ctx.lineTo(833+i*20,398);ctx.lineTo(802+i*20,468);ctx.lineTo(789+i*20,470);ctx.closePath();ctx.fill()}ctx.restore();ctx.strokeStyle='#8b8d70';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(812,408);ctx.lineTo(960,382);ctx.stroke();
-// Central raised maintenance pad, worn paint and bolts.
-ctx.fillStyle='#050605';ctx.beginPath();ctx.ellipse(614,433,174,47,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#45483b';ctx.beginPath();ctx.ellipse(614,425,158,37,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#777b68';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(614,425,158,37,0,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#23271f';ctx.fillRect(467,408,294,18);ctx.fillStyle='#858c73';ctx.fillRect(467,408,294,3);for(let i=0;i<10;i++){ctx.fillStyle='#b4b79c';ctx.beginPath();ctx.arc(481+i*28,416,2,0,Math.PI*2);ctx.fill()}
-// Small warning stripes on the workshop floor.
-for(let i=0;i<9;i++){ctx.fillStyle=i%2?'#24261d':'#b0a05b';ctx.beginPath();ctx.moveTo(482+i*29,453);ctx.lineTo(497+i*29,453);ctx.lineTo(490+i*29,460);ctx.lineTo(475+i*29,460);ctx.closePath();ctx.fill()}
-drawRobot(614,393,1.48);
-// A smaller contrasting robot stands beside Gorbi, as in the original welcome room.
-const savedRobot={...state.robot};state.robot={...state.robot,head:2,body:1,legs:1,color:3};drawRobot(390,421,.62);state.robot=savedRobot;
-// Heavy floor cable, visible in the original welcome-room screenshot.
-ctx.lineCap='round';ctx.strokeStyle='#080a08';ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(-20,470);ctx.bezierCurveTo(70,462,85,507,176,502);ctx.bezierCurveTo(260,498,278,465,358,475);ctx.bezierCurveTo(430,486,445,521,534,518);ctx.stroke();ctx.strokeStyle='#3e4638';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-20,466);ctx.bezierCurveTo(70,458,85,503,176,498);ctx.bezierCurveTo(260,494,278,461,358,471);ctx.bezierCurveTo(430,482,445,517,534,514);ctx.stroke();
-// Subtle floating dust and warm indicator lights.
-const dustTime=performance.now()/1000;for(let i=0;i<24;i++){const x=(i*137+31+Math.sin(dustTime*.45+i*1.7)*12+960)%960,y=(i*71+23+Math.cos(dustTime*.38+i*1.3)*8)%385;ctx.globalAlpha=.35+.35*(.5+.5*Math.sin(dustTime+i));ctx.fillStyle=i%3?'#b8c49a':'#e4dfb4';ctx.fillRect(x,y,i%4===0?3:2,i%4===0?3:2)}ctx.globalAlpha=1;ctx.fillStyle='#b8e6bf';ctx.font='bold 11px monospace';ctx.fillText('G O R B I',572,490);ctx.fillStyle='#777e6d';ctx.font='10px monospace';ctx.fillText('ROBOTLABB  /  UNDERHÅLLSSEKTOR',365,508);
-ctx.fillStyle='#050605';ctx.fillRect(0,0,960,52);ctx.fillStyle='#f0efe2';ctx.font='bold 22px monospace';ctx.fillText('TRÄFFA ROBOTEN GORBI',28,34);ctx.fillStyle='#8d987e';ctx.font='10px monospace';ctx.fillText('SVT  /  ROBOTLABBET',786,33);
+ // Perspective reconstruction of the original welcome room: low ceiling, deep side walls,
+ // worn concrete floor, the green service lift, parts terminal and Gorbi at center stage.
+ const poly=(pts,fill,stroke,width=1)=>{ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke()}};
+ const line=(pts,color,width=1)=>{ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()};
+ const metal=(x,y,w,h,base='#34362e')=>{ctx.fillStyle='#080908';ctx.fillRect(x+4,y+5,w,h);ctx.fillStyle=base;ctx.fillRect(x,y,w,h);ctx.strokeStyle='#686a5c';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,w-4,h-4);ctx.fillStyle='#4b4d41';ctx.fillRect(x+6,y+6,w-12,3);for(const [bx,by] of [[x+8,y+8],[x+w-8,y+8],[x+8,y+h-8],[x+w-8,y+h-8]]){ctx.fillStyle='#a5a58c';ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#25271f';ctx.beginPath();ctx.arc(bx,by,1,0,Math.PI*2);ctx.fill()}};
+ const grad=ctx.createLinearGradient(0,0,0,540);grad.addColorStop(0,'#171a18');grad.addColorStop(.35,'#282b26');grad.addColorStop(.7,'#33352d');grad.addColorStop(1,'#080908');ctx.fillStyle=grad;ctx.fillRect(0,0,960,540);
+ // The room converges toward a distant back wall instead of reading as a flat front-facing set.
+ poly([[0,55],[206,82],[245,303],[0,397]],'#1a1e1a','#46493f',2);
+ poly([[960,55],[753,82],[714,303],[960,397]],'#171a17','#42463d',2);
+ poly([[206,82],[753,82],[714,303],[245,303]],'#242721','#505246',2);
+ poly([[0,397],[245,303],[714,303],[960,397],[960,540],[0,540]],'#292b23','#525447',2);
+ // Receding ceiling beams and wall plates.
+ poly([[0,0],[960,0],[753,82],[206,82]],'#080a09','#34372f',2);
+ for(let i=0;i<8;i++){const x=206+i*68;line([[x,84],[480+(x-480)*.76,296]],'#45483e',2);line([[x+5,88],[480+(x-480)*.76+4,294]],'#171a16',5)}
+ line([[0,57],[206,82],[753,82],[960,57]],'#67695b',3);
+ // Wall recesses and green service lift on the left.
+ metal(26,91,172,224,'#34372e');
+ ctx.fillStyle='#101812';ctx.fillRect(42,109,139,160);
+ const green=ctx.createLinearGradient(42,109,181,269);green.addColorStop(0,'#304e3c');green.addColorStop(.5,'#172d22');green.addColorStop(1,'#111913');ctx.fillStyle=green;ctx.fillRect(48,116,126,143);
+ ctx.fillStyle='#9ce5b9';ctx.shadowColor='#8ce3b0';ctx.shadowBlur=18;ctx.fillRect(58,121,5,130);ctx.shadowBlur=0;
+ ctx.fillStyle='#121b15';ctx.fillRect(73,127,88,57);ctx.strokeStyle='#4f9a6d';ctx.strokeRect(73,127,88,57);
+ for(let i=0;i<4;i++){line([[81,137+i*11],[151,137+i*11]],'#397b52',1);for(let j=0;j<5;j++){ctx.fillStyle=(i+j)%3?'#80d8a1':'#d6ed9d';ctx.fillRect(84+j*13,134+i*11,4,4)}}
+ ctx.fillStyle='#0a100c';ctx.fillRect(80,196,72,45);ctx.strokeStyle='#7b8c76';ctx.strokeRect(80,196,72,45);ctx.fillStyle='#8be3ad';ctx.beginPath();ctx.moveTo(99,208);ctx.lineTo(117,208);ctx.lineTo(108,220);ctx.closePath();ctx.fill();
+ // Lift door, handle and a deep black threshold.
+ poly([[0,134],[35,140],[35,314],[0,323]],'#41453a','#777b68',2);poly([[9,148],[28,151],[28,303],[9,309]],'#111711','#636957',1);
+ ctx.fillStyle='#d3e6c9';ctx.shadowColor='#b8e9cb';ctx.shadowBlur=8;ctx.fillRect(31,145,4,158);ctx.shadowBlur=0;
+ metal(15,311,188,17,'#262920');
+ // Main wall console with the green robot-part inventory display.
+ metal(264,96,210,177,'#30332b');ctx.fillStyle='#10150f';ctx.fillRect(279,112,180,111);ctx.strokeStyle='#777b68';ctx.strokeRect(279,112,180,111);
+ ctx.fillStyle='#9de2b2';ctx.font='bold 10px monospace';ctx.fillText('RESERVDELSREGISTER',291,128);
+ ctx.fillStyle='#0c2417';ctx.fillRect(290,136,158,72);ctx.strokeStyle='#2b7950';ctx.strokeRect(290,136,158,72);
+ for(let r=0;r<4;r++)for(let c=0;c<8;c++){const xx=299+c*18,yy=144+r*15;ctx.fillStyle=(r+c)%4===0?'#d2ed9d':'#51b57b';ctx.fillRect(xx,yy,12,5);ctx.fillStyle='#173c27';ctx.fillRect(xx,yy+6,12,2)}
+ ctx.fillStyle='#161b15';ctx.fillRect(287,231,164,23);for(let i=0;i<8;i++){ctx.fillStyle=i%3?'#5a6652':'#b5c18d';ctx.beginPath();ctx.arc(299+i*20,242,3,0,Math.PI*2);ctx.fill()}
+ // Narrow central niche and hanging tool silhouettes.
+ metal(488,94,92,177,'#20231d');ctx.fillStyle='#11140f';ctx.fillRect(500,107,68,62);ctx.fillStyle='#34392f';ctx.fillRect(507,115,54,45);ctx.fillStyle='#a4d4b1';ctx.fillRect(514,126,40,3);ctx.fillRect(514,137,25,3);
+ for(let i=0;i<3;i++){const x=510+i*22;ctx.strokeStyle='#9da69a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,184);ctx.lineTo(x+3,199);ctx.lineTo(x-4,210);ctx.stroke();ctx.fillStyle='#a7ada0';ctx.beginPath();ctx.arc(x,184,4,0,Math.PI*2);ctx.fill()}
+ // Right wall: recessed blast door and black/yellow striped safety ramp.
+ metal(594,88,337,217,'#2a2c25');
+ ctx.fillStyle='#141611';ctx.fillRect(619,104,282,160);ctx.strokeStyle='#4b4d41';ctx.lineWidth=4;ctx.strokeRect(619,104,282,160);
+ ctx.fillStyle='#22251e';ctx.fillRect(634,117,252,133);ctx.strokeStyle='#5c5e50';ctx.strokeRect(634,117,252,133);
+ ctx.fillStyle='#151713';ctx.fillRect(653,132,214,99);ctx.fillStyle='#272a22';ctx.fillRect(659,138,202,87);
+ poly([[606,263],[902,263],[930,313],[578,313]],'#0a0b09','#626453',2);
+ ctx.save();ctx.beginPath();ctx.moveTo(606,263);ctx.lineTo(902,263);ctx.lineTo(930,313);ctx.lineTo(578,313);ctx.closePath();ctx.clip();
+ for(let i=-8;i<25;i++){poly([[600+i*19,261],[610+i*19,261],[588+i*19,315],[578+i*19,315]],i%2?'#171914':'#b2a25a')}
+ ctx.restore();line([[607,265],[902,265]],'#d0c27b',2);
+ // Floor perspective lines, worn metal seams and a faded teal floor emblem.
+ const fg=ctx.createLinearGradient(0,303,0,540);fg.addColorStop(0,'#424439');fg.addColorStop(.25,'#33352b');fg.addColorStop(1,'#171914');ctx.fillStyle=fg;ctx.fillRect(0,303,960,237);
+ for(let i=0;i<17;i++){const x=i*60;line([[480+(x-480)*.43,303],[x,540]],'#4a4c3d',1)}
+ for(let j=0;j<7;j++){const y=318+j*j*4;line([[0,y],[960,y]],'#20231c',1)}
+ // Parts machine on the far right; retain the exact pointer hitboxes for the handle and hatch.
+ metal(735,65,190,303,'#2a2c25');ctx.fillStyle='#c1c0aa';ctx.font='bold 12px monospace';ctx.fillText('RESERVDELAR',756,91);
+ for(let i=0;i<4;i++){const yy=112+i*54;ctx.fillStyle='#0c0e0b';ctx.fillRect(750,yy,160,45);ctx.fillStyle='#4b4e42';ctx.fillRect(750,yy,160,3);ctx.strokeStyle='#595c4d';ctx.strokeRect(750,yy,160,45);const c=['#b8d0bf','#b94f52','#8a75b5','#a7b5a5'][i];ctx.fillStyle='#0b0d0a';ctx.fillRect(792,yy+5,42,34);ctx.fillStyle=c;ctx.fillRect(799,yy+10,28,24);ctx.fillStyle='#17231b';ctx.fillRect(803,yy+14,20,15);ctx.fillStyle='#e8d67b';ctx.fillRect(806,yy+17,4,4);ctx.fillRect(816,yy+17,4,4);ctx.strokeStyle='#a8b2a3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(786,yy+20);ctx.lineTo(792,yy+20);ctx.moveTo(834,yy+20);ctx.lineTo(840,yy+20);ctx.stroke()}
+ ctx.fillStyle='#10120e';ctx.fillRect(751,337,156,22);ctx.fillStyle='#4c5043';ctx.fillRect(751,337,156,3);ctx.strokeStyle='#9aa18a';ctx.lineWidth=2;ctx.strokeRect(751,337,156,22);ctx.fillStyle=state.machinePrimed?'#d8bd68':'#65705d';ctx.fillRect(764,343,52,10);ctx.fillStyle='#151812';ctx.fillRect(769,345,42,6);ctx.strokeStyle='#aeb9a5';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(878,342);ctx.lineTo(878,351+(state.machinePullStart!==null?7:0));ctx.stroke();ctx.fillStyle='#c5c7b6';ctx.fillRect(869,350+(state.machinePullStart!==null?7:0),18,5);ctx.shadowColor=state.machinePrimed?'#f3dc7d':'#9bd6a7';ctx.shadowBlur=state.machinePrimed?11:3+2*Math.sin(performance.now()/300);ctx.fillStyle=state.machinePrimed?'#e8d67b':'#91a18a';ctx.beginPath();ctx.arc(889,337,3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ // A dispensed part rises out of the machine, matching the original interaction.
+ if(state.dispensedPart!==null){const age=performance.now()-state.dispensedAt;if(age<1350){const lift=Math.sin(Math.min(1,age/1350)*Math.PI)*24,part=allParts[state.dispensedPart%allParts.length];ctx.save();ctx.translate(835,338-lift);ctx.shadowColor='#b4edbd';ctx.shadowBlur=10;ctx.fillStyle='#b7d3b4';ctx.fillRect(-10,-10,20,20);ctx.shadowBlur=0;ctx.fillStyle=part.type==='head'?'#243b2d':part.type==='body'?'#638b6c':'#d3d9c5';ctx.fillRect(-7,-7,14,14);if(part.type==='head'){ctx.fillStyle='#f0dc70';ctx.fillRect(-5,-3,3,4);ctx.fillRect(2,-3,3,4)}else if(part.type==='body'){ctx.strokeStyle='#d5e5cf';ctx.strokeRect(-5,-5,10,10)}else{ctx.fillStyle='#202b23';ctx.beginPath();ctx.arc(-4,5,3,0,Math.PI*2);ctx.arc(4,5,3,0,Math.PI*2);ctx.fill()}ctx.restore()}else state.dispensedPart=null;}
+ // Circular floor marking and chipped paint are deliberately subdued like the game screenshot.
+ ctx.save();ctx.translate(480,429);ctx.rotate(-.09);ctx.fillStyle='#1b3932';ctx.beginPath();ctx.ellipse(0,0,176,56,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#496359';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#263d34';ctx.beginPath();ctx.ellipse(0,0,145,43,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#5c7160';ctx.font='bold 17px monospace';ctx.fillText('GORBI',-32,5);ctx.fillStyle='#172720';ctx.font='bold 8px monospace';ctx.fillText('ROBOTLABB',-32,17);ctx.restore();
+ poly([[0,460],[150,441],[198,540],[0,540]],'#1a1d17');poly([[0,460],[150,441],[198,540],[0,540]],'#20241c','#45483b',1);
+ // Thick cable crosses the near foreground, a distinctive detail from the original room.
+ ctx.lineCap='round';ctx.strokeStyle='#080908';ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(-20,470);ctx.bezierCurveTo(70,462,85,507,176,502);ctx.bezierCurveTo(260,498,278,465,358,475);ctx.bezierCurveTo(430,486,445,521,534,518);ctx.stroke();ctx.strokeStyle='#51564a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-20,466);ctx.bezierCurveTo(70,458,85,503,176,498);ctx.bezierCurveTo(260,494,278,461,358,471);ctx.bezierCurveTo(430,482,445,517,534,514);ctx.stroke();
+ // Gorbi and the tiny helper bot, placed in the open floor in front of the console.
+ ctx.save();ctx.translate(480,0);ctx.scale(1.04,1);ctx.translate(-480,0);drawRobot(480,407,1.62, false, 0, true);ctx.restore();
+ const savedRobot={...state.robot};state.robot={...state.robot,head:2,body:1,legs:1,color:3};drawRobot(267,435,.46,false,0,true);state.robot=savedRobot;
+ // A few small floating motes and indicator lights keep the room alive without a flat UI feel.
+ const dustTime=performance.now()/1000;for(let i=0;i<30;i++){const x=(i*137+31+Math.sin(dustTime*.45+i*1.7)*12+960)%960,y=(i*71+23+Math.cos(dustTime*.38+i*1.3)*8)%385;ctx.globalAlpha=.18+.32*(.5+.5*Math.sin(dustTime+i));ctx.fillStyle=i%3?'#b8c49a':'#e4dfb4';ctx.fillRect(x,y,i%4===0?3:2,i%4===0?3:2)}ctx.globalAlpha=1;
+ // The original's black title strip and bold condensed lettering are part of the composition.
+ const top=ctx.createLinearGradient(0,0,0,52);top.addColorStop(0,'#020303');top.addColorStop(1,'#10120f');ctx.fillStyle=top;ctx.fillRect(0,0,960,52);ctx.fillStyle='#050605';ctx.fillRect(0,49,960,4);
+ ctx.fillStyle='#eeeee5';ctx.font='900 23px Impact,Arial Narrow,Arial,sans-serif';ctx.letterSpacing='1.5px';ctx.fillText('TRÄFFA ROBOTEN GORBI',28,34);ctx.fillStyle='#879382';ctx.font='bold 10px monospace';ctx.fillText('ROBOTLABB  /  UNDERJORDISKT LABORATORIUM',637,33);ctx.letterSpacing='0px';
 }
 function drawLevel(){
 const d=state.levelData;if(!d)return;const p=state.player,cols=d.cols,rows=d.rows;const palettes=[['#31342d','#151812','#45483a','#8e9275'],['#2d3437','#111618','#424c4d','#84a4a2'],['#38302c','#17110f','#57433a','#b08b67'],['#30312a','#141610','#51513b','#c1a45f'],['#283638','#101819','#3c5353','#78b8ad'],['#302c3a','#14101b','#4e435f','#a48bc3']];const pal=palettes[d.theme];
