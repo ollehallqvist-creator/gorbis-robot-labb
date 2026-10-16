@@ -1,0 +1,13 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+assert.match(html, /function drawLevel\(\)/, "level renderer should exist");
+assert.match(html, /Rough cavern backdrop/, "levels should have layered rocky cavern art");
+assert.match(html, /Stalactites and fractured ledges/, "caverns should include jagged rock silhouettes");
+assert.match(html, /Heavy pipes, brackets and dim warning lamps/, "cavern machinery should be visible");
+assert.match(html, /ctx\.rotate\(performance\.now\(\)\/4500/, "decorative cave gears should animate");
+assert.match(html, /const chip=\(x\*17\+z\*31\+d\.number\*13\)/, "wall faces should include deterministic chipped-rock detail");
+assert.match(html, /function makeLevel\(n\)/, "all procedural level mechanics should remain present");
+assert.match(html, /function interact\(\)/, "crate and pressure-plate interaction should remain present");
+console.log("PASS: cavern art, animated gears, rock detail, and existing level mechanics are present.");
