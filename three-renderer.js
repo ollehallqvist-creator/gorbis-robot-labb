@@ -3,10 +3,20 @@
 const T=window.THREE;
 const api={ready:false,renderer:null,scene:null,camera:null,key:"",stage:null,refs:{}};
 const palette=["#79c8a6","#c47a52","#9489c7","#6c9fbd","#79a76e","#b7a85c","#83b8b8","#b96e80"];
-const mats={};
-function material(color,roughness=.82,metalness=.12,emissive=null){const key=[color,roughness,metalness,emissive].join("|");if(mats[key])return mats[key];const opts={color,roughness,metalness};if(emissive){opts.emissive=emissive;opts.emissiveIntensity=.32}return mats[key]=new T.MeshStandardMaterial(opts)}
+const mats={},surfaceMaps={};
+function surfaceTexture(kind){
+ if(surfaceMaps[kind])return surfaceMaps[kind];
+ const canvas=document.createElement("canvas");canvas.width=128;canvas.height=128;const c=canvas.getContext("2d");
+ let seed=kind==="metal"?41821:91673;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+ c.fillStyle=kind==="metal"?"#b9bcb5":"#c1c0b8";c.fillRect(0,0,128,128);
+ for(let i=0;i<(kind==="metal"?480:920);i++){const x=rnd()*128,y=rnd()*128,r=kind==="metal"?.25+rnd()*1.4:.35+rnd()*2.2;c.globalAlpha=.035+rnd()*.18;c.fillStyle=rnd()>.5?"#ffffff":"#252823";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
+ if(kind==="metal"){for(let i=0;i<24;i++){c.globalAlpha=.04+rnd()*.12;c.strokeStyle=rnd()>.5?"#ffffff":"#151815";c.lineWidth=.3+rnd()*1.2;c.beginPath();const x=rnd()*128,y=rnd()*128;c.moveTo(x,y);c.lineTo(x+4+rnd()*30,y+(rnd()-.5)*2);c.stroke()}}
+ else{for(let i=0;i<28;i++){const x=rnd()*128,y=rnd()*128;c.globalAlpha=.035+rnd()*.09;c.fillStyle=rnd()>.5?"#f8f4e8":"#171916";c.beginPath();c.moveTo(x,y);c.lineTo(x+3+rnd()*12,y-2-rnd()*6);c.lineTo(x+8+rnd()*14,y+1+rnd()*5);c.lineTo(x+2+rnd()*7,y+5+rnd()*9);c.closePath();c.fill()}}
+ c.globalAlpha=1;const tex=new T.CanvasTexture(canvas);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(2,2);tex.colorSpace=T.SRGBColorSpace;return surfaceMaps[kind]=tex
+}
+function material(color,roughness=.82,metalness=.12,emissive=null){const key=[color,roughness,metalness,emissive].join("|");if(mats[key])return mats[key];const opts={color,roughness,metalness};if(roughness>=.94)opts.map=surfaceTexture(metalness>.35?"metal":"stone");if(emissive){opts.emissive=emissive;opts.emissiveIntensity=.32}return mats[key]=new T.MeshStandardMaterial(opts)}
 function box(parent,w,h,d,color,x,y,z,opts={}){const m=new T.Mesh(new T.BoxGeometry(w,h,d),material(color,opts.roughness??.82,opts.metalness??.12,opts.emissive??null));m.position.set(x,y,z);if(opts.rotationY)m.rotation.y=opts.rotationY;m.castShadow=!!opts.castShadow;m.receiveShadow=opts.receiveShadow!==false;parent.add(m);return m}
-function plane(parent,w,d,color,x,y,z){const m=new T.Mesh(new T.PlaneGeometry(w,d),material(color));m.rotation.x=-Math.PI/2;m.position.set(x,y,z);m.receiveShadow=true;parent.add(m);return m}
+function plane(parent,w,d,color,x,y,z){const m=new T.Mesh(new T.PlaneGeometry(w,d),material(color,.96,.02));m.rotation.x=-Math.PI/2;m.position.set(x,y,z);m.receiveShadow=true;parent.add(m);return m}
 function pipe(parent,a,b,r,color){const v1=new T.Vector3(...a),v2=new T.Vector3(...b),dir=new T.Vector3().subVectors(v2,v1),mesh=new T.Mesh(new T.CylinderGeometry(r,r,dir.length(),10),material(color,.56,.58));mesh.position.copy(v1).add(v2).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),dir.normalize());parent.add(mesh);return mesh}
 function addLights(scene,theme=0){scene.add(new T.HemisphereLight(0x9daeb2,0x191714,2.0));const key=new T.DirectionalLight(0xffe6bd,2.3);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.camera.left=-16;key.shadow.camera.right=16;key.shadow.camera.top=12;key.shadow.camera.bottom=-12;key.shadow.camera.near=.5;key.shadow.camera.far=35;scene.add(key);const rim=new T.DirectionalLight(0x7dc7bb,1.15);rim.position.set(7,6,-6);scene.add(rim);const green=new T.PointLight(theme===0?0x4de09b:0x8bafc0,5,10);green.position.set(-4,2,-3);scene.add(green)}
 function robot(parent,config={},scale=1){
@@ -121,7 +131,7 @@ function makeLevel(state){
  for(let z=0;z<rows;z++)for(let x=0;x<cols;x++)if(d.walls[z][x]){
   const wx=x-cols/2+.5,wz=z-rows/2+.5,h=1.15+(z%3)*.08;
   if(d.theme===1||d.theme===4){
-   box(scene,.98,h,.98,wallMats[d.theme],wx,h/2,wz);
+   box(scene,.98,h,.98,wallMats[d.theme],wx,h/2,wz,{roughness:.97,metalness:.04});
    for(let rr=0;rr<2;rr++)for(let cc=0;cc<3;cc++){const tile=new T.Mesh(new T.CylinderGeometry(.13,.13,.025,6),material((rr+cc)%3===0?"#9ba39a":"#606760",.8,.18));tile.rotation.x=Math.PI/2;tile.position.set(wx-.3+cc*.3,.25+rr*.42,wz+.505);scene.add(tile)}
   }else{
    const rock=new T.Mesh(new T.DodecahedronGeometry(.62,1),material(wallMats[d.theme],.99,.01));rock.scale.set(1.08,h/1.05,1.08);rock.position.set(wx,h*.48,wz);scene.add(rock);
