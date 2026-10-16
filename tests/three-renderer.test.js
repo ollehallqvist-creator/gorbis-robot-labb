@@ -18,6 +18,7 @@ assert.match(renderer, /function makeLab\(state,isBuild\)/, "the 3D renderer sho
 assert.match(renderer, /function robot\(parent,config=\{\},scale=1\)/, "the 3D robot should be composed of geometry");
 assert.match(renderer, /g\.userData\.wheels=wheels;g\.userData\.armSegments=armSegments/, "robot wheels and arms should be tracked for animation");
 assert.match(renderer, /moving\?Math\.abs\(Math\.sin\(now\/75\)\)/, "the robot should bob while moving");
+assert.match(renderer, /p\.faceX<0\?-Math\.PI\/2:p\.faceX>0\?Math\.PI\/2:p\.faceZ<0\?Math\.PI:0/, "robot orientation should follow movement direction");
 assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize only when available");
 assert.match(renderer, /this\.renderer\.shadowMap\.enabled=true/, "3D scene should use real-time shadows");
 assert.match(renderer, /key\.castShadow=true/, "directional lighting should cast shadows");
