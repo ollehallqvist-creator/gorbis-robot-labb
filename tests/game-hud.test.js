@@ -7,4 +7,5 @@ assert.match(html, /I 24 MAGISKA BANOR/, "banner should reference the 24 origina
 assert.match(html, /\.hud-card:last-child\{padding:5px 7px;background:#10141bdd;border:3px solid #4a78b7/, "part counter should use the blue-framed bottom-left layout");
 assert.match(html, /d\.textContent=got\?"◉":"⬡"/, "part slots should distinguish collected parts from empty slots");
 assert.match(html, /\.hud\{display:flex;position:absolute;inset:auto auto 14px 14px/, "level HUD should be visible at the bottom left");
+assert.ok(html.includes('const use3D=!!(window.Gorbi3D&&window.Gorbi3D.ready&&state.scene!=="title")'), "hidden Canvas fallback should not render every frame when WebGL is active");
 console.log("PASS: gameplay banner and three-slot collection HUD match the original layout more closely.");
