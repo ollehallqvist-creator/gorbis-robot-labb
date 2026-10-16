@@ -34,4 +34,6 @@ assert.match(renderer, /new T\.WebGLRenderer/, "WebGL renderer should initialize
 assert.match(renderer, /this\.renderer\.shadowMap\.enabled=true/, "3D scene should use real-time shadows");
 assert.match(renderer, /key\.castShadow=true/, "directional lighting should cast shadows");
 assert.match(renderer, /if\(!this\.ready\|\|state\.scene==="title"\)return/, "the renderer should defer to the title-card Canvas and gracefully fall back");
+assert.ok(renderer.includes("function hexTiles(scene,placements,radius=.16,depth=.035)"), "repeated hex wall tiles should be instanced for Chromebook performance");
+assert.ok(renderer.includes("new T.InstancedMesh(new T.CylinderGeometry(radius,radius,depth,6)"), "hex wall tiles should render as instances instead of hundreds of separate meshes");
 console.log("PASS: WebGL scene layer, 3D lab/levels/robot, and Canvas fallback are wired.");
