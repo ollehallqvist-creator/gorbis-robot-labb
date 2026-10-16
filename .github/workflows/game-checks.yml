@@ -20,4 +20,9 @@ jobs:
         run: node tests/sound-cues.test.js
       - name: Check title screen and welcome-room scene
         run: node tests/title-screen.test.js
-      - name: Check cavern level art and mechanics\n        run: node tests/level-art.test.js\n      - name: Check robot builder carousel controls\n        run: node tests/robot-builder.test.js\n      - name: Check robot model materials\n        run: node tests/robot-materials.test.js\n
+      - name: Check cavern level art and mechanics
+        run: node tests/level-art.test.js
+      - name: Check robot builder carousel controls
+        run: node tests/robot-builder.test.js
+      - name: Check robot model materials
+        run: node tests/robot-materials.test.js
