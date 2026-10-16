@@ -27,7 +27,7 @@ function addLights(scene,theme=0){scene.add(new T.HemisphereLight(0x9daeb2,0x191
 function robot(parent,config={},scale=1){
  const g=new T.Group();g.scale.setScalar(scale);parent.add(g);const wheels=[],armSegments=[];
  const color=palette[(config.color||0)%palette.length],bodyColor=palette[(config.body||0)%palette.length]||color;
- const headVariant=Math.abs(config.head||0)%24,bodyVariant=Math.abs(config.body||0)%24,legVariant=Math.abs(config.legs||0)%24;
+ const headVariant=Math.abs(config.head||0)%25,bodyVariant=Math.abs(config.body||0)%25,legVariant=Math.abs(config.legs||0)%25;
  const headW=.48+(headVariant%6)*.025,headH=.36+(Math.floor(headVariant/6)%4)*.035,headD=.44+(headVariant%4)*.02;
  const bodyW=.64+(bodyVariant%5)*.035,bodyH=.72+(Math.floor(bodyVariant/5)%4)*.045,bodyD=.48+(bodyVariant%3)*.035;
  const wheelR=.13+(legVariant%5)*.012,wheelX=.31+(legVariant%4)*.025;
@@ -55,6 +55,7 @@ function robot(parent,config={},scale=1){
  for(const side of [-1,1])for(const y of [1.83-headH*.31,1.83+headH*.31]){const bolt=new T.Mesh(new T.SphereGeometry(.026,8,6),material("#d7e0d2",.42,.45));bolt.position.set(side*headW*.4,y,headD*.5+.02);g.add(bolt)}
  if(headVariant%3!==0){const ax=headVariant%2?-.1:.1,topY=1.83+headH/2+.025;pipe(g,[ax,topY,0],[ax-.02,topY+.18+(headVariant%4)*.025,0],.022,"#c0cabe");const tipColor=headVariant%2?"#df6c53":"#f1d56e",tip=new T.Mesh(new T.SphereGeometry(.045+(headVariant%3)*.006,8,8),material(tipColor,.38,.18,tipColor));tip.position.set(ax-.02,topY+.2+(headVariant%4)*.025,0);g.add(tip)}
  if(headVariant%5===0){for(const side of [-1,1]){const ear=box(g,.12,.18,.2,"#a9b9a9",side*(headW*.53),1.83,.01);ear.rotation.z=side*.12}}
+ if(headVariant===24){for(const side of [-1,1]){pipe(g,[side*.12,1.83+headH/2,0],[side*.16,1.83+headH/2+.22,0],.022,"#c0cabe");const sensor=new T.Mesh(new T.SphereGeometry(.05,8,8),material("#66dca1",.3,.1,"#3ebd7b"));sensor.position.set(side*.16,1.83+headH/2+.24,0);g.add(sensor)}}
  if(legVariant%4===1){for(const side of [-1,1]){const foot=new T.Mesh(new T.CylinderGeometry(.17+(legVariant%3)*.02,.17+(legVariant%3)*.02,.1,16),material("#527f71",.45,.28));foot.rotation.z=Math.PI/2;foot.position.set(side*(wheelX+.06),.14,.06);g.add(foot)}}
  else if(legVariant%4===2){for(const side of [-1,1]){const support=box(g,.12,.3,.14,"#9aa99d",side*.24,.3,-.16);support.rotation.z=side*.18}}
  else if(legVariant%4===3){for(const side of [-1,1]){const plate=box(g,.16,.24,.3,"#65796b",side*.38,.35,.02);plate.rotation.z=side*.15}}
