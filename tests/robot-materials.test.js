@@ -1,0 +1,10 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+assert.match(html, /const bodyGrad=ctx\.createLinearGradient/, "robot body should use directional material shading");
+assert.match(html, /const headGrad=ctx\.createLinearGradient/, "robot head should use directional material shading");
+assert.match(html, /for\(const hx of \[-13,13\]\)/, "head should have small mechanical fasteners");
+assert.match(html, /ctx\.globalAlpha=\.42/, "bevel highlight should add material depth");
+assert.match(html, /function drawRobot\(x,y,scale=1/, "robot variants and drawing function should remain available");
+console.log("PASS: robot model uses shaded enamel, beveled highlights, and mechanical fasteners.");
